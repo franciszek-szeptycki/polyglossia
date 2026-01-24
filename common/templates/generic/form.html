@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block header_text %}
+  {% if object %}Edytuj {{ model_name }}{% else %}Dodaj {{ model_name }}{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm border-0">
+  <div class="card-body p-4">
+    <form method="post">
+      {% csrf_token %}
+      {{ form|crispy }}
+      <div class="d-flex justify-content-end gap-2 mt-4">
+        <a href="{{ cancel_url }}" class="btn btn-light">Anuluj</a>
+        <button type="submit" class="btn btn-primary shadow-sm">Zapisz</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
