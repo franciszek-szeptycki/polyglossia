@@ -19,7 +19,7 @@
 
             <div class="col-md-3 d-grid gap-2">
                 <a href="{% url 'word_edit' word.id %}" class="btn btn-primary btn-sm">Edytuj</a>
-                <a href="{% url 'word_generate_flashcards' word.id %}" class="btn btn-success btn-sm">Generuj flashcards</a>
+                <a href="{% url 'word_generate_flashcards' word.id %}" class="btn btn-success btn-sm">Wygeneruj fiszki</a>
                 <a href="{% url 'word_delete' word.id %}" class="btn btn-danger btn-sm">Usuń</a>
                 <a href="{% url 'word_next_redirect' %}" class="btn btn-secondary btn-sm">Następne słówko</a>
                 <a href="{% url 'word_list' %}" class="btn btn-outline-secondary btn-sm">&larr; Powrót</a>
@@ -32,7 +32,7 @@
 
 <div class="mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h5 class="mb-0">Flashcards</h5>
+        <h5 class="mb-0">Fiszki</h5>
         <span class="badge bg-light text-muted border">Tryb liniowy</span>
     </div>
 
