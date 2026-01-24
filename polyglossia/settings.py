@@ -41,7 +41,11 @@ ROOT_URLCONF = "polyglossia.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, "*", "templates")],
+        "DIRS": [
+            os.path.join(BASE_DIR, "common", "templates"),
+            os.path.join(BASE_DIR, "sentences", "templates"),
+            os.path.join(BASE_DIR, "vocabulary", "templates"),
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

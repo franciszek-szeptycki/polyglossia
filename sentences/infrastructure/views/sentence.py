@@ -8,7 +8,7 @@ from sentences.infrastructure.forms.sentence import SentenceForm
 
 
 class ContactView(View):
-    template_name = "sentence.html"
+    template_name = "sentence/form.html"
 
     def get(self, request):
         form = SentenceForm()

@@ -7,7 +7,7 @@ from sentences.infrastructure.views.sentence_revision import (
 )
 
 urlpatterns = [
-    path("", ContactView.as_view(), name="create_sentence"),
+    path("", ContactView.as_view(), name="sentence_form"),
     path(
         "revisions/", SentenceRevisionListView.as_view(), name="sentence_revision_list"
     ),
