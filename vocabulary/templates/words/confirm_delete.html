@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block header_text %}Usuń słowo{% endblock %}
+{% block content %}
+<div class="card shadow-sm border-0">
+  <div class="card-body p-4 text-center">
+    <h4 class="mb-4">Czy na pewno chcesz usunąć słowo "<strong>{{ object.text }}</strong>"?</h4>
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger btn-lg px-5 shadow-sm">Tak, usuń</button>
+      <a href="{% url 'word_list' %}" class="btn btn-light btn-lg px-4">Anuluj</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

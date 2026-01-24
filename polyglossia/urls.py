@@ -1,8 +1,8 @@
-from django.contrib import admin
 from django.urls import include, path
+from django.views.generic import RedirectView
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
     path("sentences/", include("sentences.urls")),
-    # path("vocabulary/", include("vocabulary.urls")),
+    path("vocabulary/", include("vocabulary.urls")),
+    path("", RedirectView.as_view(url="vocabulary/", permanent=False)),
 ]
