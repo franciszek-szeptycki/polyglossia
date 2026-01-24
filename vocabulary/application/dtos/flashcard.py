@@ -1,4 +1,6 @@
 from dataclasses import dataclass
+from datetime import datetime
+from typing import Optional
 
 
 @dataclass
@@ -7,4 +9,5 @@ class FlashcardDTO:
     word_id: str
     front: str
     back: str
-    is_active: bool
+    is_active: Optional[bool] = None
+    last_exported_at: Optional[datetime] = None
