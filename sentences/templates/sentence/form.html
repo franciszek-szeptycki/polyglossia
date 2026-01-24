@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}
+.form-control-custom {
+  display: block;
+  width: 100%;
+  padding: 0.8rem 1rem;
+  color: #212529;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 0.5rem;
+  min-height: 120px;
+  white-space: pre-wrap;
+}
+.translated-field {
+  border-color: #0d6efd;
+  background-color: rgba(13, 110, 253, 0.02);
+  font-weight: 500;
+  color: #0d6efd;
+}
+.errorlist {
+  list-style: none;
+  padding: 0;
+  color: #dc3545;
+  font-size: 0.875rem;
+  font-weight: bold;
+  margin-top: 5px;
+}
+{% endblock %}
+
+{% block content %}
+
+<div class="card shadow-sm border-0">
+  <div class="card-header bg-dark text-white py-3">
+    <h5 class="mb-0">Dodaj nowe zdanie</h5>
+  </div>
+
+  <div class="card-body p-4">
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="mb-4">
+        <label class="badge bg-secondary mb-2 text-uppercase"
+          >Zdanie</label
+        >
+        <textarea
+          name="original_text"
+          id="id_original_text"
+          class="form-control-custom shadow-sm"
+        >
+{% if form.original_text.value %}{{ form.original_text.value }}{% endif %}</textarea
+        >
+        {{ form.original_text.errors }}
+      </div>
+
+      <div class="mb-4">
+        <label class="badge bg-primary mb-2 text-uppercase"
+          >Tłumaczenie</label
+        >
+        <textarea
+          name="translated_text"
+          id="id_translated_text"
+          class="form-control-custom translated-field shadow-sm"
+        >
+{% if form.translated_text.value %}{{ form.translated_text.value }}{% endif %}</textarea
+        >
+        {{ form.translated_text.errors }}
+      </div>
+
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+        <button
+          type="submit"
+          class="btn btn-primary btn-lg px-5 shadow-sm fw-bold"
+        >
+          Zapisz
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
