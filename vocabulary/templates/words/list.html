@@ -2,6 +2,7 @@
 {% block header_text %}Lista słów{% endblock %}
 {% block content %}
 <div class="mb-3 text-end">
+    <a href="{% url 'word_bulk_create' %}" class="btn btn-outline-success me-2">Dodaj wiele słówek</a>
     <a href="{% url 'word_create' %}" class="btn btn-success">+ Dodaj słowo</a>
 </div>
 <div class="card shadow-sm border-0">

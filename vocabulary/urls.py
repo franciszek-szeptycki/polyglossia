@@ -7,6 +7,10 @@ from vocabulary.infrastructure.views.word import (
     WordListView,
     WordUpdateView,
 )
+from vocabulary.infrastructure.views.words_bulk import (
+    WordBulkConfirmView,
+    WordBulkCreateView,
+)
 
 urlpatterns = [
     path("", WordListView.as_view(), name="word_list"),
@@ -14,4 +18,6 @@ urlpatterns = [
     path("<uuid:pk>/", WordDetailView.as_view(), name="word_detail"),
     path("<uuid:pk>/edit/", WordUpdateView.as_view(), name="word_edit"),
     path("<uuid:pk>/delete/", WordDeleteView.as_view(), name="word_delete"),
+    path("add-bulk/", WordBulkCreateView.as_view(), name="word_bulk_create"),
+    path("add-bulk/confirm/", WordBulkConfirmView.as_view(), name="word_bulk_confirm"),
 ]

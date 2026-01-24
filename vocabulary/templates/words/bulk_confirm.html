@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block header_text %}Potwierdź import{% endblock %}
+{% block content %}
+<div class="card shadow-sm border-0">
+  <div class="table-responsive">
+    <table class="table mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Słowo</th>
+          <th>Kontekst</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in preview_data %}
+        <tr>
+          <td>{{ item.text }}</td>
+          <td>{{ item.context }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="card-footer bg-white p-4">
+    <form method="post">
+      {% csrf_token %}
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <a href="{% url 'word_bulk_create' %}" class="btn btn-light px-4">Wróć</a>
+        <button type="submit" class="btn btn-success px-5 fw-bold">Akceptuj i dodaj</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

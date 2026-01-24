@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block header_text %}Dodaj wiele słówek{% endblock %}
+{% block content %}
+<div class="card shadow-sm border-0">
+  <div class="card-body p-4">
+    <p class="text-muted">Wprowadź dane w formacie: <code>słówko; kontekst</code> (każde w nowej linii)</p>
+    <form method="post">
+      {% csrf_token %}
+      <div class="mb-4">
+        {{ form.data }}
+      </div>
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <a href="{% url 'word_list' %}" class="btn btn-light px-4">Anuluj</a>
+        <button type="submit" class="btn btn-primary px-5 fw-bold">Dalej</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
