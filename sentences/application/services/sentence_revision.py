@@ -1,9 +1,9 @@
 import json
 from uuid import uuid4
 
+from common.adapters.openai_adapter import openai_adapter
 from sentences.application.dtos.sentence import SentenceDTO
 from sentences.application.dtos.sentence_revision import SentenceRevisionDTO
-from sentences.infrastructure.adapters.openai_adapter import openai_adapter
 
 
 class GetSentenceRevisionService:
