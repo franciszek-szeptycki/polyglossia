@@ -33,14 +33,17 @@ class GenerateFlashcardsService:
             raise ValueError("No response received from OpenAI")
 
         return [
-            FlashcardDTO(id=str(uuid4()), front=item["front"], back=item["back"])
+            FlashcardDTO(
+                id=str(uuid4()), word_id=word.id, front=item["front"], back=item["back"]
+            )
             for item in json.loads(response)
         ]
 
 
-generate_flashcards_service = GenerateFlashcardsService()
+ask_ai_for_flashcards_service = GenerateFlashcardsService()
 
 if __name__ == "__main__":
     word = WordDTO(id="", text="example", context="example context")
-    flashcard = generate_flashcards_service.execute(word=word)
-    print(flashcard)
+    flashcards = ask_ai_for_flashcards_service.execute(word=word)
+    for flashcard in flashcards:
+        print(flashcard)

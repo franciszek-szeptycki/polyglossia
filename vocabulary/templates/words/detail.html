@@ -1,28 +1,58 @@
+
 {% extends 'base.html' %}
 {% block header_text %}Szczegóły słowa{% endblock %}
 {% block content %}
-<div class="card shadow-sm border-0">
-  <div class="card-body p-4">
-    <div class="mb-4">
-      <label class="badge bg-secondary mb-2 text-uppercase">Słowo</label>
-      <div class="p-3 border rounded bg-white shadow-sm">{{ word.text }}</div>
-    </div>
-    <div class="mb-5">
-      <label class="badge bg-primary mb-2 text-uppercase">Kontekst</label>
-      <div class="p-3 border border-primary rounded bg-primary bg-opacity-10 shadow-sm fw-bold text-primary">
-        {{ word.context }}
+
+<div class="row g-4">
+  <!-- LEWA KOLUMNA: szczegóły słowa -->
+  <div class="col-md-6">
+    <div class="card shadow-sm border-0">
+      <div class="card-body p-4">
+        <div class="mb-4">
+          <label class="badge bg-secondary mb-2 text-uppercase">Słowo</label>
+          <div class="p-3 border rounded bg-white shadow-sm">{{ word.text }}</div>
+        </div>
+        <div class="mb-5">
+          <label class="badge bg-primary mb-2 text-uppercase">Kontekst</label>
+          <div class="p-3 border border-primary rounded bg-primary bg-opacity-10 shadow-sm fw-bold text-primary">
+            {{ word.context }}
+          </div>
+        </div>
+        <div class="d-flex justify-content-between">
+          <a href="{% url 'word_list' %}" class="btn btn-outline-secondary">&larr; Powrót</a>
+          <div>
+            <a href="{% url 'word_edit' word.id %}" class="btn btn-primary">Edytuj</a>
+            <a href="{% url 'word_generate_flashcards' word.id %}" class="btn btn-success">Generuj flashcards</a>
+            <a href="{% url 'word_delete' word.id %}" class="btn btn-danger">Usuń</a>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer bg-white text-muted small">
+        Dodano: {{ word.created_at|date:"d.m.Y, H:i:s" }} | ID: {{ word.id }}
       </div>
     </div>
-    <div class="d-flex justify-content-between">
-        <a href="{% url 'word_list' %}" class="btn btn-outline-secondary">&larr; Powrót</a>
-        <div>
-            <a href="{% url 'word_edit' word.id %}" class="btn btn-primary">Edytuj</a>
-            <a href="{% url 'word_delete' word.id %}" class="btn btn-danger">Usuń</a>
-        </div>
+  </div>
+
+  <!-- PRAWA KOLUMNA: lista flashcardów -->
+  <div class="col-md-6">
+    <div class="card shadow-sm border-0 h-100">
+      <div class="card-body p-4">
+        <h5 class="card-title mb-3">Flashcards</h5>
+        {% if flashcards %}
+          <ul class="list-group list-group-flush">
+            {% for card in flashcards %}
+              <li class="list-group-item">
+                <strong>Front:</strong> {{ card.front }}<br>
+                <strong>Back:</strong> {{ card.back }}
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-muted">Brak przypisanych flashcardów.</p>
+        {% endif %}
+      </div>
     </div>
   </div>
-  <div class="card-footer bg-white text-muted small">
-    Dodano: {{ word.created_at|date:"d.m.Y, H:i:s" }} | ID: {{ word.id }}
-  </div>
 </div>
+
 {% endblock %}

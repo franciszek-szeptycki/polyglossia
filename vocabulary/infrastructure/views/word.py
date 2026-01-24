@@ -22,6 +22,11 @@ class WordDetailView(DetailView):
     template_name = "words/detail.html"
     context_object_name = "word"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["flashcards"] = self.object.flashcards.all()
+        return context
+
 
 class WordCreateView(CreateView):
     model = Word
