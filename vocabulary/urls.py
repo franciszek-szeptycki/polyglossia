@@ -7,7 +7,7 @@ from vocabulary.infrastructure.views.word import (
     WordListView,
     WordUpdateView,
 )
-from vocabulary.infrastructure.views.words_bulk import (
+from vocabulary.infrastructure.views.word_bulk import (
     WordBulkConfirmView,
     WordBulkCreateView,
 )
