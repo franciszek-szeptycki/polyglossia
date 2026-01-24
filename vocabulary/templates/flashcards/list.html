@@ -19,7 +19,7 @@
     <tbody>
       {% for card in flashcards %}
       <tr>
-        <td class="text-muted small">{{ word.created_at|date:"Y-m-d H:i" }}</td>
+        <td class="text-muted small">{{ card.created_at|date:"Y-m-d H:i" }}</td>
         <td>{{ card.front }}</td>
         <td>{{ card.back }}</td>
       </tr>
