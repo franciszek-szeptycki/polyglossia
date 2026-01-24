@@ -13,4 +13,4 @@ class Flashcard(models.Model):
     exported_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        ordering = ["-exported_at"]
+        ordering = [models.F("exported_at").desc(nulls_first=True)]
