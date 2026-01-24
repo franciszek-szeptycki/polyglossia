@@ -8,7 +8,10 @@ class OpenAIAdapter:
         self.default_model = "gpt-5-nano"
 
     def generate_response(
-        self, prompt, system_instructions="You are a helpful assistant.", max_tokens=500
+        self,
+        *,
+        prompt: str,
+        system_instructions: str,
     ):
         try:
             response = self.client.chat.completions.create(
