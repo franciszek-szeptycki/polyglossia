@@ -2,56 +2,50 @@
 
 {% block title %}Historia Rewizji{% endblock %}
 
+{% block header_text %}Historia Rewizji{% endblock %}
+
 {% block content %}
-<div class="card shadow-sm border-0">
-  <div class="card-header bg-dark text-white py-3">
-    <h4 class="mb-0">Historia Rewizji</h4>
-    <span class="badge bg-light text-dark">Razem: {{ revisions.count }}</span>
-  </div>
-
-
-  <div class="card-body p-0">
-    <div class="table-responsive">
-      <table class="table table-hover mb-0">
-        <thead class="table-light">
-          <tr>
-            <th>Data</th>
-            <th>Oryginalny tekst</th>
-            <th>Tłumaczenie</th>
-            <th class="text-end">Akcje</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for item in revisions %}
-          <tr>
-            <td class="text-muted small">
-              {{ item.created_at|date:"Y-m-d H:i" }}
-            </td>
-            <td>{{ item.original_text|truncatechars:50 }}</td>
-            <td>
-              <span class="text-success"
-                >{{ item.translated_text|truncatechars:50 }}</span
-              >
-            </td>
-            <td class="text-end">
-              <a
-                href="{% url 'sentence_revision_detail' item.id %}"
-                class="btn btn-sm btn-outline-primary"
-              >
-                Szczegóły &rarr;
-              </a>
-            </td>
-          </tr>
-          {% empty %}
-          <tr>
-            <td colspan="4" class="text-center py-4 text-muted">
-              Brak rewizji w bazie.
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
+<div class="card-body p-0">
+  <div class="table-responsive">
+    <table class="table table-hover mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Data</th>
+          <th>Oryginalny tekst</th>
+          <th>Tłumaczenie</th>
+          <th class="text-end">Akcje</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in revisions %}
+        <tr>
+          <td class="text-muted small">
+            {{ item.created_at|date:"Y-m-d H:i" }}
+          </td>
+          <td>{{ item.original_text|truncatechars:50 }}</td>
+          <td>
+            <span class="text-success"
+              >{{ item.translated_text|truncatechars:50 }}</span
+            >
+          </td>
+          <td class="text-end">
+            <a
+              href="{% url 'sentence_revision_detail' item.id %}"
+              class="btn btn-sm btn-outline-primary"
+            >
+              Szczegóły &rarr;
+            </a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="4" class="text-center py-4 text-muted">
+            Brak rewizji w bazie.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
 </div>
 {% endblock %}

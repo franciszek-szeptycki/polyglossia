@@ -28,13 +28,11 @@
 }
 {% endblock %}
 
+{% block header_text %}Dodaj nowe zdanie{% endblock %}
+
 {% block content %}
 
 <div class="card shadow-sm border-0">
-  <div class="card-header bg-dark text-white py-3">
-    <h5 class="mb-0">Dodaj nowe zdanie</h5>
-  </div>
-
   <div class="card-body p-4">
     <form method="post">
       {% csrf_token %}
