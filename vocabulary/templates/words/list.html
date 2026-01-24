@@ -17,10 +17,11 @@
   <table class="table table-hover mb-0">
     <thead class="table-light">
       <tr>
-        <th>Data</th>
-        <th>Słowo</th>
-        <th>Kontekst</th>
-        <th class="text-end">Akcje</th>
+        <th class="">Data</th>
+        <th class="">Słowo</th>
+        <th class="">Kontekst</th>
+        <th class="text-center">Czy ma aktywne fiszki?</th>
+        <th class="text-center">Akcje</th>
       </tr>
     </thead>
     <tbody>
@@ -29,7 +30,8 @@
         <td class="text-muted small">{{ word.created_at|date:"Y-m-d H:i" }}</td>
         <td>{{ word.text|truncatechars:50 }}</td>
         <td><span class="text-primary">{{ word.context|truncatechars:50 }}</span></td>
-        <td class="text-end">
+        <td class="text-center">{% if word.has_selected_flashcards %}✅{% else %}❌{% endif %}</td>
+        <td class="text-center">
           <a href="{% url 'word_detail' word.id %}" class="btn btn-sm btn-outline-primary">Szczegóły</a>
           <a href="{% url 'word_edit' word.id %}" class="btn btn-sm btn-outline-secondary">Edytuj</a>
           <a href="{% url 'word_delete' word.id %}" class="btn btn-sm btn-outline-danger">Usuń</a>
@@ -42,4 +44,3 @@
   </table>
 </div>
 {% endblock %}
-

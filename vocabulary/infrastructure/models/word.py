@@ -11,3 +11,7 @@ class Word(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
+
+    @property
+    def has_selected_flashcards(self):
+        return self.flashcards.filter(is_selected=True).exists()
