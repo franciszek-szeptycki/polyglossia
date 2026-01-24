@@ -5,28 +5,55 @@
 {% block card_body_class %}p-0{% endblock %}
 
 {% block card_body %}
-<div class="table-responsive">
-  <table class="table table-hover mb-0">
-    <thead class="table-light">
-      <tr>
-        <th class="">Data dodania</th>
-        <th class="">Front</th>
-        <th class="">Back</th>
-        <th class="text-center">Data ostatniego eksportu</th>
-        <th class="text-center">Akcje</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for card in flashcards %}
-      <tr>
-        <td class="text-muted small">{{ card.created_at|date:"Y-m-d H:i" }}</td>
-        <td>{{ card.front }}</td>
-        <td>{{ card.back }}</td>
-      </tr>
-      {% empty %}
-      <tr><td colspan="5" class="text-center py-4 text-muted">Brak fiszek spełniających kryteria.</td></tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
+{# Zmieniono na standardowy formularz POST #}
+<form id="bulk-export-form"
+      method="POST"
+      action="{% url 'flashcard_bulk_export' %}">
+    {% csrf_token %}
+
+    <div class="p-3 border-bottom bg-light d-flex justify-content-between align-items-center">
+        <span id="export-status-message" class="small text-muted">Zaznacz fiszki, które chcesz pobrać jako plik .csv</span>
+        <button type="submit" class="btn btn-primary btn-sm">
+            <i class="fas fa-download me-1"></i> Eksportuj zaznaczone
+        </button>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th style="width: 40px;" class="text-center">
+                        <input type="checkbox"
+                               onclick="let checkboxes = document.querySelectorAll('input[name=\'card_ids\']'); checkboxes.forEach(c => c.checked = this.checked)">
+                    </th>
+                    <th>Data dodania</th>
+                    <th>Front</th>
+                    <th>Back</th>
+                    <th class="text-center">Data ostatniego eksportu</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for card in flashcards %}
+                <tr>
+                    <td class="text-center">
+                        <input type="checkbox" name="card_ids" value="{{ card.id }}">
+                    </td>
+                    <td class="text-muted small">{{ card.created_at|date:"Y-m-d H:i" }}</td>
+                    <td>{{ card.front }}</td>
+                    <td>{{ card.back }}</td>
+                    <td class="text-center small">
+                        {{ card.exported_at|date:"Y-m-d"|default:"-" }}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center py-4 text-muted">
+                        Brak fiszek spełniających kryteria.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</form>
 {% endblock %}

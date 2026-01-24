@@ -10,4 +10,4 @@ class FlashcardDTO:
     front: str
     back: str
     is_active: Optional[bool] = None
-    last_exported_at: Optional[datetime] = None
+    exported_at: Optional[datetime] = None

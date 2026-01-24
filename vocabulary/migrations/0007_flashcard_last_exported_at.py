@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('vocabulary', '0006_rename_is_selected_flashcard_is_active'),
+        ("vocabulary", "0006_rename_is_selected_flashcard_is_active"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='flashcard',
-            name='last_exported_at',
+            model_name="flashcard",
+            name="last_exported_at",
             field=models.DateTimeField(blank=True, null=True),
         ),
     ]

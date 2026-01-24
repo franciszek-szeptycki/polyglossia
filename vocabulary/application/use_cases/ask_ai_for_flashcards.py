@@ -1,8 +1,8 @@
 from vocabulary.application.services.generate_flashcards import (
     ask_ai_for_flashcards_service,
 )
-from vocabulary.infrastructure.repository.flashcard import flashcard_repository
-from vocabulary.infrastructure.repository.word import word_repository
+from vocabulary.infrastructure.repositories.flashcard import flashcard_repository
+from vocabulary.infrastructure.repositories.word import word_repository
 
 
 class AskAIForFlashcardsUseCase:

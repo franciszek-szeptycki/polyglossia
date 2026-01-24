@@ -1,6 +1,9 @@
 from django.urls import path
 
 from vocabulary.infrastructure.views.flashcard import FlashcardListView
+from vocabulary.infrastructure.views.flashcard_bulk_export import (
+    FlashcardBulkExportView,
+)
 from vocabulary.infrastructure.views.flashcard_htmx import FlashcardUpdateHTMXView
 from vocabulary.infrastructure.views.word import (
     WordCreateView,
@@ -39,5 +42,10 @@ urlpatterns = [
         "flashcards/",
         FlashcardListView.as_view(),
         name="flashcard_list",
+    ),
+    path(
+        "flashcards/bulk-export/",
+        FlashcardBulkExportView.as_view(),
+        name="flashcard_bulk_export",
     ),
 ]
