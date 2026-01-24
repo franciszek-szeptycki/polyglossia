@@ -26,10 +26,9 @@
                         <input type="checkbox"
                                onclick="let checkboxes = document.querySelectorAll('input[name=\'card_ids\']'); checkboxes.forEach(c => c.checked = this.checked)">
                     </th>
-                    <th>Data dodania</th>
+                    <th>Data ostatniego eksportu</th>
                     <th>Front</th>
                     <th>Back</th>
-                    <th class="text-center">Data ostatniego eksportu</th>
                 </tr>
             </thead>
             <tbody>
@@ -38,12 +37,11 @@
                     <td class="text-center">
                         <input type="checkbox" name="card_ids" value="{{ card.id }}">
                     </td>
-                    <td class="text-muted small">{{ card.created_at|date:"Y-m-d H:i" }}</td>
+                    <td class="small">
+                        {{ card.exported_at|date:"Y-m-d H:i" }}
+                    </td>
                     <td>{{ card.front }}</td>
                     <td>{{ card.back }}</td>
-                    <td class="text-center small">
-                        {{ card.exported_at|date:"Y-m-d"|default:"-" }}
-                    </td>
                 </tr>
                 {% empty %}
                 <tr>
