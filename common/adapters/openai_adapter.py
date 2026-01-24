@@ -6,6 +6,10 @@ from openai import OpenAI
 load_dotenv()
 
 
+class OpenAIResponseError(Exception):
+    pass
+
+
 class OpenAIAdapter:
     def __init__(self):
         self.client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
@@ -27,7 +31,7 @@ class OpenAIAdapter:
             )
             return response.choices[0].message.content
         except Exception as e:
-            return f"Error: {str(e)}"
+            raise OpenAIResponseError(f"Error: {str(e)}")
 
 
 openai_adapter = OpenAIAdapter()
