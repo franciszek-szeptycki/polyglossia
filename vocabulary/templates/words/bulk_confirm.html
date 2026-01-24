@@ -6,6 +6,7 @@
     <table class="table mb-0">
       <thead class="table-light">
         <tr>
+          <th>#</th>
           <th>Słowo</th>
           <th>Kontekst</th>
         </tr>
@@ -13,6 +14,7 @@
       <tbody>
         {% for item in preview_data %}
         <tr>
+          <td>{{ forloop.counter }}</td>
           <td>{{ item.text }}</td>
           <td>{{ item.context }}</td>
         </tr>
