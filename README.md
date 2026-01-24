@@ -10,4 +10,6 @@ The app leverages AI to make learning more efficient by:
 - Quickly creating advanced **ANKI flashcards** for vocabulary and grammar practice.
 
 ## Important notes
-> Current Focus: The app is currently optimized for Polish-German translations and learning.
+**Current Focus**: The app is currently optimized for Polish-German translations and learning.
+
+**Hosting**: ⚠️ Single-User Only: Multi-user support is not available yet — the app can only be run locally.
