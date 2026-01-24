@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('vocabulary', '0003_alter_word_context'),
+        ("vocabulary", "0003_alter_word_context"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='flashcard',
-            name='is_selected',
+            model_name="flashcard",
+            name="is_selected",
             field=models.BooleanField(default=False),
         ),
     ]

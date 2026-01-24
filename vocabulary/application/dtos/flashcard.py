@@ -7,4 +7,4 @@ class FlashcardDTO:
     word_id: str
     front: str
     back: str
-    is_selected: bool
+    is_active: bool

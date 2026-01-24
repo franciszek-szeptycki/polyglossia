@@ -38,7 +38,7 @@ class GenerateFlashcardsService:
                 word_id=word.id,
                 front=item["front"],
                 back=item["back"],
-                is_selected=False,
+                is_active=False,
             )
             for item in json.loads(response)
         ]

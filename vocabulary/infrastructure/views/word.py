@@ -20,9 +20,9 @@ class WordListView(ListView):
         queryset = super().get_queryset()
         self.active_filter = self.request.GET.get("active_flashcards")
         if self.active_filter == "yes":
-            queryset = queryset.filter(flashcards__is_selected=True).distinct()
+            queryset = queryset.filter(flashcards__is_active=True).distinct()
         elif self.active_filter == "no":
-            queryset = queryset.exclude(flashcards__is_selected=True).distinct()
+            queryset = queryset.exclude(flashcards__is_active=True).distinct()
 
         return queryset
 

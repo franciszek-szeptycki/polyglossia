@@ -16,11 +16,11 @@
 <div class="p-3 border-bottom bg-light">
     <form method="get" class="row g-2 align-items-center">
         <div class="col-auto">
-            <label class="small fw-bold text-muted">Przypisane fiszki:</label>
+            <label class="small fw-bold text-muted">Aktywne fiszki:</label>
             <select name="active_flashcards" class="form-select form-select-sm" onchange="this.form.submit()">
                 <option value="" {% if not current_filter %}selected{% endif %}>Wszystkie</option>
-                <option value="yes" {% if current_filter == 'yes' %}selected{% endif %}>Tak (✅)</option>
-                <option value="no" {% if current_filter == 'no' %}selected{% endif %}>Nie (❌)</option>
+                <option value="yes" {% if current_filter == 'yes' %}selected{% endif %}>Tak ✅</option>
+                <option value="no" {% if current_filter == 'no' %}selected{% endif %}>Nie ❌</option>
             </select>
         </div>
         {% if current_filter %}
@@ -41,7 +41,7 @@
         <th class="">Data</th>
         <th class="">Słowo</th>
         <th class="">Kontekst</th>
-        <th class="text-center">Czy ma przypisane fiszki?</th>
+        <th class="text-center">Czy ma aktywne fiszki?</th>
         <th class="text-center">Akcje</th>
       </tr>
     </thead>
@@ -51,7 +51,7 @@
         <td class="text-muted small">{{ word.created_at|date:"Y-m-d H:i" }}</td>
         <td>{{ word.text|truncatechars:50 }}</td>
         <td><span class="text-primary">{{ word.context|truncatechars:50 }}</span></td>
-        <td class="text-center">{% if word.has_selected_flashcards %}✅{% else %}❌{% endif %}</td>
+        <td class="text-center">{% if word.has_active_flashcards %}✅{% else %}❌{% endif %}</td>
         <td class="text-center">
           <a href="{% url 'word_detail' word.id %}" class="btn btn-sm btn-outline-primary">Szczegóły</a>
           <a href="{% url 'word_edit' word.id %}" class="btn btn-sm btn-outline-secondary">Edytuj</a>

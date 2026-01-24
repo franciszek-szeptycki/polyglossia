@@ -1,5 +1,6 @@
 from django.urls import path
 
+from vocabulary.infrastructure.views.flashcard import FlashcardListView
 from vocabulary.infrastructure.views.flashcard_htmx import FlashcardUpdateHTMXView
 from vocabulary.infrastructure.views.word import (
     WordCreateView,
@@ -33,5 +34,10 @@ urlpatterns = [
         "flashcards/<uuid:pk>/update-htmx/",
         FlashcardUpdateHTMXView.as_view(),
         name="flashcard_update_htmx",
+    ),
+    path(
+        "flashcards/",
+        FlashcardListView.as_view(),
+        name="flashcard_list",
     ),
 ]

@@ -5,7 +5,7 @@ from vocabulary.infrastructure.models.flashcard import Flashcard
 
 class FlashcardUpdateHTMXView(UpdateView):
     model = Flashcard
-    fields = ["front", "back", "is_selected"]
+    fields = ["front", "back", "is_active"]
     template_name = "partials/flashcard_row.html"
 
     def form_valid(self, form):

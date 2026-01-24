@@ -5,20 +5,21 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('vocabulary', '0004_flashcard_is_selected'),
+        ("vocabulary", "0004_flashcard_is_selected"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='flashcard',
-            options={'ordering': ['-created_at']},
+            name="flashcard",
+            options={"ordering": ["-created_at"]},
         ),
         migrations.AddField(
-            model_name='flashcard',
-            name='created_at',
-            field=models.DateTimeField(auto_now_add=True, default=django.utils.timezone.now),
+            model_name="flashcard",
+            name="created_at",
+            field=models.DateTimeField(
+                auto_now_add=True, default=django.utils.timezone.now
+            ),
             preserve_default=False,
         ),
     ]
