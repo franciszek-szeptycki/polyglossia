@@ -3,4 +3,5 @@ from dataclasses import dataclass
 
 @dataclass
 class SentenceDTO:
-    text: str
+    original_text: str
+    translated_text: str

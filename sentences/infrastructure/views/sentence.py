@@ -5,10 +5,6 @@ from sentences.application.use_cases.ask_for_sentence_revision import (
     ask_for_sentence_revision_use_case,
 )
 from sentences.infrastructure.forms.sentence import SentenceForm
-from sentences.infrastructure.repository.sentence import (
-    SentenceRepository,
-    sentence_repository,
-)
 
 
 class ContactView(View):

@@ -3,11 +3,13 @@ from sentences.infrastructure.models.sentence_revision import SentenceRevision
 
 
 class SentenceRevisionRepository:
-    def create_from_dto(self, dto: SentenceRevisionDTO) -> SentenceRevisionDTO:
-        obj = SentenceRevision.objects.create(
-            id=dto.id, text=dto.text, revision=dto.revision
+    def create_from_dto(self, dto: SentenceRevisionDTO):
+        SentenceRevision.objects.create(
+            id=dto.id,
+            original_text=dto.original_text,
+            translated_text=dto.translated_text,
+            revision=dto.revision,
         )
-        return SentenceRevisionDTO(id=str(obj.id), text=obj.text, revision=obj.revision)
 
 
 sentence_revision_repository = SentenceRevisionRepository()

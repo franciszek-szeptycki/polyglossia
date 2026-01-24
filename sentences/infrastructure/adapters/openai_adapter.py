@@ -9,7 +9,7 @@ load_dotenv()
 class OpenAIAdapter:
     def __init__(self):
         self.client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
-        self.default_model = "gpt-5-nano"
+        self.default_model = "gpt-4o-mini"
 
     def generate_response(
         self,
@@ -17,7 +17,6 @@ class OpenAIAdapter:
         system: str,
         user: str,
     ):
-        print("hmm")
         try:
             response = self.client.chat.completions.create(
                 model=self.default_model,
