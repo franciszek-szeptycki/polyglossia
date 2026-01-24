@@ -2,60 +2,60 @@
 
 {% block header_text %}Szczegóły rewizji{% endblock %}
 
-{% block content %}
-<div class="card shadow-sm border-0">
-  <div class="card-body p-4">
-    <div class="mb-4">
-      <label class="badge bg-secondary mb-2 text-uppercase"
-        >Oryginał</label
-      >
-      <div class="p-3 border rounded bg-white text-box shadow-sm">
-        {{ revision_item.original_text }}
-      </div>
-    </div>
-
-    <div class="mb-5">
-      <label class="badge bg-primary mb-2 text-uppercase"
-        >Tłumaczenie</label
-      >
-      <div
-        class="p-3 border border-primary rounded bg-primary bg-opacity-10 text-box shadow-sm fw-bold text-primary"
-      >
-        {{ revision_item.translated_text }}
-      </div>
-    </div>
-
-    <hr class="my-4" />
-
-    <h6 class="fw-bold mb-3">Dane techniczne (JSON)</h6>
-    <div class="table-responsive">
-      <table class="table table-bordered align-middle shadow-sm">
-        <tbody>
-          {% for key, value in revision_item.revision.items %}
-          <tr>
-            <td class="key-column text-end pe-4">{{ key }}</td>
-            <td class="ps-4 py-3 text-dark">
-              {% if value is iterable and value is not string %}
-              <pre
-                class="mb-0 bg-light p-2 rounded small"
-              ><code>{{ value }}</code></pre>
-              {% else %} {{ value }} {% endif %}
-            </td>
-          </tr>
-          {% empty %}
-          <tr>
-            <td colspan="2" class="text-center text-muted py-4">
-              Brak danych w polu 'revision'.
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <div class="card-footer bg-white text-muted small">
-    Utworzono: {{ revision_item.created_at|date:"d.m.Y, H:i:s" }} | UUID:
-    {{ revision_item.id }}
+{% block card_body %}
+<div class="mb-4">
+  <label class="badge bg-secondary mb-2 text-uppercase"
+    >Oryginał</label
+  >
+  <div class="p-3 border rounded bg-white text-box shadow-sm">
+    {{ revision_item.original_text }}
   </div>
 </div>
+
+<div class="mb-5">
+  <label class="badge bg-primary mb-2 text-uppercase"
+    >Tłumaczenie</label
+  >
+  <div
+    class="p-3 border border-primary rounded bg-primary bg-opacity-10 text-box shadow-sm fw-bold text-primary"
+  >
+    {{ revision_item.translated_text }}
+  </div>
+</div>
+
+<hr class="my-4" />
+
+<h6 class="fw-bold mb-3">Dane techniczne (JSON)</h6>
+<div class="table-responsive">
+  <table class="table table-bordered align-middle shadow-sm">
+    <tbody>
+      {% for key, value in revision_item.revision.items %}
+      <tr>
+        <td class="key-column text-end pe-4">{{ key }}</td>
+        <td class="ps-4 py-3 text-dark">
+          {% if value is iterable and value is not string %}
+          <pre
+            class="mb-0 bg-light p-2 rounded small"
+          ><code>{{ value }}</code></pre>
+          {% else %} {{ value }} {% endif %}
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="2" class="text-center text-muted py-4">
+          Brak danych w polu 'revision'.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 {% endblock %}
+
+{% block card_footer %}
+<div class="card-footer bg-white text-muted small">
+  Utworzono: {{ revision_item.created_at|date:"d.m.Y, H:i:s" }} | UUID:
+  {{ revision_item.id }}
+</div>
+{% endblock %}
+

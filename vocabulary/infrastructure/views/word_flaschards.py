@@ -1,4 +1,5 @@
 from django.views.generic import TemplateView
 
 
-class WordFlashcardsView(TemplateView)
+class WordFlashcardsView(TemplateView):
+    pass
