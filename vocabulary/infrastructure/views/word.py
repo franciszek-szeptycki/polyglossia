@@ -26,15 +26,27 @@ class WordDetailView(DetailView):
 class WordCreateView(CreateView):
     model = Word
     form_class = WordForm
-    template_name = "words/form.html"
+    template_name = "generic/form.html"
     success_url = reverse_lazy("word_list")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["model_name"] = "słowo"
+        context["cancel_url"] = reverse_lazy("word_list")
+        return context
 
 
 class WordUpdateView(UpdateView):
     model = Word
     form_class = WordForm
-    template_name = "words/form.html"
+    template_name = "generic/form.html"
     success_url = reverse_lazy("word_list")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["model_name"] = "słowo"
+        context["cancel_url"] = reverse_lazy("word_list")
+        return context
 
 
 class WordDeleteView(DeleteView):
