@@ -19,6 +19,7 @@ from vocabulary.infrastructure.views.word_bulk import (
 from vocabulary.infrastructure.views.word_generate_flashcards import (
     WordGenerateFlashcardsView,
 )
+from vocabulary.infrastructure.views.word_next_redirect import WordNextRedirectView
 
 urlpatterns = [
     path("", WordListView.as_view(), name="word_list"),
@@ -28,6 +29,11 @@ urlpatterns = [
     path("<uuid:pk>/delete/", WordDeleteView.as_view(), name="word_delete"),
     path("add-bulk/", WordBulkCreateView.as_view(), name="word_bulk_create"),
     path("add-bulk/confirm/", WordBulkConfirmView.as_view(), name="word_bulk_confirm"),
+    path(
+        "next-word-redirect/",
+        WordNextRedirectView.as_view(),
+        name="word_next_redirect",
+    ),
     path(
         "<uuid:pk>/generate-flashcards/",
         WordGenerateFlashcardsView.as_view(),
