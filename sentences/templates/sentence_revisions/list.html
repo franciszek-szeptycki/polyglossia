@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Sentence Revisions</title>
+  </head>
+  <body>
+    <h1>Sentence Revisions</h1>
+
+    {% if revisions %}
+    <table border="1" cellpadding="5" cellspacing="0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Text</th>
+          <th>Revision</th>
+          <th>Created At</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for rev in revisions %}
+        <tr>
+          <td>{{ rev.id }}</td>
+          <td>{{ rev.text }}</td>
+          <td><pre>{{ rev.revision|safe }}</pre></td>
+          <td>{{ rev.created_at }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>No revisions found.</p>
+    {% endif %}
+  </body>
+</html>

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Sentence Revision Detail</title>
+  </head>
+  <body>
+    <h1>Sentence Revision Detail</h1>
+
+    <dl>
+      <dt>ID:</dt>
+      <dd>{{ revision.id }}</dd>
+
+      <dt>Text:</dt>
+      <dd>{{ revision.text }}</dd>
+
+      <dt>Revision:</dt>
+      <dd><pre>{{ revision.revision|safe }}</pre></dd>
+
+      <dt>Created At:</dt>
+      <dd>{{ revision.created_at }}</dd>
+    </dl>
+
+    <p>
+      <a href="{% url 'sentence_revision_list' %}">Back to list</a>
+    </p>
+  </body>
+</html>

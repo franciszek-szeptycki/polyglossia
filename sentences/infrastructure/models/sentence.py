@@ -1,7 +1,5 @@
 from django.db import models
 
-from sentences.application.dtos.sentece import SentenceDTO
-
 
 class Sentence(models.Model):
     text = models.TextField()

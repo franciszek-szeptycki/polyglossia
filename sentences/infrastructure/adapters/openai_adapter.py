@@ -1,4 +1,9 @@
+import os
+
+from dotenv import load_dotenv
 from openai import OpenAI
+
+load_dotenv()
 
 
 class OpenAIAdapter:
@@ -25,14 +30,10 @@ class OpenAIAdapter:
             return f"Error: {str(e)}"
 
 
+openai_adapter = OpenAIAdapter()
+
 if __name__ == "__main__":
-    import os
-
-    from dotenv import load_dotenv
-
-    load_dotenv()
-    adapter = OpenAIAdapter()
-    response = adapter.generate_response(
+    response = openai_adapter.generate_response(
         system="", user="What is the capital of France?"
     )
     print(response)
