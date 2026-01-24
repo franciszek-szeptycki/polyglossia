@@ -17,6 +17,7 @@ class OpenAIAdapter:
         system: str,
         user: str,
     ):
+        print("hmm")
         try:
             response = self.client.chat.completions.create(
                 model=self.default_model,

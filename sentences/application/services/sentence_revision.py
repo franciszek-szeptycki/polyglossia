@@ -7,6 +7,11 @@ from sentences.infrastructure.adapters.openai_adapter import openai_adapter
 
 
 class GetSentenceRevisionService:
+    SYSTEM_PROMPT = """
+    Jesteś nauczycielem języka niemieckiego. Twoim zadaniem jest sprawdzenie czy poniższe zdanie jest poprawne.
+    Jeśli nie, popraw je. Spodziewaj się że uczeń ma poziom językowy B1.
+    """
+
     def execute(self, *, sentence_dto: SentenceDTO) -> SentenceRevisionDTO:
         response = openai_adapter.generate_response(
             system="", user="What is the capital of France?"
