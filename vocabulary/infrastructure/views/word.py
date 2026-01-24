@@ -16,6 +16,22 @@ class WordListView(ListView):
     template_name = "words/list.html"
     context_object_name = "words"
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        self.active_filter = self.request.GET.get("active_flashcards")
+        if self.active_filter == "yes":
+            queryset = queryset.filter(flashcards__is_selected=True).distinct()
+        elif self.active_filter == "no":
+            queryset = queryset.exclude(flashcards__is_selected=True).distinct()
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["total_count"] = self.get_queryset().count()
+        context["current_filter"] = self.active_filter
+        return context
+
 
 class WordDetailView(DetailView):
     model = Word

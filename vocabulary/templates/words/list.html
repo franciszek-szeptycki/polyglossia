@@ -2,7 +2,7 @@
 
 {% block header_text %}
   <div class="d-flex justify-content-between align-items-center">
-    <span>Lista słów</span>
+    <span>Lista słów ({{ total_count }})</span>
     <div>
       <a href="{% url 'word_bulk_create' %}" class="btn btn-outline-success btn-sm me-2">Dodaj wiele słówek</a>
       <a href="{% url 'word_create' %}" class="btn btn-success btn-sm">+ Dodaj słowo</a>
@@ -13,6 +13,27 @@
 {% block card_body_class %}p-0{% endblock %}
 
 {% block card_body %}
+<div class="p-3 border-bottom bg-light">
+    <form method="get" class="row g-2 align-items-center">
+        <div class="col-auto">
+            <label class="small fw-bold text-muted">Przypisane fiszki:</label>
+            <select name="active_flashcards" class="form-select form-select-sm" onchange="this.form.submit()">
+                <option value="" {% if not current_filter %}selected{% endif %}>Wszystkie</option>
+                <option value="yes" {% if current_filter == 'yes' %}selected{% endif %}>Tak (✅)</option>
+                <option value="no" {% if current_filter == 'no' %}selected{% endif %}>Nie (❌)</option>
+            </select>
+        </div>
+        {% if current_filter %}
+        <div class="col-auto">
+            <a href="{% url 'word_list' %}" class="btn btn-sm btn-link text-decoration-none">Wyczyść filtry</a>
+        </div>
+        {% endif %}
+        <div class="col text-end">
+            <span class="badge bg-secondary">Znaleziono: {{ total_count }}</span>
+        </div>
+    </form>
+</div>
+
 <div class="table-responsive">
   <table class="table table-hover mb-0">
     <thead class="table-light">
@@ -20,7 +41,7 @@
         <th class="">Data</th>
         <th class="">Słowo</th>
         <th class="">Kontekst</th>
-        <th class="text-center">Czy ma aktywne fiszki?</th>
+        <th class="text-center">Czy ma przypisane fiszki?</th>
         <th class="text-center">Akcje</th>
       </tr>
     </thead>
@@ -38,7 +59,7 @@
         </td>
       </tr>
       {% empty %}
-      <tr><td colspan="4" class="text-center py-4 text-muted">Brak słów w bazie.</td></tr>
+      <tr><td colspan="5" class="text-center py-4 text-muted">Brak słów spełniających kryteria.</td></tr>
       {% endfor %}
     </tbody>
   </table>
