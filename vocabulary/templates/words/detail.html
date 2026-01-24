@@ -1,58 +1,47 @@
-
 {% extends 'base.html' %}
 {% block header_text %}Szczegóły słowa{% endblock %}
 {% block content %}
 
-<div class="row g-4">
-  <!-- LEWA KOLUMNA: szczegóły słowa -->
-  <div class="col-md-6">
-    <div class="card shadow-sm border-0">
-      <div class="card-body p-4">
-        <div class="mb-4">
-          <label class="badge bg-secondary mb-2 text-uppercase">Słowo</label>
-          <div class="p-3 border rounded bg-white shadow-sm">{{ word.text }}</div>
-        </div>
-        <div class="mb-5">
-          <label class="badge bg-primary mb-2 text-uppercase">Kontekst</label>
-          <div class="p-3 border border-primary rounded bg-primary bg-opacity-10 shadow-sm fw-bold text-primary">
-            {{ word.context }}
-          </div>
-        </div>
-        <div class="d-flex justify-content-between">
-          <a href="{% url 'word_list' %}" class="btn btn-outline-secondary">&larr; Powrót</a>
-          <div>
-            <a href="{% url 'word_edit' word.id %}" class="btn btn-primary">Edytuj</a>
-            <a href="{% url 'word_generate_flashcards' word.id %}" class="btn btn-success">Generuj flashcards</a>
-            <a href="{% url 'word_delete' word.id %}" class="btn btn-danger">Usuń</a>
-          </div>
-        </div>
-      </div>
-      <div class="card-footer bg-white text-muted small">
-        Dodano: {{ word.created_at|date:"d.m.Y, H:i:s" }} | ID: {{ word.id }}
-      </div>
-    </div>
-  </div>
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-body p-4">
+        <div class="row align-items-center">
+            <div class="col-md-4">
+                <label class="badge bg-secondary mb-2 text-uppercase">Słowo</label>
+                <div class="p-3 border rounded bg-white shadow-sm h4 mb-0">{{ word.text }}</div>
+            </div>
 
-  <!-- PRAWA KOLUMNA: lista flashcardów -->
-  <div class="col-md-6">
-    <div class="card shadow-sm border-0 h-100">
-      <div class="card-body p-4">
-        <h5 class="card-title mb-3">Flashcards</h5>
-        {% if flashcards %}
-          <ul class="list-group list-group-flush">
-            {% for card in flashcards %}
-              <li class="list-group-item">
-                <strong>Front:</strong> {{ card.front }}<br>
-                <strong>Back:</strong> {{ card.back }}
-              </li>
-            {% endfor %}
-          </ul>
-        {% else %}
-          <p class="text-muted">Brak przypisanych flashcardów.</p>
-        {% endif %}
-      </div>
+            <div class="col-md-5">
+                <label class="badge bg-primary mb-2 text-uppercase">Kontekst</label>
+                <div class="p-3 border border-primary rounded bg-primary bg-opacity-10 shadow-sm fw-bold text-primary">
+                    {{ word.context }}
+                </div>
+            </div>
+
+            <div class="col-md-3 d-grid gap-2">
+                <a href="{% url 'word_edit' word.id %}" class="btn btn-primary btn-sm">Edytuj</a>
+                <a href="{% url 'word_generate_flashcards' word.id %}" class="btn btn-success btn-sm">Generuj flashcards</a>
+                <a href="{% url 'word_delete' word.id %}" class="btn btn-danger btn-sm">Usuń</a>
+                <a href="{% url 'word_list' %}" class="btn btn-outline-secondary btn-sm">&larr; Powrót</a>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
-{% endblock %}
+<hr>
+
+<div class="mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mb-0">Flashcards</h5>
+        <span class="badge bg-light text-muted border">Tryb liniowy</span>
+    </div>
+
+    <div id="flashcards-list" class="w-100">
+        {% for card in flashcards %}
+            {% include "partials/flashcard_row.html" with card=card %}
+        {% empty %}
+            <div class="alert alert-light border text-center text-muted">
+                Brak przypisanych flashcardów.
+            </div>
+        {% endfor %}
+    </div>
+</div>{% endblock %}

@@ -1,4 +1,4 @@
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.views.generic import (
     CreateView,
     DeleteView,
@@ -32,13 +32,16 @@ class WordCreateView(CreateView):
     model = Word
     form_class = WordForm
     template_name = "generic/form.html"
-    success_url = reverse_lazy("word_list")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["model_name"] = "słowo"
-        context["cancel_url"] = reverse_lazy("word_list")
+        context["cancel_url"] = reverse("word_list")
         return context
+
+    def get_success_url(self):
+        # self.object to nowo utworzony obiekt Word
+        return reverse("word_detail", kwargs={"pk": self.object.pk})
 
 
 class WordUpdateView(UpdateView):

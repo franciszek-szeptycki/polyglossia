@@ -34,7 +34,11 @@ class GenerateFlashcardsService:
 
         return [
             FlashcardDTO(
-                id=str(uuid4()), word_id=word.id, front=item["front"], back=item["back"]
+                id=str(uuid4()),
+                word_id=word.id,
+                front=item["front"],
+                back=item["back"],
+                is_selected=False,
             )
             for item in json.loads(response)
         ]

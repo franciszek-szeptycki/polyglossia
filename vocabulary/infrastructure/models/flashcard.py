@@ -8,3 +8,8 @@ class Flashcard(models.Model):
     word = models.ForeignKey(Word, on_delete=models.CASCADE, related_name="flashcards")
     front = models.TextField()
     back = models.TextField()
+    is_selected = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
