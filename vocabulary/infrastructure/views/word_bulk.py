@@ -2,27 +2,23 @@ from django import forms
 from django.shortcuts import redirect
 from django.views.generic import FormView, TemplateView
 
+from vocabulary.infrastructure.forms.word_bulk_import import BulkImportForm
 from vocabulary.infrastructure.models.word import Word
-
-
-class BulkImportForm(forms.Form):
-    data = forms.CharField(
-        widget=forms.Textarea(attrs={"class": "form-control", "rows": 15})
-    )
-
-    def get_parsed_data(self):
-        lines = self.cleaned_data["data"].splitlines()
-        parsed = []
-        for line in lines:
-            if ";" in line:
-                text, context = line.split(";", 1)
-                parsed.append({"text": text.strip(), "context": context.strip()})
-        return parsed
 
 
 class WordBulkCreateView(FormView):
     template_name = "words/bulk_form.html"
     form_class = BulkImportForm
+
+    def get_initial(self):
+        initial = super().get_initial()
+        bulk_data = self.request.session.get("bulk_data")
+
+        if bulk_data:
+            lines = [f"{item['text']}; {item['context']}" for item in bulk_data]
+            initial["data"] = "\n".join(lines)
+
+        return initial
 
     def form_valid(self, form):
         self.request.session["bulk_data"] = form.get_parsed_data()
