@@ -16,4 +16,6 @@ class BulkImportForm(forms.Form):
             if ";" in line:
                 parts = line.split(";", 1)
                 parsed.append({"text": parts[0].strip(), "context": parts[1].strip()})
+            else:
+                parsed.append({"text": line, "context": ""})
         return parsed
