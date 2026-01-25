@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 
+import dj_database_url
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -8,7 +9,7 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-SECRET_KEY = "django-insecure-m3ew1oml(3q*4bvm*!iyst+os(8@(j$)h398rw7e*^(fp96*$g"
+SECRET_KEY = os.environ["SECRET_KEY"]
 
 DEBUG = True
 
@@ -52,9 +53,9 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
-            os.path.join(BASE_DIR, "common", "templates"),
-            os.path.join(BASE_DIR, "sentences", "templates"),
-            os.path.join(BASE_DIR, "vocabulary", "templates"),
+            os.path.join("common", "templates"),
+            os.path.join("sentences", "templates"),
+            os.path.join("vocabulary", "templates"),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -70,12 +71,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "polyglossia.wsgi.application"
 
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
+DATABASES = {"default": dj_database_url.config()}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
