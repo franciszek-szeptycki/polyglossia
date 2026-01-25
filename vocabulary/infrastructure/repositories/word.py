@@ -13,17 +13,17 @@ class WordRepository:
 
     def generating_flash_cards_in_progress(self, *, word_id: str):
         WordModel.objects.filter(id=word_id).update(
-            generating_anki_status=WordModel.GeneratingAnkiStatus.IN_PROGRESS
+            generating_flashcards_status=WordModel.GeneratingAnkiStatus.IN_PROGRESS
         )
 
     def generating_flash_cards_done(self, *, word_id: str):
         WordModel.objects.filter(id=word_id).update(
-            generating_anki_status=WordModel.GeneratingAnkiStatus.DONE
+            generating_flashcards_status=WordModel.GeneratingAnkiStatus.DONE
         )
 
     def generating_flash_cards_failed(self, *, word_id: str):
         WordModel.objects.filter(id=word_id).update(
-            generating_anki_status=WordModel.GeneratingAnkiStatus.FAILED
+            generating_flashcards_status=WordModel.GeneratingAnkiStatus.FAILED
         )
 
 

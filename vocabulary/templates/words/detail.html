@@ -34,15 +34,7 @@
 <div class="mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h5 class="mb-0">Fiszki</h5>
-        <label class="badge
-            {% if word.generating_anki_status == 'NULL' %}bg-secondary
-            {% elif word.generating_anki_status == 'IN_PROGRESS' %}bg-primary
-            {% elif word.generating_anki_status == 'FAILED' %}bg-danger
-            {% elif word.generating_anki_status == 'DONE' %}bg-success
-            {% endif %}
-        ">
-            STATUS GENEROWANIA - {{ word.get_generating_anki_status_display }}
-        </label>
+        <span>{% include "words/partials/generating_flashcards_status_badge.html" %}</span>
     </div>
 
     <div id="flashcards-list" class="w-100">

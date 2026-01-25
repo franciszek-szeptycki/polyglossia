@@ -42,7 +42,7 @@
         <th class="">Słowo</th>
         <th class="">Kontekst</th>
         <th class="text-center">Aktywne fiszki</th>
-        <th class="text-center">Wszystkie fiszki</th>
+        <th class="text-center">Status generowania</th>
         <th class="text-center">Akcje</th>
       </tr>
     </thead>
@@ -53,11 +53,13 @@
         <td>{{ word.text|truncatechars:50 }}</td>
         <td><span class="text-primary">{{ word.context|truncatechars:50 }}</span></td>
         <td class="text-center">{% if word.has_active_flashcards %}✅{% else %}❌{% endif %}</td>
-        <td class="text-center">{{ word.flashcards_number }}</td>
+        <td class="text-center">
+          {% include "words/partials/generating_flashcards_status_badge.html" %}
+        </td>
         <td class="text-center">
           <a href="{% url 'word_detail' word.id %}" class="btn btn-sm btn-outline-primary">Szczegóły</a>
           <a href="{% url 'word_generate_flashcards' word.id %}" class="btn btn-sm btn-outline-success">Wygeneruj fiszki</a>
-          <a href="{% url 'word_edit' word.id %}" class="btn btn-sm btn-outline-secondary">Edytuj</a>
+          <!--<a href="{% url 'word_edit' word.id %}" class="btn btn-sm btn-outline-secondary">Edytuj</a>-->
           <a href="{% url 'word_delete' word.id %}" class="btn btn-sm btn-outline-danger">Usuń</a>
         </td>
       </tr>

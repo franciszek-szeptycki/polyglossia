@@ -1,0 +1,9 @@
+<label class="badge
+    {% if word.generating_flashcards_status == 'NULL' %}bg-secondary
+    {% elif word.generating_flashcards_status == 'IN_PROGRESS' %}bg-primary
+    {% elif word.generating_flashcards_status == 'FAILED' %}bg-danger
+    {% elif word.generating_flashcards_status == 'DONE' %}bg-success
+    {% endif %}
+">
+    {{ word.get_generating_flashcards_status_display }}
+</label>

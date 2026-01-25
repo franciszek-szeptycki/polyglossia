@@ -14,7 +14,7 @@ class Word(models.Model):
     text = models.CharField(max_length=255)
     context = models.CharField(max_length=255, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    generating_anki_status = models.CharField(
+    generating_flashcards_status = models.CharField(
         max_length=20,
         choices=GeneratingAnkiStatus.choices,
         default=GeneratingAnkiStatus.NULL,

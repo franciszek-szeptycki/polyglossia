@@ -4,15 +4,23 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('vocabulary', '0011_alter_flashcard_word'),
+        ("vocabulary", "0011_alter_flashcard_word"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='word',
-            name='generating_anki_status',
-            field=models.CharField(choices=[('NULL', 'NULL'), ('IN_PROGRESS', 'IN_PROGRESS'), ('FAILED', 'FAILED'), ('DONE', 'DONE')], default='NULL', max_length=20),
+            model_name="word",
+            name="generating_anki_status",
+            field=models.CharField(
+                choices=[
+                    ("NULL", "NULL"),
+                    ("IN_PROGRESS", "IN_PROGRESS"),
+                    ("FAILED", "FAILED"),
+                    ("DONE", "DONE"),
+                ],
+                default="NULL",
+                max_length=20,
+            ),
         ),
     ]
