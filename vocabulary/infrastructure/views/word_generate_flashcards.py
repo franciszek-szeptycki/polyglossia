@@ -10,4 +10,4 @@ class WordGenerateFlashcardsView(View):
     def dispatch(self, request, pk, *args, **kwargs):
         generate_flashcards_use_case.execute(word_id=pk)
 
-        return redirect("word_detail", pk=pk)
+        return redirect(request.META.get("HTTP_REFERER", "/"))
