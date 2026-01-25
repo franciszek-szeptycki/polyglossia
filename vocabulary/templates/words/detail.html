@@ -24,6 +24,7 @@
                 <a href="{% url 'word_next_redirect' %}" class="btn btn-secondary btn-sm">Następne słówko</a>
                 <a href="{% url 'word_list' %}" class="btn btn-outline-secondary btn-sm">&larr; Powrót</a>
             </div>
+
         </div>
     </div>
 </div>
@@ -33,7 +34,15 @@
 <div class="mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h5 class="mb-0">Fiszki</h5>
-        <span class="badge bg-light text-muted border">Tryb liniowy</span>
+        <label class="badge
+            {% if word.generating_anki_status == 'NULL' %}bg-secondary
+            {% elif word.generating_anki_status == 'IN_PROGRESS' %}bg-primary
+            {% elif word.generating_anki_status == 'FAILED' %}bg-danger
+            {% elif word.generating_anki_status == 'DONE' %}bg-success
+            {% endif %}
+        ">
+            STATUS GENEROWANIA - {{ word.get_generating_anki_status_display }}
+        </label>
     </div>
 
     <div id="flashcards-list" class="w-100">

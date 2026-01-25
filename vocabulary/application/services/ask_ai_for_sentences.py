@@ -21,8 +21,8 @@ class AskAiForSentencesService:
 
     def execute(self, *, word: WordDTO) -> List[RawFlashcardDataDTO]:
         user_prompt = f"""
-        słówko: {word.text}
-        kontekst: {word.context}
+            słówko: {word.text}
+            kontekst: {word.context}
         """
 
         response = openai_adapter.generate_response(
@@ -47,6 +47,6 @@ ask_ai_for_sentences_service = AskAiForSentencesService()
 
 if __name__ == "__main__":
     word = WordDTO(id="", text="Haus", context="impreza")
-    flashcards_raw_data = ask_ai_for_sentences_service.execute(word=word)
-    for value in flashcards_raw_data:
+    raw_flashcards_data = ask_ai_for_sentences_service.execute(word=word)
+    for value in raw_flashcards_data:
         print(value)

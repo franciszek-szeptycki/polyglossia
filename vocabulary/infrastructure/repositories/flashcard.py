@@ -3,6 +3,7 @@ from typing import List
 
 from vocabulary.application.dtos.flashcard import FlashcardDTO
 from vocabulary.infrastructure.models.flashcard import Flashcard
+from vocabulary.infrastructure.models.word import Word
 
 
 class FlashcardRepository:

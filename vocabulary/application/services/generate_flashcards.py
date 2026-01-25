@@ -6,7 +6,7 @@ from uuid import uuid4
 
 from common.adapters.openai_adapter import openai_adapter
 from vocabulary.application.dtos.flashcard import FlashcardDTO
-from vocabulary.application.dtos.word import WordDTO
+from vocabulary.application.dtos.raw_flashcard_data import RawFlashcardDataDTO
 
 
 class GenerateFlashcardsService:
@@ -18,11 +18,21 @@ class GenerateFlashcardsService:
         with open(self.PROMPT_FILE_PATH) as file:
             self.system_prompt = file.read()
 
-    def execute(self, *, word: WordDTO) -> List[FlashcardDTO]:
-        user_prompt = f"""
-        słówko: {word.text}
-        kontekst: {word.context}
-        """
+    def execute(
+        self, *, raw_flashcards_data: List[RawFlashcardDataDTO], word_id: str
+    ) -> List[FlashcardDTO]:
+        word_text = raw_flashcards_data[0].word
+        sentences_payload = [
+            {
+                "target_language_sentence": dto.target_language_sentence,
+                "sentence_translation": dto.sentence_translation,
+            }
+            for dto in raw_flashcards_data
+        ]
+
+        user_prompt = json.dumps(
+            {"word": word_text, "sentences": sentences_payload}, ensure_ascii=False
+        )
 
         response = openai_adapter.generate_response(
             system=self.system_prompt,
@@ -35,7 +45,7 @@ class GenerateFlashcardsService:
         return [
             FlashcardDTO(
                 id=str(uuid4()),
-                word_id=word.id,
+                word_id=word_id,
                 front=item["front"],
                 back=item["back"],
             )
@@ -43,10 +53,29 @@ class GenerateFlashcardsService:
         ]
 
 
-ask_ai_for_flashcards_service = GenerateFlashcardsService()
+generate_flashcards_service = GenerateFlashcardsService()
 
 if __name__ == "__main__":
-    word = WordDTO(id="", text="example", context="example context")
-    flashcards = ask_ai_for_flashcards_service.execute(word=word)
+    dtos = [
+        RawFlashcardDataDTO(
+            word="das Haus",
+            target_language_sentence="Lass uns die Getränke im Haus vorbereiten.",
+            sentence_translation="Przygotujmy napoje w domu.",
+        ),
+        RawFlashcardDataDTO(
+            word="das Haus",
+            target_language_sentence="Das Haus ist rot.",
+            sentence_translation="Dom jest czerwony.",
+        ),
+        RawFlashcardDataDTO(
+            word="das Haus",
+            target_language_sentence="Wir tanzen die ganze Nacht im Haus.",
+            sentence_translation="Tańczymy całą noc w domu.",
+        ),
+    ]
+    flashcards = generate_flashcards_service.execute(
+        raw_flashcards_data=dtos, word_id=""
+    )
+
     for flashcard in flashcards:
         print(flashcard)

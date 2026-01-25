@@ -5,7 +5,9 @@ from vocabulary.infrastructure.models.word import Word
 
 class Flashcard(models.Model):
     id = models.UUIDField(primary_key=True, editable=False)
-    word = models.ForeignKey(Word, on_delete=models.SET_NULL, related_name="flashcards")
+    word = models.ForeignKey(
+        Word, on_delete=models.SET_NULL, null=True, related_name="flashcards"
+    )
     front = models.TextField()
     back = models.TextField()
     is_active = models.BooleanField(default=False)
