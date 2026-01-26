@@ -24,8 +24,9 @@ class GenerateFlashcardsForWordUseCase:
 
             word_repository.generating_flash_cards_done(word_id=word_id)
 
-        except Exception as _:
+        except Exception as e:
             word_repository.generating_flash_cards_failed(word_id=word_id)
+            raise e
 
 
 generate_flashcards_for_word_use_case = GenerateFlashcardsForWordUseCase()

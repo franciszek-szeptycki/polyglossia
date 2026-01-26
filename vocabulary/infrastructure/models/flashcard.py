@@ -1,9 +1,10 @@
 from django.db import models
 
+from multitenancy.models import TenantModel
 from vocabulary.infrastructure.models.word import Word
 
 
-class Flashcard(models.Model):
+class Flashcard(TenantModel):
     id = models.UUIDField(primary_key=True, editable=False)
     word = models.ForeignKey(
         Word, on_delete=models.SET_NULL, null=True, related_name="flashcards"
@@ -14,7 +15,7 @@ class Flashcard(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     exported_at = models.DateTimeField(null=True, blank=True)
 
-    class Meta:
+    class Meta(TenantModel.Meta):
         ordering = [
             models.F("exported_at").desc(nulls_first=True),
             models.F("created_at").desc(),
