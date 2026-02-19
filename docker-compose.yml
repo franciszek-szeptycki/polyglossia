@@ -8,3 +8,5 @@ services:
       - ./media:/app/media
       - ./staticfiles:/app/staticfiles
     command: ["./docker-cmd-server.sh"]
+    env_file:
+      - .env

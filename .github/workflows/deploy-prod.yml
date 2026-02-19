@@ -32,6 +32,6 @@ jobs:
             git pull origin tenant-mode
 
             docker compose down || true
-            docker compose up -d
+            docker compose up -d --build
 
             timeout 30s docker compose logs -f || echo "The deployment process has completed."
