@@ -1,0 +1,31 @@
+name: Deploy Prod
+
+on:
+  push:
+    branches: [ tenant-mode ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Execute remote commands via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            if [ ! -d "polyglossia" ]; then
+              git clone https://github.com/franciszek-szeptycki/polyglossia.git
+            fi
+
+            cd polyglossia
+
+            git pull origin main
+
+            docker compose down || true
+            docker compose up -d
+
+            timeout 30s docker compose logs -f || echo "The deployment process has completed."

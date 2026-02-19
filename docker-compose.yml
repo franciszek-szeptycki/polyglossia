@@ -1,0 +1,10 @@
+services:
+  server:
+    build:
+      context: .
+    ports:
+      - 127.0.0.1:8000:8000
+    volumes:
+      - ./media:/app/media
+      - ./staticfiles:/app/staticfiles
+    command: ["./docker-cmd-server.sh"]
