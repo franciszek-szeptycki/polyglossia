@@ -34,4 +34,10 @@ jobs:
             docker compose down || true
             docker compose up -d --build
 
-            timeout 30s docker compose logs -f || echo "The deployment process has completed."
+            timeout 30s docker compose logs -f
+
+            if docker compose ps | grep -q 'healthy'; then
+              exit 0
+            else
+              exit 1
+            fi
