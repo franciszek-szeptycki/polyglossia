@@ -17,13 +17,19 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
+            #!/bin/bash
+
+            set -ex
+
             if [ ! -d "polyglossia" ]; then
               git clone https://github.com/franciszek-szeptycki/polyglossia.git
             fi
 
             cd polyglossia
 
-            git pull origin main
+            git checkout -b tenant-mode
+
+            git pull origin tenant-mode
 
             docker compose down || true
             docker compose up -d
