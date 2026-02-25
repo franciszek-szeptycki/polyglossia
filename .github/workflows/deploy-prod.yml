@@ -27,7 +27,7 @@ jobs:
 
             cd polyglossia
 
-            git checkout -b tenant-mode
+            git checkout -b tenant-mode || true
 
             git pull origin tenant-mode
 
