@@ -4,8 +4,6 @@ services:
       context: .
     ports:
       - 127.0.0.1:8000:8000
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     volumes:
       - ./media:/app/media
       - ./staticfiles:/app/staticfiles
@@ -18,3 +16,10 @@ services:
       timeout: 3s
       retries: 3
       start_period: 10s
+
+  database:
+    image: postgres:latest
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    env_file:
+      - .env.db
