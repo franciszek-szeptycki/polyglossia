@@ -104,12 +104,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATIC_URL = "static/"
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "common", "static"),
-]
-
-
 OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
