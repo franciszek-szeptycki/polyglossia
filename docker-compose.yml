@@ -6,7 +6,7 @@ services:
       - 127.0.0.1:8000:8000
     volumes:
       - ./media:/app/media
-      - ./staticfiles:/app/staticfiles
+      - ./staticfiles:/app/polyglossia/staticfiles/
     command: ["./docker-cmd-server.sh"]
     env_file:
       - .env
