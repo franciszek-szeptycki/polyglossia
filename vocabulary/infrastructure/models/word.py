@@ -2,10 +2,8 @@ import uuid
 
 from django.db import models
 
-from multitenancy.models import TenantModel
 
-
-class Word(TenantModel):
+class Word(models.Model):
     class GeneratingAnkiStatus(models.TextChoices):
         NULL = "NULL", "NULL"
         IN_PROGRESS = "IN_PROGRESS", "IN_PROGRESS"
@@ -22,7 +20,7 @@ class Word(TenantModel):
         default=GeneratingAnkiStatus.NULL,
     )
 
-    class Meta(TenantModel.Meta):
+    class Meta:
         ordering = ["-created_at"]
 
     @property

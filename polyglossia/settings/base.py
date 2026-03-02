@@ -28,7 +28,6 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "crispy_forms",
     "crispy_bootstrap5",
-    # "sentences",
     "vocabulary",
 ]
 
@@ -42,7 +41,7 @@ MIDDLEWARE = [
     "allauth.account.middleware.AccountMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "multitenancy.middleware.MultitenancyMiddleware",
+    "common.context.UserContextMiddleware",
 ]
 
 ROOT_URLCONF = "polyglossia.urls"
