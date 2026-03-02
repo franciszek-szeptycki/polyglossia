@@ -8,6 +8,10 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+DEBUG = True
+SECRET_KEY = "dev_secret_key"
+ALLOWED_HOSTS = []
+
 INSTALLED_APPS = [
     "jazzmin",
     "django.contrib.admin",
