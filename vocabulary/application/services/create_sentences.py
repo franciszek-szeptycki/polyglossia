@@ -7,7 +7,7 @@ from common.adapters.ollama_adapter import ollama_adapter
 from common.ports.llm_adapter import LLMAdapter
 
 
-class CreateRawSentencesService:
+class CreateSentencesService:
     def __init__(self, *, llm_adapter: LLMAdapter):
         self.llm_adapter: LLMAdapter = llm_adapter
 
@@ -41,7 +41,7 @@ class CreateRawSentencesService:
 
 if __name__ == "__main__":
     llm_adapter = ollama_adapter
-    svc = CreateRawSentencesService(llm_adapter=ollama_adapter)
+    svc = CreateSentencesService(llm_adapter=ollama_adapter)
     sentences = svc.execute(word="Krankenheit")
     for sentence in sentences:
         print(sentence)

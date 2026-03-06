@@ -4,8 +4,8 @@ from common.adapters.ollama_adapter import ollama_adapter
 from common.adapters.openai_adapter import openai_adapter
 from common.ports.llm_adapter import LLMAdapter
 from vocabulary.application.ports.word_repository import WordRepositoryABC
-from vocabulary.application.services.create_raw_sentences import (
-    CreateRawSentencesService,
+from vocabulary.application.services.create_sentences import (
+    CreateSentencesService,
 )
 from vocabulary.application.services.replace_word_in_sentence import (
     ReplaceWordInSentence,
@@ -18,7 +18,7 @@ class GenerateFlashcardsForWordUseCase:
 
         self.word_repo = word_repo
 
-        self.create_raw_sentences = CreateRawSentencesService(llm_adapter=llm_adapter)
+        self.create_sentences = CreateSentencesService(llm_adapter=llm_adapter)
         self.replace_word_in_sentence = ReplaceWordInSentence()
 
     def execute(self, *, word_id: str):
@@ -28,7 +28,7 @@ class GenerateFlashcardsForWordUseCase:
         self.word_repo.generating_flash_cards_in_progress(word_id=word_id)
 
         try:
-            sentences = self.create_raw_sentences.execute(word=word.text)
+            sentences = self.create_sentences.execute(word=word.text)
 
             sentences_with_blank = []
 
