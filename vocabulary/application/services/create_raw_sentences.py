@@ -1,15 +1,10 @@
 import json
 import os
 import pathlib
-from logging import getLogger
 from typing import List
 
 from common.adapters.ollama_adapter import ollama_adapter
-from common.adapters.openai_adapter import openai_adapter
 from common.ports.llm_adapter import LLMAdapter
-from vocabulary.application.dtos.flashcard import FlashcardDTO
-from vocabulary.application.dtos.raw_flashcard_data import RawFlashcardDataDTO
-from vocabulary.application.dtos.word import WordDTO
 
 
 class CreateRawSentencesService:

@@ -1,11 +1,11 @@
 from common.adapters.ollama_adapter import ollama_adapter
 from common.adapters.openai_adapter import openai_adapter
 from common.ports.llm_adapter import LLMAdapter
-from vocabulary.application.services.ask_ai_for_sentences import (
-    AskAiForSentencesService,
+from vocabulary.application.services.create_raw_sentences import (
+    CreateRawSentencesService,
 )
-from vocabulary.application.services.generate_flashcards import (
-    GenerateFlashcardsService,
+from vocabulary.application.services.replace_word_in_sentence import (
+    ReplaceWordInSentence,
 )
 from vocabulary.infrastructure.repositories.flashcard import flashcard_repository
 from vocabulary.infrastructure.repositories.word import word_repository
@@ -13,29 +13,32 @@ from vocabulary.infrastructure.repositories.word import word_repository
 
 class GenerateFlashcardsForWordUseCase:
     def __init__(self, *, llm_adapter: LLMAdapter):
-        self.ask_ai_for_sentences: AskAiForSentencesService = AskAiForSentencesService(
-            llm_adapter=llm_adapter
-        )
-        self.generate_flashcards: GenerateFlashcardsService = GenerateFlashcardsService(
-            llm_adapter=llm_adapter
-        )
+        self.create_raw_sentences = CreateRawSentencesService(llm_adapter=llm_adapter)
+        self.replace_word_in_sentence = ReplaceWordInSentence()
 
     def execute(self, *, word_id: str):
         word = word_repository.get(word_id)
 
+        # WORD as IN_PROGRESS
         word_repository.generating_flash_cards_in_progress(word_id=word_id)
 
         try:
-            raw_flashcards_data = self.ask_ai_for_sentences.execute(word=word)
-            flashcards = self.generate_flashcards.execute(
-                raw_flashcards_data=raw_flashcards_data, word_id=word.id
-            )
+            sentences = self.create_raw_sentences.execute(word=word.text)
 
-            flashcard_repository.bulk_create(dtos=flashcards)
+            sentences_with_blank = []
+            for sentence in sentences:
+                sentence_with_blank = self.replace_word_in_sentence.execute(
+                    sentence=sentence, word=word.text
+                )
+                sentences_with_blank.append(sentence_with_blank)
 
+            print(sentences_with_blank)
+
+            # WORD as DONE
             word_repository.generating_flash_cards_done(word_id=word_id)
 
         except Exception as e:
+            # WORD as FAILED
             word_repository.generating_flash_cards_failed(word_id=word_id)
             raise e
 

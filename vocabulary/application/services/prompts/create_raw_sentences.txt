@@ -1,6 +1,6 @@
 Jesteś w procesie tworzenia fiszek językowych.
 
-Dla poniższego słowa wygeneruj 7 przykładowych zdań w języku niemieckim.
+Dla poniższego słowa wygeneruj 10 przykładowych zdań w języku niemieckim.
 
 Zwróc zdania w tablicy w formacie JSON, nie dodawaj żadnych znaków specjalnych aby to co zwrócisz dało się w całości przetworzyć skryptem.
 
