@@ -1,28 +1,32 @@
 from typing import List
 
+from common.repositories.user_context_repository import UserContextRepository
 from vocabulary.application.dtos.word import WordDTO
 from vocabulary.infrastructure.models.word import Word as WordModel
 
 
-class WordRepository:
+class WordRepository(UserContextRepository):
     def create(self, dto: WordDTO) -> WordDTO:
-        user = get_current_user()
-        if not user:
-            raise PermissionError("Użytkownik musi być zalogowany, aby stworzyć słowo.")
-
         word = WordModel.objects.create(
-            id=dto.id, text=dto.text, context=dto.context, user=user
+            id=dto.id,
+            text=dto.text,
+            context=dto.context,
+            user=self._get_user_id(),
         )
         return self._to_dto(word)
 
     def get(self, id: str) -> WordDTO:
-        word = WordModel.objects.get(id=id)
+        word = WordModel.objects.get(
+            id=id,
+            user=self._get_user_id(),
+        )
         return self._to_dto(word)
 
     def _update_status(self, word_id: str, status: WordModel.GeneratingAnkiStatus):
-        updated_count = WordModel.objects.filter(id=word_id).update(
-            generating_flashcards_status=status
-        )
+        updated_count = WordModel.objects.filter(
+            id=word_id,
+            user=self._get_user_id(),
+        ).update(generating_flashcards_status=status)
 
         if updated_count == 0:
             raise ValueError(
@@ -39,7 +43,12 @@ class WordRepository:
         self._update_status(word_id, WordModel.GeneratingAnkiStatus.FAILED)
 
     def _to_dto(self, word: WordModel) -> WordDTO:
-        return WordDTO(id=str(word.id), text=str(word.text), context=str(word.context))
+        return WordDTO(
+            id=str(word.id),
+            text=str(word.text),
+            context=str(word.context),
+            user_id=word.user,
+        )
 
 
 word_repository = WordRepository()

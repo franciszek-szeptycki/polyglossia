@@ -31,7 +31,10 @@ class FlashcardRepository(UserContextRepository):
         )
 
     def get_by_ids(self, ids: List[str]) -> List[FlashcardDTO]:
-        queryset = Flashcard.objects.filter(id__in=ids)
+        queryset = Flashcard.objects.filter(
+            id__in=ids,
+            user_id=self._get_user_id(),
+        )
 
         if queryset.count() != len(ids):
             raise ValueError("Some flashcards not found")
@@ -44,12 +47,16 @@ class FlashcardRepository(UserContextRepository):
                 back=flashcard.back,
                 is_active=flashcard.is_active,
                 exported_at=flashcard.exported_at,
+                user_id=self._get_user_id(),
             )
             for flashcard in queryset
         ]
 
     def update_exported_at(self, *, ids: List[str], time: datetime):
-        Flashcard.objects.filter(id__in=ids).update(exported_at=time)
+        Flashcard.objects.filter(
+            id__in=ids,
+            user_id=self._get_user_id(),
+        ).update(exported_at=time)
 
 
 flashcard_repository = FlashcardRepository()

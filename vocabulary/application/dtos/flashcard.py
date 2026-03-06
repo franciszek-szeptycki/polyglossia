@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
+from optparse import Option
 from typing import Optional
 
 
@@ -11,3 +12,4 @@ class FlashcardDTO:
     id: Optional[str] = None
     is_active: Optional[bool] = None
     exported_at: Optional[datetime] = None
+    user_id: Optional[int] = None
