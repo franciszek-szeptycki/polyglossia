@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 DEBUG = True
 SECRET_KEY = "dev_secret_key"
@@ -68,7 +68,14 @@ TEMPLATES = [
 WSGI_APPLICATION = "polyglossia.wsgi.application"
 
 
-DATABASES = {"default": dj_database_url.config()}
+# DATABASES = {"default": dj_database_url.config()}
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
+}
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {

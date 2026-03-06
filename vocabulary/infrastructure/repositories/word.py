@@ -1,6 +1,5 @@
 from typing import List
 
-from multitenancy.thread_local import get_current_user
 from vocabulary.application.dtos.word import WordDTO
 from vocabulary.infrastructure.models.word import Word as WordModel
 

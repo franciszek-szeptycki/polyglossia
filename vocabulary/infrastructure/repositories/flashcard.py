@@ -1,28 +1,22 @@
 from datetime import datetime
 from typing import List
 
-from multitenancy.thread_local import get_current_user
+from common.repositories.user_context_repository import UserContextRepository
 from vocabulary.application.dtos.flashcard import FlashcardDTO
 from vocabulary.infrastructure.models.flashcard import Flashcard
 
 
-class FlashcardRepository:
+class FlashcardRepository(UserContextRepository):
     def create(self, *, dto: FlashcardDTO):
-        user = get_current_user()
         Flashcard.objects.create(
+            user_id=self._get_user_id(),
             id=dto.id,
             word_id=dto.word_id,
             front=dto.front,
             back=dto.back,
-            user=user,
         )
 
     def bulk_create(self, *, dtos: List[FlashcardDTO]):
-        user = get_current_user()
-
-        if not user:
-            raise PermissionError("Cannot create flashcards without a tenant user.")
-
         Flashcard.objects.bulk_create(
             [
                 Flashcard(
@@ -30,7 +24,7 @@ class FlashcardRepository:
                     word_id=dto.word_id,
                     front=dto.front,
                     back=dto.back,
-                    user=user,
+                    user_id=self._get_user_id(),
                 )
                 for dto in dtos
             ]

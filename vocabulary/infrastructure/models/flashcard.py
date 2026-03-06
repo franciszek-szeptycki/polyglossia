@@ -14,6 +14,10 @@ class Flashcard(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     exported_at = models.DateTimeField(null=True, blank=True)
 
+    user = models.ForeignKey(
+        "auth.User", on_delete=models.CASCADE, related_name="flashcards"
+    )
+
     class Meta:
         ordering = [
             models.F("exported_at").desc(nulls_first=True),

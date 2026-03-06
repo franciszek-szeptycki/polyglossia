@@ -1,4 +1,4 @@
-import ollama
+# import ollama
 
 from common.ports.llm_adapter import LLMAdapter
 

@@ -5,9 +5,9 @@ from typing import Optional
 
 @dataclass
 class FlashcardDTO:
-    id: str
     word_id: str
     front: str
     back: str
+    id: Optional[str] = None
     is_active: Optional[bool] = None
     exported_at: Optional[datetime] = None
