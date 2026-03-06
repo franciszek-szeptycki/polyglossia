@@ -17,7 +17,9 @@ class OllamaAdapter(LLMAdapter):
                 {"role": "user", "content": user},
             ],
         )
-        return response["message"]["content"]
+        content = response["message"]["content"]
+
+        return "\n".join([line for line in content.split("\n") if "`" not in line])
 
 
 ollama_adapter = OllamaAdapter()
