@@ -5,16 +5,16 @@ from vocabulary.infrastructure.views.flashcard_bulk_export import (
     FlashcardBulkExportView,
 )
 from vocabulary.infrastructure.views.flashcard_htmx import FlashcardUpdateHTMXView
-from vocabulary.infrastructure.views.word import (
+from vocabulary.infrastructure.views.word_bulk_create import (
+    WordBulkConfirmView,
+    WordBulkCreateView,
+)
+from vocabulary.infrastructure.views.word_crud import (
     WordCreateView,
     WordDeleteView,
     WordDetailView,
     WordListView,
     WordUpdateView,
-)
-from vocabulary.infrastructure.views.word_bulk import (
-    WordBulkConfirmView,
-    WordBulkCreateView,
 )
 from vocabulary.infrastructure.views.word_generate_flashcards import (
     WordGenerateFlashcardsView,

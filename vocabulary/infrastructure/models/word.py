@@ -20,6 +20,12 @@ class Word(models.Model):
         default=GeneratingAnkiStatus.NULL,
     )
 
+    user = models.ForeignKey(
+        "auth.User",
+        on_delete=models.CASCADE,
+        related_name="words",
+    )
+
     class Meta:
         ordering = ["-created_at"]
 

@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
 from django.views.generic import (
     CreateView,
@@ -11,13 +12,16 @@ from vocabulary.infrastructure.forms.word import WordForm
 from vocabulary.infrastructure.models.word import Word
 
 
-class WordListView(ListView):
+# Dodajemy LoginRequiredMixin do każdego widoku, aby wymusić logowanie
+class WordListView(LoginRequiredMixin, ListView):
     model = Word
     template_name = "words/list.html"
     context_object_name = "words"
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        # Filtrujemy queryset tak, aby zwracał TYLKO słowa zalogowanego usera
+        queryset = Word.objects.filter(user=self.request.user)
+
         self.active_filter = self.request.GET.get("active_flashcards")
         if self.active_filter == "yes":
             queryset = queryset.filter(flashcards__is_active=True).distinct()
@@ -28,26 +32,31 @@ class WordListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        # Używamy zafiltrowanego querysetu do licznika
         context["total_count"] = self.get_queryset().count()
         context["current_filter"] = self.active_filter
         return context
 
 
-class WordDetailView(DetailView):
+class WordDetailView(LoginRequiredMixin, DetailView):
     model = Word
     template_name = "words/detail.html"
     context_object_name = "word"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["flashcards"] = self.object.flashcards.all()
-        return context
+    def get_queryset(self):
+        # Zapobiega podglądaniu słówek innych userów przez zmianę ID w URL
+        return Word.objects.filter(user=self.request.user)
 
 
-class WordCreateView(CreateView):
+class WordCreateView(LoginRequiredMixin, CreateView):
     model = Word
     form_class = WordForm
     template_name = "generic/form.html"
+
+    def form_valid(self, form):
+        # Automatycznie przypisujemy zalogowanego użytkownika przed zapisem
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -56,24 +65,25 @@ class WordCreateView(CreateView):
         return context
 
     def get_success_url(self):
-        # self.object to nowo utworzony obiekt Word
         return reverse("word_detail", kwargs={"pk": self.object.pk})
 
 
-class WordUpdateView(UpdateView):
+class WordUpdateView(LoginRequiredMixin, UpdateView):
     model = Word
     form_class = WordForm
     template_name = "generic/form.html"
     success_url = reverse_lazy("word_list")
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["model_name"] = "słowo"
-        context["cancel_url"] = reverse_lazy("word_list")
-        return context
+    def get_queryset(self):
+        # User może edytować tylko swoje słówka
+        return Word.objects.filter(user=self.request.user)
 
 
-class WordDeleteView(DeleteView):
+class WordDeleteView(LoginRequiredMixin, DeleteView):
     model = Word
     template_name = "words/confirm_delete.html"
     success_url = reverse_lazy("word_list")
+
+    def get_queryset(self):
+        # User może usunąć tylko swoje słówka
+        return Word.objects.filter(user=self.request.user)
