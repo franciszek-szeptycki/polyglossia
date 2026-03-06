@@ -1,9 +1,8 @@
 from unittest import TestCase
 
-from common.ports.llm_adapter import LLMAdapter
 from vocabulary.application.dtos.word import WordDTO
 from vocabulary.application.tests.mocks import MockLlmAdapter, MockWordRepository
-from vocabulary.application.use_cases.generate_flashcards_for_word import (
+from vocabulary.application.use_cases.create_flashcards_from_word import (
     GenerateFlashcardsForWordUseCase,
 )
 
