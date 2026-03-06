@@ -6,5 +6,5 @@ from typing import Optional
 class WordDTO:
     id: str
     text: str
-    context: str
+    context: str = ""
     user_id: Optional[int] = None

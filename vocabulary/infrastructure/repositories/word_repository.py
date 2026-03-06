@@ -2,10 +2,11 @@ from typing import List
 
 from common.repositories.user_context_repository import UserContextRepository
 from vocabulary.application.dtos.word import WordDTO
+from vocabulary.application.ports.word_repository import WordRepositoryABC
 from vocabulary.infrastructure.models.word import Word as WordModel
 
 
-class WordRepository(UserContextRepository):
+class WordRepository(WordRepositoryABC, UserContextRepository):
     def create(self, dto: WordDTO) -> WordDTO:
         word = WordModel.objects.create(
             id=dto.id,
@@ -47,7 +48,7 @@ class WordRepository(UserContextRepository):
             id=str(word.id),
             text=str(word.text),
             context=str(word.context),
-            user_id=word.user,
+            user_id=int(word.user),
         )
 
 
