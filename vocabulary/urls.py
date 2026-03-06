@@ -1,10 +1,15 @@
 from django.urls import path
 
-from vocabulary.infrastructure.views.flashcard import FlashcardListView
+from vocabulary.infrastructure.views.create_flashcards_from_word import (
+    WordGenerateFlashcardsView,
+)
 from vocabulary.infrastructure.views.flashcard_bulk_export import (
     FlashcardBulkExportView,
 )
-from vocabulary.infrastructure.views.flashcard_htmx import FlashcardUpdateHTMXView
+from vocabulary.infrastructure.views.flashcard_htmx_update import (
+    FlashcardHtmxUpdateView,
+)
+from vocabulary.infrastructure.views.flashcard_list import FlashcardListView
 from vocabulary.infrastructure.views.word_bulk_create import (
     WordBulkConfirmView,
     WordBulkCreateView,
@@ -15,9 +20,6 @@ from vocabulary.infrastructure.views.word_crud import (
     WordDetailView,
     WordListView,
     WordUpdateView,
-)
-from vocabulary.infrastructure.views.word_generate_flashcards import (
-    WordGenerateFlashcardsView,
 )
 from vocabulary.infrastructure.views.word_next_redirect import WordNextRedirectView
 
@@ -41,7 +43,7 @@ urlpatterns = [
     ),
     path(
         "flashcards/<uuid:pk>/update-htmx/",
-        FlashcardUpdateHTMXView.as_view(),
+        FlashcardHtmxUpdateView.as_view(),
         name="flashcard_update_htmx",
     ),
     path(

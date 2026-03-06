@@ -3,7 +3,7 @@ from django.views.generic import UpdateView
 from vocabulary.infrastructure.models.flashcard import Flashcard
 
 
-class FlashcardUpdateHTMXView(UpdateView):
+class FlashcardHtmxUpdateView(UpdateView):
     model = Flashcard
     fields = ["front", "back", "is_active"]
     template_name = "partials/flashcard_row.html"
