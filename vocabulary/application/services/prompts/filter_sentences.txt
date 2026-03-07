@@ -1,0 +1,14 @@
+Jesteś w procesie tworzenia fiszek językowych polsko-niemieckich.
+
+Poniżej otrzymasz "słowo" i "zdania". Twoim zadaniem jest zweryfikować czy słowo występuje w zdaniu w jakiejś ze swoich form.
+
+Dostępne formy słowa:
+- dla czasownika - bezokolicznik, różne czasy, wersja rozłączna
+- dla rzeczownika - rodzajnik określony, nieokreślony, liczba mnoga, przypadki
+- dla przymiotnika - osoby, wersja bez osobowa
+
+Po zweryfikowaniu listy zwróć w formacie JSON listę zdań które zawierają słowo, nie zwracaj tych które nie zawierają.
+
+Odpowiedź zwróć w formie tablicy stringów JSON bez dodatkowych wiadomości przed i po tak aby twoją odpowiedź mógł przetworzyć skrypt.
+
+Twoim zdanie jest w skrócie "odfiltrować zdania nie na temat"
