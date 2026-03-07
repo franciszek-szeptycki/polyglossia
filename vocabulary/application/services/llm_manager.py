@@ -10,6 +10,11 @@ from common.ports.llm_adapter import LLMAdapter
 from vocabulary.application.dtos.raw_flashcard_data import RawFlashcardDataDTO
 from vocabulary.application.dtos.word import WordDTO
 
+TYPE_NOUN = "noun"
+TYPE_VERB = "verb"
+TYPE_ADJ = "adj"
+TYPE_OTHER = "other"
+
 
 class LlmManager:
     def __init__(self, *, llm_adapter: LLMAdapter):
@@ -20,6 +25,12 @@ class LlmManager:
         self._prompts = {
             "create_sentences": self._load_prompt("create_sentences.txt"),
             "filter_sentences": self._load_prompt("filter_sentences.txt"),
+            "is_word_in_sentence": self._load_prompt("is_word_in_sentence.txt"),
+            "determine_word_type": self._load_prompt("determine_word_type.txt"),
+            "create_sentences.noun": self._load_prompt("create_sentences.noun.txt"),
+            "create_sentences.verb": self._load_prompt("create_sentences.verb.txt"),
+            "create_sentences.adj": self._load_prompt("create_sentences.adj.txt"),
+            "create_sentences.other": self._load_prompt("create_sentences.other.txt"),
         }
 
     def _initialize_error_counter(self) -> count:
@@ -37,27 +48,56 @@ class LlmManager:
         next_idx = max(indices) + 1 if indices else 1
         return count(next_idx)
 
-    def create_sentences(self, *, word: str) -> List[str]:
+    def create_sentences(self, *, word: str, word_type: str) -> List[str]:
+        user_prompt = f"słowo: {word}"
+
+        if word_type not in ("noun", "verb", "adj", "other"):
+            raise ValueError(f"Invalid word type: {word_type}")
+
+        prompt_method = f"create_sentences.{word_type}"
+        response = self._generate(
+            system=self._prompts[prompt_method],
+            user=user_prompt,
+        )
+
+        return self._parse_json(response, prompt_method, user_prompt)
+
+    # def filter_sentences(self, *, word: str, sentences: List[str]) -> List[str]:
+    #     filtered_sentences = []
+    #     for sentence in sentences:
+    #         if self.is_word_in_sentence(word=word, sentence=sentence):
+    #             filtered_sentences.append(sentence)
+    #     return filtered_sentences
+
+    def determine_word_type(self, *, word: str) -> str:
         user_prompt = f"słowo: {word}"
 
         response = self._generate(
-            system=self._prompts["create_sentences"],
+            system=self._prompts["determine_word_type"],
             user=user_prompt,
         )
+        if TYPE_NOUN in response:
+            return TYPE_NOUN
+        if TYPE_VERB in response:
+            return TYPE_VERB
+        if TYPE_ADJ in response:
+            return TYPE_ADJ
+        return TYPE_OTHER
 
-        return self._parse_json(response, "create_sentences", user_prompt)
+    # def is_word_in_sentence(self, *, word: str, sentence: str) -> bool:
+    #     user_prompt = f"słowo: {word}\nzdanie: {sentence}\n"
 
-    def filter_sentences(self, *, word: str, sentences: List[str]) -> List[str]:
-        user_prompt = f"słowo: {word}\nzdania:\n"
-        for sentence in sentences:
-            user_prompt += f"{sentence}\n"
-
-        response = self._generate(
-            system=self._prompts["filter_sentences"],
-            user=user_prompt,
-        )
-
-        return self._parse_json(response, "filter_sentences", user_prompt)
+    #     response = self._generate(
+    #         system=self._prompts["is_word_in_sentence"],
+    #         user=user_prompt,
+    #     )
+    #     print(response)
+    #     print("-" * 10)
+    #     if "TAK" in response:
+    #         return True
+    #     if "NIE" in response:
+    #         return False
+    #     raise ValueError(f"Unexpected response from LLM: {response}")
 
     def _generate(self, *, system: str, user: str) -> str:
         response = self.llm_adapter.generate_response(
@@ -99,10 +139,15 @@ class LlmManager:
 
 if __name__ == "__main__":
     mng = LlmManager(llm_adapter=ollama_adapter)
+    word = "wissenschaftlich"
 
     try:
-        res = mng.create_sentences(word="Krankenheit")
-        for s in res:
+        word_type = mng.determine_word_type(word=word)
+        print(f"WORD_TYPE: {word_type}")
+
+        sentences = mng.create_sentences(word=word, word_type=word_type)
+        for s in sentences:
             print(s)
+
     except Exception as e:
         print(f"Error occurred: {e}")

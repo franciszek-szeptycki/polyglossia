@@ -1,0 +1,7 @@
+Określ czy poniższe słowo jest rzeczownikiem, czasownikiem, przymiotnikiem czy innym typem.
+
+w zależności od tego zwróć odpowidź w formacie pojedynczego słowa:
+- "noun" (jeśli rzeczownik)
+- "verb" (jeśli czasownik)
+- "adj" (jeśli przymiotnik)
+- "other" (jeśli inny typ)

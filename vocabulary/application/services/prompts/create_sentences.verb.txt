@@ -1,0 +1,9 @@
+Jesteś w procesie tworzenia fiszek językowych.
+
+Dla poniższego słowa wygeneruj 10 przykładowych zdań w języku niemieckim z podanym czasownikiem.
+
+Zdania które wygenerujesz dla poniższego słowa powinny mieć między 4 a 8 słów.
+
+Zdania które wygenerujesz powinny być zdaniami powszechnie używanymi w języku niemieckim na codzień.
+
+Zwróc zdania w tablicy w formacie JSON, nie dodawaj żadnych znaków specjalnych aby to co zwrócisz dało się w całości przetworzyć skryptem.

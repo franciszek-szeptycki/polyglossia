@@ -1,8 +1,8 @@
 Jesteś w procesie tworzenia fiszek językowych polsko-niemieckich.
 
-Poniżej otrzymasz "słowo" i "zdania".
+Poniżej otrzymasz "słowo" i "zdanie".
 
-Twoim zdaniem jest odfiltrować zdania te które nie zawierają wskazanego słowa.
+Twoim zdaniem jest określić czy zdanie zawiera słowo.
 
 np. wgl nie ma danego słowa albo występuje jako część innego słowa np. dla "Haus" nie może być zdania "Ich gehe zur Krankenhaus" bo to nie jest słowo dom.
 
@@ -11,6 +11,4 @@ Natomiast może to być słowo w innej formie np.
 - dla rzeczownika - rodzajnik określony, nieokreślony, liczba mnoga, przypadki
 - dla przymiotnika - osoby, wersja bez osobowa
 
-Jak już dostaniesz listę 10 zdań to zwróć listę tylko tych zdań które zawierają dane słowo.
-
-Zwróć listę w formacie tablicy stringów JSON, tak aby twoją odpowiedź dało się przeparsować skryptem.
+zwroć tylko "TAK" lub "NIE" w zależności od tego czy zdanie zawiera słowo.
