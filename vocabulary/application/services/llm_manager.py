@@ -2,6 +2,7 @@ import json
 import os
 import pathlib
 import re
+from dataclasses import dataclass
 from itertools import count
 from typing import List
 
@@ -14,6 +15,13 @@ TYPE_NOUN = "noun"
 TYPE_VERB = "verb"
 TYPE_ADJ = "adj"
 TYPE_OTHER = "other"
+
+
+@dataclass
+class EnhancedWord:
+    word: str
+    word_translation: str
+    type: str
 
 
 class LlmManager:
@@ -31,6 +39,7 @@ class LlmManager:
             "create_sentences.verb": self._load_prompt("create_sentences.verb.txt"),
             "create_sentences.adj": self._load_prompt("create_sentences.adj.txt"),
             "create_sentences.other": self._load_prompt("create_sentences.other.txt"),
+            "enhance_word_data": self._load_prompt("enhance_word_data.txt"),
         }
 
     def _initialize_error_counter(self) -> count:
@@ -48,17 +57,12 @@ class LlmManager:
         next_idx = max(indices) + 1 if indices else 1
         return count(next_idx)
 
-    def create_sentences(self, *, word: str, word_type: str) -> List[str]:
+    def create_sentences(self, *, word: str) -> List[str]:
         user_prompt = f"słowo: {word}"
 
-        if word_type not in ("noun", "verb", "adj", "other"):
-            raise ValueError(f"Invalid word type: {word_type}")
+        prompt_method = "create_sentences"
 
-        prompt_method = f"create_sentences.{word_type}"
-        response = self._generate(
-            system=self._prompts[prompt_method],
-            user=user_prompt,
-        )
+        response = self._generate(system=self._prompts[prompt_method], user=user_prompt)
 
         return self._parse_json(response, prompt_method, user_prompt)
 
@@ -83,6 +87,21 @@ class LlmManager:
         if TYPE_ADJ in response:
             return TYPE_ADJ
         return TYPE_OTHER
+
+    def enhance_word_data(self, *, word, sentence) -> EnhancedWord:
+        user_prompt = f"słowo: {word}\nzdanie: {sentence}\n"
+
+        response = self._generate(
+            system=self._prompts["enhance_word_data"],
+            user=user_prompt,
+        )
+
+        data = self._parse_json(response, "enhance_word_data", user_prompt)
+        return EnhancedWord(
+            word=data["word"].strip(),
+            word_translation=data["word_translation"].strip(),
+            type=data["type"].strip(),
+        )
 
     # def is_word_in_sentence(self, *, word: str, sentence: str) -> bool:
     #     user_prompt = f"słowo: {word}\nzdanie: {sentence}\n"
@@ -139,15 +158,13 @@ class LlmManager:
 
 if __name__ == "__main__":
     mng = LlmManager(llm_adapter=ollama_adapter)
-    word = "wissenschaftlich"
+    word = "sogar"
 
     try:
-        word_type = mng.determine_word_type(word=word)
-        print(f"WORD_TYPE: {word_type}")
-
-        sentences = mng.create_sentences(word=word, word_type=word_type)
+        sentences = mng.create_sentences(word=word)
         for s in sentences:
-            print(s)
+            enhanced_word = mng.enhance_word_data(word=word, sentence=s)
+            print(enhanced_word)
 
     except Exception as e:
         print(f"Error occurred: {e}")

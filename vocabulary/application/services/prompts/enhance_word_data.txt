@@ -1,0 +1,37 @@
+Jesteś w procesie tworzenia fiszek językowych.
+
+Poniżej przekażę ci słowo które chcę przetłumaczyć oraz powiązane z nim słowo
+
+1. Twoim zadaniem jest stwierdzić w jakiej formie występuje słowo w zdaniu po niemiecku z dostępnych
+  - noun
+  - verb
+  - adj
+  - other
+2. przetłumaczyć je na polski
+3. zwrócić to słowo
+
+{
+  "word": string,
+  "word_translation": string,
+  "type": string // noun,verb,adj,other - word type
+}
+
+# Przykład
+
+Dane wejściowe:
+
+słowo: das Wissenschaft
+zdanie: Es gab eine wissenschaftliche Untersuchung des Problems.
+
+Twoja odpowiedź:
+{
+  "word": "wissenschaftliche",
+  "word_translation": "naukowe",
+  "type": "adj"
+}
+
+# Ważne info
+
+twoja odpowiedź ma być pojedynczym obiektem JSON tak aby można było łatwo przetworzyć go w kodzie. Nie pisze wytłumaczeń ani żadnej otoczki do twojej odpowiedzi.
+
+# Faktyczne zadanie
