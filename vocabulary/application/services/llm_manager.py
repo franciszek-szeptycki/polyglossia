@@ -18,7 +18,7 @@ class LlmManager:
         self._error_counter = self._initialize_error_counter()
 
         self._prompts = {
-            "create_sentences": self._load_prompt("create_raw_sentences.txt"),
+            "create_sentences": self._load_prompt("create_sentences.txt"),
             "filter_sentences": self._load_prompt("filter_sentences.txt"),
         }
 
