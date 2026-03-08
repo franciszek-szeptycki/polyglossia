@@ -18,28 +18,19 @@ TYPE_OTHER = "other"
 
 
 @dataclass
-class EnhancedWord:
-    word: str
-    word_translation: str
-    type: str
+class EvaFlashcard:
+    back: str
+    front: str
 
 
 class LlmManager:
     def __init__(self, *, llm_adapter: LLMAdapter):
         self.llm_adapter = llm_adapter
-        self._error_dir = "./tmp/llm_errors"
+        self._error_dir = "./.tmp/llm_errors"
         self._error_counter = self._initialize_error_counter()
 
         self._prompts = {
-            "create_sentences": self._load_prompt("create_sentences.txt"),
-            "filter_sentences": self._load_prompt("filter_sentences.txt"),
-            "is_word_in_sentence": self._load_prompt("is_word_in_sentence.txt"),
-            "determine_word_type": self._load_prompt("determine_word_type.txt"),
-            "create_sentences.noun": self._load_prompt("create_sentences.noun.txt"),
-            "create_sentences.verb": self._load_prompt("create_sentences.verb.txt"),
-            "create_sentences.adj": self._load_prompt("create_sentences.adj.txt"),
-            "create_sentences.other": self._load_prompt("create_sentences.other.txt"),
-            "enhance_word_data": self._load_prompt("enhance_word_data.txt"),
+            "create_eva_flashcard": self._load_prompt("create_eva_flashcard.txt"),
         }
 
     def _initialize_error_counter(self) -> count:
@@ -57,66 +48,19 @@ class LlmManager:
         next_idx = max(indices) + 1 if indices else 1
         return count(next_idx)
 
-    def create_sentences(self, *, word: str) -> List[str]:
+    def create_eva_flashcard(self, *, word: str) -> EvaFlashcard:
         user_prompt = f"słowo: {word}"
 
-        prompt_method = "create_sentences"
+        prompt_method = "create_eva_flashcard"
 
         response = self._generate(system=self._prompts[prompt_method], user=user_prompt)
 
-        return self._parse_json(response, prompt_method, user_prompt)
+        json_data = self._parse_json(response, prompt_method, user_prompt)
 
-    # def filter_sentences(self, *, word: str, sentences: List[str]) -> List[str]:
-    #     filtered_sentences = []
-    #     for sentence in sentences:
-    #         if self.is_word_in_sentence(word=word, sentence=sentence):
-    #             filtered_sentences.append(sentence)
-    #     return filtered_sentences
-
-    def determine_word_type(self, *, word: str) -> str:
-        user_prompt = f"słowo: {word}"
-
-        response = self._generate(
-            system=self._prompts["determine_word_type"],
-            user=user_prompt,
+        return EvaFlashcard(
+            front=json_data["front"],
+            back=json_data["back"],
         )
-        if TYPE_NOUN in response:
-            return TYPE_NOUN
-        if TYPE_VERB in response:
-            return TYPE_VERB
-        if TYPE_ADJ in response:
-            return TYPE_ADJ
-        return TYPE_OTHER
-
-    def enhance_word_data(self, *, word, sentence) -> EnhancedWord:
-        user_prompt = f"słowo: {word}\nzdanie: {sentence}\n"
-
-        response = self._generate(
-            system=self._prompts["enhance_word_data"],
-            user=user_prompt,
-        )
-
-        data = self._parse_json(response, "enhance_word_data", user_prompt)
-        return EnhancedWord(
-            word=data["word"].strip(),
-            word_translation=data["word_translation"].strip(),
-            type=data["type"].strip(),
-        )
-
-    # def is_word_in_sentence(self, *, word: str, sentence: str) -> bool:
-    #     user_prompt = f"słowo: {word}\nzdanie: {sentence}\n"
-
-    #     response = self._generate(
-    #         system=self._prompts["is_word_in_sentence"],
-    #         user=user_prompt,
-    #     )
-    #     print(response)
-    #     print("-" * 10)
-    #     if "TAK" in response:
-    #         return True
-    #     if "NIE" in response:
-    #         return False
-    #     raise ValueError(f"Unexpected response from LLM: {response}")
 
     def _generate(self, *, system: str, user: str) -> str:
         response = self.llm_adapter.generate_response(
@@ -161,10 +105,10 @@ if __name__ == "__main__":
     word = "sogar"
 
     try:
-        sentences = mng.create_sentences(word=word)
-        for s in sentences:
-            enhanced_word = mng.enhance_word_data(word=word, sentence=s)
-            print(enhanced_word)
+        flashcard = mng.create_eva_flashcard(word=word)
+        print(flashcard.front)
+        print(flashcard.back)
+        print("=" * 10)
 
     except Exception as e:
         print(f"Error occurred: {e}")
