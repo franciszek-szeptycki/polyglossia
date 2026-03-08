@@ -2,7 +2,9 @@ from common.adapters.ollama_adapter import ollama_adapter
 from common.adapters.openai_adapter import openai_adapter
 from common.ports.llm_adapter import LLMAdapter
 from vocabulary.application.ports.word_repository import WordRepositoryABC
-from vocabulary.application.services.llm_manager import LlmManager
+from vocabulary.application.services.create_eva_flashcards_service import (
+    CreateEvaFlaschardsService,
+)
 from vocabulary.infrastructure.repositories.word_repository import word_repository
 
 
@@ -11,7 +13,7 @@ class GenerateFlashcardsForWordUseCase:
 
         self.word_repo = word_repo
 
-        self.llm_manager = LlmManager(llm_adapter=llm_adapter)
+        self.llm_manager = CreateEvaFlaschardsService(llm_adapter=llm_adapter)
 
     def execute(self, *, word_id: str):
 
@@ -21,16 +23,16 @@ class GenerateFlashcardsForWordUseCase:
         self.word_repo.generating_flash_cards_in_progress(word_id=word_dto.id)
 
         try:
-            sentences = self.llm_manager.create_sentences(word=word_dto.text)
+            # sentences = self.llm_manager.create_sentences(word=word_dto.text)
 
-            filtered_sentences = self.llm_manager.filter_sentences(
-                sentences=sentences, word=word_dto.text
-            )
+            # filtered_sentences = self.llm_manager.filter_sentences(
+            #     sentences=sentences, word=word_dto.text
+            # )
 
-            print(len(sentences))
-            print(len(filtered_sentences))
+            # print(len(sentences))
+            # print(len(filtered_sentences))
 
-            print(filtered_sentences)
+            # print(filtered_sentences)
 
             # WORD as DONE
             self.word_repo.generating_flash_cards_done(word_id=word_dto.id)

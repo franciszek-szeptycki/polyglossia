@@ -24,15 +24,66 @@ class EvaFlashcard:
     front: str
 
 
-class LlmManager:
+class CreateEvaFlaschardsService:
     def __init__(self, *, llm_adapter: LLMAdapter):
         self.llm_adapter = llm_adapter
         self._error_dir = "./.tmp/llm_errors"
         self._error_counter = self._initialize_error_counter()
 
         self._prompts = {
-            "create_eva_flashcard": self._load_prompt("create_eva_flashcard.txt"),
+            "1.create_raw_sentences": self._load_prompt("1.create_raw_sentences.txt"),
+            "2.filter_raw_sentences": self._load_prompt("2.filter_raw_sentences.txt"),
         }
+
+    def execute(self, *, word: str) -> List[EvaFlashcard]:
+
+        raw_sentences = self._create_raw_sentences(word=word)
+
+        filtered_sentences = self._filter_raw_sentences(
+            word=word, sentences=raw_sentences
+        )
+
+        for i, fs in enumerate(filtered_sentences):
+            print(f'{i}. "{fs}"')
+
+        # prompt_method = "1.create_20_sentences"
+
+        # system = self._prompts[prompt_method]
+        # user = f"słowo: {word}"
+
+        # response = self._generate(system=system, user=user)
+
+        # json_data = self._parse_json(response, prompt_method, system + user)
+
+        # return [
+        #     EvaFlashcard(
+        #         front=d["front"],
+        #         back=d["back"],
+        #     )
+        #     for d in json_data
+        # ]
+
+    def _create_raw_sentences(self, *, word: str) -> List[str]:
+        prompt_method = "1.create_raw_sentences"
+        system_prompt = self._prompts[prompt_method]
+        user_prompt = f"słowo: {word}"
+
+        response = self._generate(system=system_prompt, user=user_prompt)
+
+        return self._parse_json(response, prompt_method, system_prompt + user_prompt)
+
+    def _filter_raw_sentences(self, *, word: str, sentences: List[str]) -> List[str]:
+        prompt_method = "2.filter_raw_sentences"
+        system_prompt = self._prompts[prompt_method]
+        user_prompt = f"Słowo: {word}\nZdania:\n" + "\n".join(sentences)
+
+        response = self._generate(system=system_prompt, user=user_prompt)
+
+        return self._parse_json(response, prompt_method, system_prompt + user_prompt)
+
+    #############
+    #  Helpers  #
+    #############
 
     def _initialize_error_counter(self) -> count:
         if not os.path.exists(self._error_dir):
@@ -48,24 +99,6 @@ class LlmManager:
 
         next_idx = max(indices) + 1 if indices else 1
         return count(next_idx)
-
-    def create_eva_flashcard(self, *, word: str) -> List[EvaFlashcard]:
-        prompt_method = "create_eva_flashcard"
-
-        system = self._prompts[prompt_method]
-        user = f"słowo: {word}"
-
-        response = self._generate(system=system, user=user)
-
-        json_data = self._parse_json(response, prompt_method, system + user)
-
-        return [
-            EvaFlashcard(
-                front=d["front"],
-                back=d["back"],
-            )
-            for d in json_data
-        ]
 
     def _generate(self, *, system: str, user: str) -> str:
         response = self.llm_adapter.generate_response(
@@ -103,20 +136,3 @@ class LlmManager:
 
         with open(prompt_path, "r", encoding="utf-8") as f:
             return f.read()
-
-
-if __name__ == "__main__":
-    # llm_adapter = ollama_adapter
-    llm_adapter = openai_adapter
-    mng = LlmManager(llm_adapter=llm_adapter)
-    word = "einwerfen"
-
-    try:
-        flashcards = mng.create_eva_flashcard(word=word)
-        for flashcard in flashcards:
-            print(flashcard.front)
-            print(flashcard.back)
-            print("=" * 10)
-
-    except Exception as e:
-        print(f"Error occurred: {e}")

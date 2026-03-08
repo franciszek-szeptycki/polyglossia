@@ -1,0 +1,13 @@
+Wygeneruj 15 zdań w języku niemieckim które zawierają poniższe słowo.
+
+Zdania mają być w różnego typu, rodzaju, formy, długości, kontekstu w jakim się wypowiada.
+
+Zdania mają być jak najbardziej popularne w codziennej komunikacji i w niej przydatne.
+
+Zdania mają mieć nie mniej niż 4 słów i nie więcej niż 8.
+
+Zwróć je w formacie listy stringów w JSON który będzie łatwy do przetworzenia skryptem, czyli bez ``` i dodatkowych informacji przed i po.
+
+Zwróć uwagę aby output dokłądnie przestrzegał standardu JSON, między innymi w temacie przecinków
+
+=========================
