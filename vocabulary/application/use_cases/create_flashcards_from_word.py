@@ -14,16 +14,17 @@ class GenerateFlashcardsForWordUseCase:
         self.llm_manager = LlmManager(llm_adapter=llm_adapter)
 
     def execute(self, *, word_id: str):
-        word = self.word_repo.get(word_id)
+
+        word_dto = self.word_repo.get(word_id)
 
         # WORD as IN_PROGRESS
-        self.word_repo.generating_flash_cards_in_progress(word_id=word_id)
+        self.word_repo.generating_flash_cards_in_progress(word_id=word_dto.id)
 
         try:
-            sentences = self.llm_manager.create_sentences(word=word.text)
+            sentences = self.llm_manager.create_sentences(word=word_dto.text)
 
             filtered_sentences = self.llm_manager.filter_sentences(
-                sentences=sentences, word=word.text
+                sentences=sentences, word=word_dto.text
             )
 
             print(len(sentences))
@@ -32,11 +33,11 @@ class GenerateFlashcardsForWordUseCase:
             print(filtered_sentences)
 
             # WORD as DONE
-            self.word_repo.generating_flash_cards_done(word_id=word_id)
+            self.word_repo.generating_flash_cards_done(word_id=word_dto.id)
 
         except Exception as e:
             # WORD as FAILED
-            self.word_repo.generating_flash_cards_failed(word_id=word_id)
+            self.word_repo.generating_flash_cards_failed(word_id=word_dto.id)
             print(f"Błąd podczas generowania fiszek: {e}")
             raise e
 

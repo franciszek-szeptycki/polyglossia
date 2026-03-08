@@ -7,6 +7,7 @@ from itertools import count
 from typing import List
 
 from common.adapters.ollama_adapter import ollama_adapter
+from common.adapters.openai_adapter import openai_adapter
 from common.ports.llm_adapter import LLMAdapter
 from vocabulary.application.dtos.raw_flashcard_data import RawFlashcardDataDTO
 from vocabulary.application.dtos.word import WordDTO
@@ -48,19 +49,23 @@ class LlmManager:
         next_idx = max(indices) + 1 if indices else 1
         return count(next_idx)
 
-    def create_eva_flashcard(self, *, word: str) -> EvaFlashcard:
-        user_prompt = f"słowo: {word}"
-
+    def create_eva_flashcard(self, *, word: str) -> List[EvaFlashcard]:
         prompt_method = "create_eva_flashcard"
 
-        response = self._generate(system=self._prompts[prompt_method], user=user_prompt)
+        system = self._prompts[prompt_method]
+        user = f"słowo: {word}"
 
-        json_data = self._parse_json(response, prompt_method, user_prompt)
+        response = self._generate(system=system, user=user)
 
-        return EvaFlashcard(
-            front=json_data["front"],
-            back=json_data["back"],
-        )
+        json_data = self._parse_json(response, prompt_method, system + user)
+
+        return [
+            EvaFlashcard(
+                front=d["front"],
+                back=d["back"],
+            )
+            for d in json_data
+        ]
 
     def _generate(self, *, system: str, user: str) -> str:
         response = self.llm_adapter.generate_response(
@@ -101,14 +106,17 @@ class LlmManager:
 
 
 if __name__ == "__main__":
-    mng = LlmManager(llm_adapter=ollama_adapter)
-    word = "sogar"
+    # llm_adapter = ollama_adapter
+    llm_adapter = openai_adapter
+    mng = LlmManager(llm_adapter=llm_adapter)
+    word = "einwerfen"
 
     try:
-        flashcard = mng.create_eva_flashcard(word=word)
-        print(flashcard.front)
-        print(flashcard.back)
-        print("=" * 10)
+        flashcards = mng.create_eva_flashcard(word=word)
+        for flashcard in flashcards:
+            print(flashcard.front)
+            print(flashcard.back)
+            print("=" * 10)
 
     except Exception as e:
         print(f"Error occurred: {e}")
