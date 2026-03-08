@@ -6,6 +6,8 @@ from dataclasses import dataclass
 from itertools import count
 from typing import List
 
+from tqdm import tqdm
+
 from common.adapters.ollama_adapter import ollama_adapter
 from common.adapters.openai_adapter import openai_adapter
 from common.ports.llm_adapter import LLMAdapter
@@ -33,35 +35,29 @@ class CreateEvaFlaschardsService:
         self._prompts = {
             "1.create_raw_sentences": self._load_prompt("1.create_raw_sentences.txt"),
             "2.filter_raw_sentences": self._load_prompt("2.filter_raw_sentences.txt"),
+            "3.replace_in_eva_style": self._load_prompt("3.replace_in_eva_style.txt"),
         }
 
-    def execute(self, *, word: str) -> List[EvaFlashcard]:
+    def execute(self, *, word: str) -> List["EvaFlashcard"]:
+        with tqdm(total=3, position=0, leave=False) as pbar:
+            raw_sentences = self._create_raw_sentences(word=word)
+            pbar.update(1)
 
-        raw_sentences = self._create_raw_sentences(word=word)
+            filtered_sentences = self._filter_raw_sentences(
+                word=word, sentences=raw_sentences
+            )
+            for i, fs in enumerate(filtered_sentences):
+                tqdm.write(f'{i}. "{fs}"')
+            pbar.update(1)
 
-        filtered_sentences = self._filter_raw_sentences(
-            word=word, sentences=raw_sentences
-        )
+            eva_flashcards = self._replace_in_eva_style(
+                word=word, sentences=filtered_sentences
+            )
+            for card in eva_flashcards:
+                tqdm.write(str(card))
+            pbar.update(1)
 
-        for i, fs in enumerate(filtered_sentences):
-            print(f'{i}. "{fs}"')
-
-        # prompt_method = "1.create_20_sentences"
-
-        # system = self._prompts[prompt_method]
-        # user = f"słowo: {word}"
-
-        # response = self._generate(system=system, user=user)
-
-        # json_data = self._parse_json(response, prompt_method, system + user)
-
-        # return [
-        #     EvaFlashcard(
-        #         front=d["front"],
-        #         back=d["back"],
-        #     )
-        #     for d in json_data
-        # ]
+        return eva_flashcards
 
     def _create_raw_sentences(self, *, word: str) -> List[str]:
         prompt_method = "1.create_raw_sentences"
@@ -80,6 +76,27 @@ class CreateEvaFlaschardsService:
         response = self._generate(system=system_prompt, user=user_prompt)
 
         return self._parse_json(response, prompt_method, system_prompt + user_prompt)
+
+    def _replace_in_eva_style(
+        self, *, word: str, sentences: List[str]
+    ) -> List[EvaFlashcard]:
+        prompt_method = "3.replace_in_eva_style"
+        system_prompt = self._prompts[prompt_method]
+        user_prompt = f"Słowo: {word}\nZdania:\n" + "\n".join(sentences)
+
+        response = self._generate(system=system_prompt, user=user_prompt)
+
+        json_data = self._parse_json(
+            response, prompt_method, system_prompt + user_prompt
+        )
+
+        return [
+            EvaFlashcard(
+                front=d["front"],
+                back=d["back"],
+            )
+            for d in json_data
+        ]
 
     #############
     #  Helpers  #

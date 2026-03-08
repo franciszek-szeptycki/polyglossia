@@ -7,6 +7,6 @@ Twoim zadaniem jest wybrać 7 spośród tych zdań które najlepiej spełniają 
 
 Zwróć je w formacie listy stringów List[str] w JSON który będzie łatwy do przetworzenia skryptem, czyli bez ``` i dodatkowych informacji przed i po.
 
-Zwróć uwagę aby output dokładnie przestrzegał standardu JSON, między innymi w temacie przecinków
+Zwróć uwagę aby output dokładnie przestrzegał standardu JSON, między innymi w temacie poprawnego umiejscowienia przecinków.
 
 =========================

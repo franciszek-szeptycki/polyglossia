@@ -14,8 +14,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         word = options["word"]
 
-        llm_adapter = ollama_adapter
-        # llm_adapter = openai_adapter
+        # llm_adapter = ollama_adapter
+        llm_adapter = openai_adapter
         service = CreateEvaFlaschardsService(llm_adapter=llm_adapter)
 
         flashcards = service.execute(word=word)
