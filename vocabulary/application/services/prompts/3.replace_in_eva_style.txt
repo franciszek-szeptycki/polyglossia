@@ -71,23 +71,22 @@ Możesz znaleźć wszystkie dostępne opcje po lewej stronie pola edycji tekstu.
 
 ZADANIE:
 
-Poniżej otrzymasz słowo w języku niemieckim oraz 7 zdań przygotowanych aby przećwiczyć to słowo.
+Poniżej otrzymasz słowo w języku niemieckim oraz zdanie przygotowane aby przećwiczyć to słowo.
 
-Twoim zadaniem będzie wygenerować fiszki językowe metodą EVA z tego słowa i 7 zdań.
+Twoim zadaniem będzie wygenerować fiszkę językową metodą EVA z tego słowa.
 
 Chciałbym abyś dla każdego zdania wygenerował fiszkę poprzez wygenerowanie przodu (front) i tyłu (back) zgodną z metodą EVA.
 
 Na przodzie fiszki ma się przekazane przeze mnie poniżej zdanie z podmienionym słowem metodą EVA (jak w artykule), a na tyle to słowo.
 
+Front fiszki musi mieć zdanie po niemiecku z podmienionym wskazanym słowem na język polski, a tył piszki mus zawierać to słówko w języku oryginalnym.
+
 Odpowiedź zwróć jako JSON w poniższym formacie:
 
-[
-  {
-    "front": str
-    "back": str,
-  },
-  ...
-]
+{
+  "front": str
+  "back": str,
+},
 
 Uwzględnij to że twoja odpowiedź będzie procesowana przez skrypt w pythonie, więc nie dodawaj żadnych komentarzy ani ```json aby twoją odpowiedź można było bez problemu przeprocesować.
 

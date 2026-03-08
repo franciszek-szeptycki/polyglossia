@@ -26,6 +26,12 @@ class EvaFlashcard:
     front: str
 
 
+import concurrent.futures
+from typing import List
+
+from tqdm import tqdm
+
+
 class CreateEvaFlaschardsService:
     def __init__(self, *, llm_adapter: LLMAdapter):
         self.llm_adapter = llm_adapter
@@ -39,23 +45,31 @@ class CreateEvaFlaschardsService:
         }
 
     def execute(self, *, word: str) -> List["EvaFlashcard"]:
-        with tqdm(total=3, position=0, leave=False) as pbar:
-            raw_sentences = self._create_raw_sentences(word=word)
-            pbar.update(1)
+        raw_sentences = self._create_raw_sentences(word=word)
 
-            filtered_sentences = self._filter_raw_sentences(
-                word=word, sentences=raw_sentences
-            )
-            for i, fs in enumerate(filtered_sentences):
-                tqdm.write(f'{i}. "{fs}"')
-            pbar.update(1)
+        filtered_sentences = self._filter_raw_sentences(
+            word=word, sentences=raw_sentences
+        )
 
-            eva_flashcards = self._replace_in_eva_style(
-                word=word, sentences=filtered_sentences
-            )
-            for card in eva_flashcards:
-                tqdm.write(str(card))
-            pbar.update(1)
+        for i, fs in enumerate(filtered_sentences):
+            tqdm.write(f'{i}. "{fs}"')
+
+        eva_flashcards = []
+
+        with tqdm(total=len(filtered_sentences), position=0, leave=False) as pbar:
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                future_to_sentence = {
+                    executor.submit(
+                        self._replace_in_eva_style, word=word, sentence=sentence
+                    ): sentence
+                    for sentence in filtered_sentences
+                }
+
+                for future in concurrent.futures.as_completed(future_to_sentence):
+                    card = future.result()
+                    eva_flashcards.append(card)
+                    tqdm.write(str(card))
+                    pbar.update(1)
 
         return eva_flashcards
 
@@ -77,12 +91,10 @@ class CreateEvaFlaschardsService:
 
         return self._parse_json(response, prompt_method, system_prompt + user_prompt)
 
-    def _replace_in_eva_style(
-        self, *, word: str, sentences: List[str]
-    ) -> List[EvaFlashcard]:
+    def _replace_in_eva_style(self, *, word: str, sentence: str) -> List[EvaFlashcard]:
         prompt_method = "3.replace_in_eva_style"
         system_prompt = self._prompts[prompt_method]
-        user_prompt = f"Słowo: {word}\nZdania:\n" + "\n".join(sentences)
+        user_prompt = f"Słowo: {word}\nZdanie: {sentence}"
 
         response = self._generate(system=system_prompt, user=user_prompt)
 
@@ -92,10 +104,9 @@ class CreateEvaFlaschardsService:
 
         return [
             EvaFlashcard(
-                front=d["front"],
-                back=d["back"],
+                front=json_data["front"],
+                back=json_data["back"],
             )
-            for d in json_data
         ]
 
     #############
