@@ -95,7 +95,11 @@ Front: [[ zagajnik ]] riecht gut.
 Back: Ein Gehölz
 
 Dodatkowe uwagi:
-- w przypadku gdy słowo występuje w więcej niż jednym miejscu zdania (np. czasownik rozdzielny) zrób jego replace w dwóch miejscach np. dla "austehen": "Ich [[ wstaję ]] oft um 8 Uhr [[ wstaję ]]" - bo zdanie: "Ich stehe oft um 8 Uhr auf"
+- w przypadku gdy słowo występuje w więcej niż jednym miejscu zdania (np. czasownik rozdzielny) zrób podmianę słowa na polskie w tych miejscach zdania w których wystepuje. Przykład:
+
+słowo: austehen
+zdanie: Ich stehe oft um 8 Uhr auf
+zdanie po podmianie: Ich [[ wstaję ]] oft um 8 Uhr [[ wstaję ]]
 
 Zwróć uwagę aby output dokładnie przestrzegał standardu JSON, między innymi w temacie poprawnego umiejscowienia przecinków.
 

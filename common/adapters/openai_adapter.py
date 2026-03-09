@@ -12,6 +12,7 @@ class OpenAIAdapter(LLMAdapter):
     def __init__(self):
         self.client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
         self.default_model = "gpt-4o-mini"
+        # self.default_model = "gpt-4o"
 
     def generate_response(
         self,
@@ -28,8 +29,6 @@ class OpenAIAdapter(LLMAdapter):
         )
         return response.choices[0].message.content
 
-
-openai_adapter = OpenAIAdapter()
 
 if __name__ == "__main__":
     response = openai_adapter.generate_response(
