@@ -1,3 +1,4 @@
+import concurrent.futures
 import json
 import os
 import pathlib
@@ -8,16 +9,7 @@ from typing import List
 
 from tqdm import tqdm
 
-from common.adapters.ollama_adapter import ollama_adapter
-from common.adapters.openai_adapter import openai_adapter
 from common.ports.llm_adapter import LLMAdapter
-from vocabulary.application.dtos.raw_flashcard_data import RawFlashcardDataDTO
-from vocabulary.application.dtos.word import WordDTO
-
-TYPE_NOUN = "noun"
-TYPE_VERB = "verb"
-TYPE_ADJ = "adj"
-TYPE_OTHER = "other"
 
 
 @dataclass
@@ -26,16 +18,11 @@ class EvaFlashcard:
     front: str
 
 
-import concurrent.futures
-from typing import List
-
-from tqdm import tqdm
-
-
 class CreateEvaFlaschardsService:
     def __init__(self, *, llm_adapter: LLMAdapter):
         self.llm_adapter = llm_adapter
         self._error_dir = "./.tmp/llm_errors"
+        self._language = "de"
         self._error_counter = self._initialize_error_counter()
 
         self._prompts = {
@@ -160,7 +147,7 @@ class CreateEvaFlaschardsService:
 
     def _load_prompt(self, filename: str) -> str:
         base_dir = pathlib.Path(__file__).resolve().parent
-        prompt_path = base_dir / "prompts" / filename
+        prompt_path = base_dir / "prompts" / self._language / filename
 
         with open(prompt_path, "r", encoding="utf-8") as f:
             return f.read()
