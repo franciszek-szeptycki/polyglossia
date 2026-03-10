@@ -1,15 +1,9 @@
-import concurrent.futures
-import json
-import os
-import pathlib
-import re
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
-from itertools import count
-from typing import Any, Callable, List
+from typing import List
 
 from tqdm import tqdm
 
-from common.ports.llm_adapter import LLMAdapter
 from vocabulary.application.managers.prompt_manager import PromptManager
 
 
@@ -60,21 +54,52 @@ class CreateEvaFlaschardsService:
         self._prompt_manager = prompt_manager
 
     def execute(self, *, word: str) -> List["EvaFlashcard"]:
-        raw_sentences = self._prompt_manager.create_raw_sentences(word=word)
+        with tqdm(total=100, desc=f"Word: {word}", unit="%") as pbar:
+            raw_sentences = self._prompt_manager.create_raw_sentences(word=word)
+            pbar.update(25)
 
-        filtered_sentences = self._prompt_manager.filter_raw_sentences(
-            word=word, sentences=raw_sentences
-        )
+            filtered_sentences = self._prompt_manager.filter_raw_sentences(
+                word=word, sentences=raw_sentences
+            )
+            pbar.update(25)
 
-        eva_flashcards = []
-        for sentence in filtered_sentences:
-            builder = EvaFlashcardBuilder(prompt_manager=self._prompt_manager)
+            num_sentences = len(filtered_sentences)
+            if num_sentences == 0:
+                pbar.update(50)
+                return []
 
-            builder.add_word(word=word)
-            builder.add_raw_sentence(raw_sentence=sentence)
-            builder.generate_draft()
-            builder.generate_additional_info()
+            eva_flashcards = []
+            step = 25 // num_sentences
 
-            eva_flashcards.append(builder.build())
+            def process_sentence(sentence: str) -> "EvaFlashcard":
+                builder = EvaFlashcardBuilder(prompt_manager=self._prompt_manager)
+                builder.add_word(word=word)
+                builder.add_raw_sentence(raw_sentence=sentence)
 
-        return eva_flashcards
+                builder.generate_draft()
+                pbar.update(step)
+
+                builder.generate_additional_info()
+                pbar.update(step)
+
+                return builder.build()
+
+            with ThreadPoolExecutor() as executor:
+                # Używamy dict do śledzenia tasków
+                future_to_sentence = {
+                    executor.submit(process_sentence, s): s for s in filtered_sentences
+                }
+
+                for future in as_completed(future_to_sentence):
+                    try:
+                        card = future.result()
+                        eva_flashcards.append(card)
+                    except Exception:
+                        # Jeśli jeden padnie, dopychamy jego brakujący progress
+                        pbar.update(step * 2)
+
+            # Finalizacja do 100%
+            if pbar.n < 100:
+                pbar.update(100 - pbar.n)
+
+            return eva_flashcards

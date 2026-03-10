@@ -10,7 +10,7 @@ Poniżej otrzymasz słowo w języku niemieckim i zdanie w języku niemieckim z k
 
 Twoim zadaniem jest zwrócić podstawową formę słowa, aby na kolejnym etapie tworzenia fiszek można było tymi informacjami wzbogadzić fiszkę w celu lepszej nauki.
 
-Jeżeli słówko jest czasownikiem - zwróć po niemiecku jego formę bezokolicznikową w tym samym czasie.
+Jeżeli słówko jest czasownikiem - zwróć po niemiecku jego formę bezokolicznikową w tym samym czasie co oryginał, czyli jak przeszły to przeszły, jak przeszły złożony to przeszły złożony, jak teraźniejszy to teraźniejszy.
 
 Jeżeli słówko jest rzeczownikiem - zwróć po niemiecku, w mianowniku, w liczbie pojedynczej, w formacie '{rzeczownik określony} / {rzeczownik nieokreślony}' wraz z rodzajnikiem.
 
