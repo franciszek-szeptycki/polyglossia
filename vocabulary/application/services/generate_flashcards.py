@@ -4,7 +4,6 @@ import pathlib
 from typing import List
 from uuid import uuid4
 
-from common.adapters.openai_adapter import openai_adapter
 from common.ports.llm_adapter import LLMAdapter
 from vocabulary.application.dtos.flashcard import FlashcardDTO
 from vocabulary.application.dtos.raw_flashcard_data import RawFlashcardDataDTO

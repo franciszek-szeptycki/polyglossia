@@ -30,9 +30,8 @@ class OpenAIAdapter(LLMAdapter):
         return response.choices[0].message.content
 
 
-openai_adapter = OpenAIAdapter()
-
 if __name__ == "__main__":
+    openai_adapter = OpenAIAdapter()
     response = openai_adapter.generate_response(
         system="", user="What is the capital of France?"
     )

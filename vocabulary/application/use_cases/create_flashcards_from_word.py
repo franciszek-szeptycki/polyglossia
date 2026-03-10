@@ -1,6 +1,8 @@
 from common.adapters.ollama_adapter import ollama_adapter
-from common.adapters.openai_adapter import openai_adapter
 from common.ports.llm_adapter import LLMAdapter
+from vocabulary.application.managers.prompt_manager import (
+    PromptManagersContainer,
+)
 from vocabulary.application.ports.word_repository import WordRepositoryABC
 from vocabulary.application.services.create_eva_flashcards_service import (
     CreateEvaFlaschardsService,
@@ -13,7 +15,11 @@ class GenerateFlashcardsForWordUseCase:
 
         self.word_repo = word_repo
 
-        self.llm_manager = CreateEvaFlaschardsService(llm_adapter=llm_adapter)
+        prompt_mng_container = PromptManagersContainer(llm_adapter=llm_adapter)
+
+        self.create_eva_flashcard_svc_de = CreateEvaFlaschardsService(
+            prompt_manager=prompt_mng_container.de_regular
+        )
 
     def execute(self, *, word_id: str):
 
@@ -23,18 +29,8 @@ class GenerateFlashcardsForWordUseCase:
         self.word_repo.generating_flash_cards_in_progress(word_id=word_dto.id)
 
         try:
-            # sentences = self.llm_manager.create_sentences(word=word_dto.text)
+            self.create_eva_flashcard_svc_de
 
-            # filtered_sentences = self.llm_manager.filter_sentences(
-            #     sentences=sentences, word=word_dto.text
-            # )
-
-            # print(len(sentences))
-            # print(len(filtered_sentences))
-
-            # print(filtered_sentences)
-
-            # WORD as DONE
             self.word_repo.generating_flash_cards_done(word_id=word_dto.id)
 
         except Exception as e:
@@ -47,5 +43,4 @@ class GenerateFlashcardsForWordUseCase:
 generate_flashcards_for_word_use_case = GenerateFlashcardsForWordUseCase(
     word_repo=word_repository,
     llm_adapter=ollama_adapter,
-    # llm_adapter=openai_adapter
 )

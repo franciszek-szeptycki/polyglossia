@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 
-from common.adapters.ollama_adapter import ollama_adapter
-from common.adapters.openai_adapter import openai_adapter
+from common.adapters.openai_adapter import OpenAIAdapter
+from vocabulary.application.managers.prompt_manager import PromptManagersContainer
 from vocabulary.application.services.create_eva_flashcards_service import (
     CreateEvaFlaschardsService,
 )
@@ -14,9 +14,12 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         word = options["word"]
 
-        # llm_adapter = ollama_adapter
-        llm_adapter = openai_adapter
-        service = CreateEvaFlaschardsService(llm_adapter=llm_adapter)
+        llm_adapter = OpenAIAdapter()
+        prompt_mng_container = PromptManagersContainer(llm_adapter=llm_adapter)
+
+        service = CreateEvaFlaschardsService(
+            prompt_manager=prompt_mng_container.de_regular
+        )
 
         flashcards = service.execute(word=word)
         for flashcard in flashcards:
