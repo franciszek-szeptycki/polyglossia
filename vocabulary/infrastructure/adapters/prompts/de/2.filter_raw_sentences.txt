@@ -1,0 +1,12 @@
+Poniżej otrzymasz x zdań w języku niemieckim stworzonych ze wskazanego słowa, aby potem z nich zrobić fiszki do nauki języka.
+
+Twoim zadaniem jest wybrać 7 spośród tych zdań które najlepiej spełniają poniższe założenia:
+ - Zdania zawierają podane słowo.
+ - Zdania mają być jak najbardziej popularne w codziennej komunikacji i w niej przydatne.
+ - Zdania mają mieć nie mniej niż 4 słów i nie więcej niż 8.
+
+Zwróć je w formacie listy stringów List[str] w JSON który będzie łatwy do przetworzenia skryptem, czyli bez ``` i dodatkowych informacji przed i po.
+
+Zwróć uwagę aby output dokładnie przestrzegał standardu JSON, między innymi w temacie poprawnego umiejscowienia przecinków.
+
+=========================

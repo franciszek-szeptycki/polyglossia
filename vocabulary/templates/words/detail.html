@@ -38,7 +38,7 @@
     </div>
 
     <div id="flashcards-list" class="w-100">
-        {% for card in flashcards %}
+        {% for card in word.flashcards.all %}
             {% include "partials/flashcard_row.html" with card=card %}
         {% empty %}
             <div class="alert alert-light border text-center text-muted">

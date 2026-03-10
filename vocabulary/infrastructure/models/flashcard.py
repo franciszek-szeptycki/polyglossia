@@ -4,7 +4,6 @@ from vocabulary.infrastructure.models.word import Word
 
 
 class Flashcard(models.Model):
-    id = models.UUIDField(primary_key=True, editable=False)
     word = models.ForeignKey(
         Word, on_delete=models.SET_NULL, null=True, related_name="flashcards"
     )
@@ -13,6 +12,10 @@ class Flashcard(models.Model):
     is_active = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     exported_at = models.DateTimeField(null=True, blank=True)
+
+    user = models.ForeignKey(
+        "auth.User", on_delete=models.CASCADE, related_name="flashcards"
+    )
 
     class Meta:
         ordering = [
