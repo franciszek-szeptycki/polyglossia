@@ -19,7 +19,8 @@ class Command(BaseCommand):
         service = CreateEvaFlaschardsService(llm_adapter=llm_adapter)
 
         flashcards = service.execute(word=word)
-        # for flashcard in flashcards:
-        #     print(flashcard.front)
-        #     print(flashcard.back)
-        #     print("=" * 10)
+        for flashcard in flashcards:
+            print(flashcard)
+            print(flashcard.front)
+            print(flashcard.back)
+            print("=" * 10)

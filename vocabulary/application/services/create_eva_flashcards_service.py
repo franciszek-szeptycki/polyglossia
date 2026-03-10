@@ -5,7 +5,7 @@ import pathlib
 import re
 from dataclasses import dataclass
 from itertools import count
-from typing import List
+from typing import Any, Callable, List
 
 from tqdm import tqdm
 
@@ -41,22 +41,14 @@ class CreateEvaFlaschardsService:
         for i, fs in enumerate(filtered_sentences):
             tqdm.write(f'{i}. "{fs}"')
 
-        eva_flashcards = []
-
-        with tqdm(total=len(filtered_sentences), position=0, leave=False) as pbar:
-            with concurrent.futures.ThreadPoolExecutor() as executor:
-                future_to_sentence = {
-                    executor.submit(
-                        self._replace_in_eva_style, word=word, sentence=sentence
-                    ): sentence
-                    for sentence in filtered_sentences
-                }
-
-                for future in concurrent.futures.as_completed(future_to_sentence):
-                    card = future.result()
-                    eva_flashcards.append(card)
-                    tqdm.write(str(card))
-                    pbar.update(1)
+        eva_flashcards: List["EvaFlashcard"] = [
+            EvaFlashcard(front=item["front"], back=item["back"])
+            for item in self._multithreaded_execute(
+                func=self._create_eva_flashcard,
+                items=filtered_sentences,
+                word=word,
+            )
+        ]
 
         return eva_flashcards
 
@@ -78,7 +70,16 @@ class CreateEvaFlaschardsService:
 
         return self._parse_json(response, prompt_method, system_prompt + user_prompt)
 
-    def _replace_in_eva_style(self, *, word: str, sentence: str) -> List[EvaFlashcard]:
+    def _create_eva_flashcard(self, *, word: str, item: str) -> dict:
+        prompt_method = "3.replace_in_eva_style"
+        system_prompt = self._prompts[prompt_method]
+        user_prompt = f"Słowo: {word}\nZdanie: {item}"
+
+        response = self._generate(system=system_prompt, user=user_prompt)
+
+        return self._parse_json(response, prompt_method, system_prompt + user_prompt)
+
+    def _replace_in_eva_style(self, *, word: str, sentence: str) -> EvaFlashcard:
         prompt_method = "3.replace_in_eva_style"
         system_prompt = self._prompts[prompt_method]
         user_prompt = f"Słowo: {word}\nZdanie: {sentence}"
@@ -89,16 +90,29 @@ class CreateEvaFlaschardsService:
             response, prompt_method, system_prompt + user_prompt
         )
 
-        return [
-            EvaFlashcard(
-                front=json_data["front"],
-                back=json_data["back"],
-            )
-        ]
+        return EvaFlashcard(
+            front=json_data["front"],
+            back=json_data["back"],
+        )
 
     #############
     #  Helpers  #
     #############
+
+    def _multithreaded_execute(
+        self, *, func: Callable, items: List[Any], **kwargs
+    ) -> List[Any]:
+        results: List[Any] = []
+        with tqdm(total=len(items), position=0, leave=False) as pbar:
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                future_to_item = {
+                    executor.submit(func, item=item, **kwargs): item for item in items
+                }
+                for future in concurrent.futures.as_completed(future_to_item):
+                    card = future.result()
+                    results.append(card)
+                    pbar.update(1)
+        return results
 
     def _initialize_error_counter(self) -> count:
         if not os.path.exists(self._error_dir):
