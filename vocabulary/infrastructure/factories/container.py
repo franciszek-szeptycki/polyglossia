@@ -1,3 +1,5 @@
+from typing_extensions import Optional
+
 from common.adapters.ollama_adapter import OllamaAdapter
 from common.adapters.openai_adapter import OpenAIAdapter
 from common.ports.llm_adapter import LLMAdapter
@@ -22,13 +24,17 @@ class DependencyContainer:
     def __init__(self, *, offline: bool = False):
         self._offline = offline
 
-        self._word_repository: WordRepositoryABC
-        self._flashcard_repository: FlashcardRepository
-        self._llm_adapter: LLMAdapter
-        self._prompt_managers: PromptManagersContainer
-        self._service_create_eva_flashcards: CreateEvaFlaschardsService
-        self._use_case_generate_flashcards_for_word: GenerateFlashcardsForWordUseCase
-        self._use_case_get_flashcard_data_to_export: GetFlashcardDataToExportUseCase
+        self._word_repository: Optional[WordRepositoryABC] = None
+        self._flashcard_repository: Optional[FlashcardRepository] = None
+        self._llm_adapter: Optional[LLMAdapter] = None
+        self._prompt_managers: Optional[PromptManagersContainer] = None
+        self._service_create_eva_flashcards: Optional[CreateEvaFlaschardsService] = None
+        self._use_case_generate_flashcards_for_word: Optional[
+            GenerateFlashcardsForWordUseCase
+        ] = None
+        self._use_case_get_flashcard_data_to_export: Optional[
+            GetFlashcardDataToExportUseCase
+        ] = None
 
     ##############
     #  ADAPTERS  #

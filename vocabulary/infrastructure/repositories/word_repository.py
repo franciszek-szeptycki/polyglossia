@@ -48,7 +48,7 @@ class WordRepository(WordRepositoryABC, UserContextRepository):
             id=str(word.id),
             text=str(word.text),
             context=str(word.context),
-            user_id=int(word.user),
+            user_id=int(word.user.id),
         )
 
 
