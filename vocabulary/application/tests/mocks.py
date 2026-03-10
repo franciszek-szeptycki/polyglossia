@@ -1,6 +1,6 @@
 from common.ports.llm_adapter import LLMAdapter
 from vocabulary.application.dtos.word import WordDTO
-from vocabulary.application.ports.word_repository import WordRepositoryABC
+from vocabulary.domain.ports.word_repository import WordRepositoryABC
 
 
 class MockLlmAdapter(LLMAdapter):

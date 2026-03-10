@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import List
 
-from vocabulary.application.ports.flashcard_repository import FlashcardRepositoryABC
+from vocabulary.domain.ports.flashcard_repository import FlashcardRepositoryABC
 
 
 class GetFlashcardDataToExportUseCase:

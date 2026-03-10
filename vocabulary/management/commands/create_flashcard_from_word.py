@@ -1,10 +1,10 @@
 from django.core.management.base import BaseCommand
 
 from common.adapters.openai_adapter import OpenAIAdapter
-from vocabulary.application.managers.prompt_manager import PromptManagersContainer
-from vocabulary.application.services.create_eva_flashcards_service import (
+from vocabulary.domain.services.create_eva_flashcards_service import (
     CreateEvaFlaschardsService,
 )
+from vocabulary.infrastructure.adapters.prompt_manager import PromptManagersContainer
 
 
 class Command(BaseCommand):

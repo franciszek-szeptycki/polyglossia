@@ -3,16 +3,18 @@ from typing_extensions import Optional
 from common.adapters.ollama_adapter import OllamaAdapter
 from common.adapters.openai_adapter import OpenAIAdapter
 from common.ports.llm_adapter import LLMAdapter
-from vocabulary.application.managers.prompt_manager import PromptManagersContainer
-from vocabulary.application.ports.word_repository import WordRepositoryABC
-from vocabulary.application.services.create_eva_flashcards_service import (
-    CreateEvaFlaschardsService,
-)
 from vocabulary.application.use_cases.create_flashcards_from_word_use_case import (
     GenerateFlashcardsForWordUseCase,
 )
 from vocabulary.application.use_cases.get_flashcard_data_to_export_use_case import (
     GetFlashcardDataToExportUseCase,
+)
+from vocabulary.domain.ports.word_repository import WordRepositoryABC
+from vocabulary.domain.services.create_eva_flashcards_service import (
+    CreateEvaFlaschardsService,
+)
+from vocabulary.infrastructure.adapters.prompt_manager import (
+    PromptManagersContainer,
 )
 from vocabulary.infrastructure.repositories.flashcard_repository import (
     FlashcardRepository,

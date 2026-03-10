@@ -3,7 +3,7 @@ from typing import List
 
 from common.repositories.user_context_repository import UserContextRepository
 from vocabulary.application.dtos.flashcard import FlashcardDTO
-from vocabulary.application.ports.flashcard_repository import FlashcardRepositoryABC
+from vocabulary.domain.ports.flashcard_repository import FlashcardRepositoryABC
 from vocabulary.infrastructure.models.flashcard import Flashcard
 
 

@@ -2,7 +2,7 @@ from typing import List
 
 from common.repositories.user_context_repository import UserContextRepository
 from vocabulary.application.dtos.word import WordDTO
-from vocabulary.application.ports.word_repository import WordRepositoryABC
+from vocabulary.domain.ports.word_repository import WordRepositoryABC
 from vocabulary.infrastructure.models.word import Word as WordModel
 
 

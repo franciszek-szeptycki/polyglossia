@@ -1,13 +1,13 @@
 from common.adapters.ollama_adapter import ollama_adapter
 from common.ports.llm_adapter import LLMAdapter
 from vocabulary.application.dtos.flashcard import FlashcardDTO
-from vocabulary.application.managers.prompt_manager import (
-    PromptManagersContainer,
-)
-from vocabulary.application.ports.flashcard_repository import FlashcardRepositoryABC
-from vocabulary.application.ports.word_repository import WordRepositoryABC
-from vocabulary.application.services.create_eva_flashcards_service import (
+from vocabulary.domain.ports.flashcard_repository import FlashcardRepositoryABC
+from vocabulary.domain.ports.word_repository import WordRepositoryABC
+from vocabulary.domain.services.create_eva_flashcards_service import (
     CreateEvaFlaschardsService,
+)
+from vocabulary.infrastructure.adapters.prompt_manager import (
+    PromptManagersContainer,
 )
 
 

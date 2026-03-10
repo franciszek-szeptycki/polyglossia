@@ -4,7 +4,7 @@ from typing import List
 
 from tqdm import tqdm
 
-from vocabulary.application.managers.prompt_manager import PromptManager
+from vocabulary.infrastructure.adapters.prompt_manager import PromptManager
 
 
 @dataclass
