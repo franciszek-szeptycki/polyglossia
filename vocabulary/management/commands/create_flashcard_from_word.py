@@ -18,7 +18,7 @@ class Command(BaseCommand):
         prompt_mng_container = PromptManagersContainer(llm_adapter=llm_adapter)
 
         service = CreateEvaFlaschardsService(
-            prompt_manager=prompt_mng_container.de_regular
+            prompt_manager=prompt_mng_container.language_de
         )
 
         flashcards = service.execute(word=word)

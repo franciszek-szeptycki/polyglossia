@@ -2,7 +2,7 @@ from unittest import TestCase
 
 from vocabulary.application.dtos.word import WordDTO
 from vocabulary.application.tests.mocks import MockLlmAdapter, MockWordRepository
-from vocabulary.application.use_cases.create_flashcards_from_word import (
+from vocabulary.application.use_cases.create_flashcards_from_word_use_case import (
     GenerateFlashcardsForWordUseCase,
 )
 

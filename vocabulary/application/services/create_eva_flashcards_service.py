@@ -53,7 +53,7 @@ class CreateEvaFlaschardsService:
     def __init__(self, *, prompt_manager: PromptManager):
         self._prompt_manager = prompt_manager
 
-    def execute(self, *, word: str) -> List["EvaFlashcard"]:
+    def execute(self, *, word: str) -> List[EvaFlashcard]:
         with tqdm(total=100, desc=f"Word: {word}", unit="%") as pbar:
             raw_sentences = self._prompt_manager.create_raw_sentences(word=word)
             pbar.update(25)

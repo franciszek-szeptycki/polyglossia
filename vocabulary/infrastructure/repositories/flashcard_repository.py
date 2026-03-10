@@ -3,10 +3,11 @@ from typing import List
 
 from common.repositories.user_context_repository import UserContextRepository
 from vocabulary.application.dtos.flashcard import FlashcardDTO
+from vocabulary.application.ports.flashcard_repository import FlashcardRepositoryABC
 from vocabulary.infrastructure.models.flashcard import Flashcard
 
 
-class FlashcardRepository(UserContextRepository):
+class FlashcardRepository(FlashcardRepositoryABC, UserContextRepository):
     def create(self, *, dto: FlashcardDTO):
         Flashcard.objects.create(
             user_id=self._get_user_id(),
@@ -57,6 +58,3 @@ class FlashcardRepository(UserContextRepository):
             id__in=ids,
             user_id=self._get_user_id(),
         ).update(exported_at=time)
-
-
-flashcard_repository = FlashcardRepository()

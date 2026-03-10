@@ -122,4 +122,4 @@ class PromptManager:
 
 class PromptManagersContainer:
     def __init__(self, *, llm_adapter: LLMAdapter):
-        self.de_regular = PromptManager(llm_adapter=llm_adapter)
+        self.language_de = PromptManager(llm_adapter=llm_adapter)
