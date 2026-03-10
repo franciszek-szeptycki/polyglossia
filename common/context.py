@@ -19,3 +19,9 @@ class UserContextMiddleware:
             user_id_ctx.reset(token)
 
         return response
+
+
+def get_user_id() -> int:
+    if user_id := user_id_ctx.get():
+        return user_id
+    raise ValueError("No user id in context")

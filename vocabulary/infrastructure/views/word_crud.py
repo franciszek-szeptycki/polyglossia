@@ -8,19 +8,19 @@ from django.views.generic import (
     UpdateView,
 )
 
+from vocabulary.infrastructure.factories.container import container
 from vocabulary.infrastructure.forms.word import WordForm
 from vocabulary.infrastructure.models.word import Word
+from vocabulary.infrastructure.queries.word_query import WordQuery
 
 
-# Dodajemy LoginRequiredMixin do każdego widoku, aby wymusić logowanie
 class WordListView(LoginRequiredMixin, ListView):
     model = Word
     template_name = "words/list.html"
     context_object_name = "words"
 
     def get_queryset(self):
-        # Filtrujemy queryset tak, aby zwracał TYLKO słowa zalogowanego usera
-        queryset = Word.objects.filter(user=self.request.user)
+        queryset = WordQuery.list()
 
         self.active_filter = self.request.GET.get("active_flashcards")
         if self.active_filter == "yes":
@@ -45,7 +45,7 @@ class WordDetailView(LoginRequiredMixin, DetailView):
 
     def get_queryset(self):
         # Zapobiega podglądaniu słówek innych userów przez zmianę ID w URL
-        return Word.objects.filter(user=self.request.user)
+        return WordQuery.list()
 
 
 class WordCreateView(LoginRequiredMixin, CreateView):
@@ -76,7 +76,7 @@ class WordUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_queryset(self):
         # User może edytować tylko swoje słówka
-        return Word.objects.filter(user=self.request.user)
+        return WordQuery.list()
 
 
 class WordDeleteView(LoginRequiredMixin, DeleteView):
@@ -86,4 +86,4 @@ class WordDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_queryset(self):
         # User może usunąć tylko swoje słówka
-        return Word.objects.filter(user=self.request.user)
+        return WordQuery.list()

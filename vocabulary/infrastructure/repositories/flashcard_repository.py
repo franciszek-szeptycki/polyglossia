@@ -1,16 +1,16 @@
 from datetime import datetime
 from typing import List
 
-from common.repositories.user_context_repository import UserContextRepository
+from common.context import get_user_id
 from vocabulary.application.dtos.flashcard import FlashcardDTO
 from vocabulary.domain.ports.flashcard_repository import FlashcardRepositoryABC
 from vocabulary.infrastructure.models.flashcard import Flashcard
 
 
-class FlashcardRepository(FlashcardRepositoryABC, UserContextRepository):
+class FlashcardRepository(FlashcardRepositoryABC):
     def create(self, *, dto: FlashcardDTO):
         Flashcard.objects.create(
-            user_id=self._get_user_id(),
+            user_id=get_user_id(),
             id=dto.id,
             word_id=dto.word_id,
             front=dto.front,
@@ -25,7 +25,7 @@ class FlashcardRepository(FlashcardRepositoryABC, UserContextRepository):
                     word_id=dto.word_id,
                     front=dto.front,
                     back=dto.back,
-                    user_id=self._get_user_id(),
+                    user_id=get_user_id(),
                 )
                 for dto in dtos
             ]
@@ -34,7 +34,7 @@ class FlashcardRepository(FlashcardRepositoryABC, UserContextRepository):
     def get_by_ids(self, ids: List[str]) -> List[FlashcardDTO]:
         queryset = Flashcard.objects.filter(
             id__in=ids,
-            user_id=self._get_user_id(),
+            user_id=get_user_id(),
         )
 
         if queryset.count() != len(ids):
@@ -48,7 +48,7 @@ class FlashcardRepository(FlashcardRepositoryABC, UserContextRepository):
                 back=flashcard.back,
                 is_active=flashcard.is_active,
                 exported_at=flashcard.exported_at,
-                user_id=self._get_user_id(),
+                user_id=get_user_id(),
             )
             for flashcard in queryset
         ]
@@ -56,5 +56,5 @@ class FlashcardRepository(FlashcardRepositoryABC, UserContextRepository):
     def update_exported_at(self, *, ids: List[str], time: datetime):
         Flashcard.objects.filter(
             id__in=ids,
-            user_id=self._get_user_id(),
+            user_id=get_user_id(),
         ).update(exported_at=time)

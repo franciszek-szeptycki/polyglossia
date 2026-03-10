@@ -26,17 +26,13 @@ class DependencyContainer:
     def __init__(self, *, offline: bool = False):
         self._offline = offline
 
-        self._word_repository: Optional[WordRepositoryABC] = None
-        self._flashcard_repository: Optional[FlashcardRepository] = None
-        self._llm_adapter: Optional[LLMAdapter] = None
-        self._prompt_managers: Optional[PromptManagersContainer] = None
-        self._service_create_eva_flashcards: Optional[CreateEvaFlaschardsService] = None
-        self._use_case_generate_flashcards_for_word: Optional[
-            GenerateFlashcardsForWordUseCase
-        ] = None
-        self._use_case_get_flashcard_data_to_export: Optional[
-            GetFlashcardDataToExportUseCase
-        ] = None
+        self._word_repository: WordRepositoryABC
+        self._flashcard_repository: FlashcardRepository
+        self._llm_adapter: LLMAdapter
+        self._prompt_managers: PromptManagersContainer
+        self._service_create_eva_flashcards: CreateEvaFlaschardsService
+        self._use_case_generate_flashcards_for_word: GenerateFlashcardsForWordUseCase
+        self._use_case_get_flashcard_data_to_export: GetFlashcardDataToExportUseCase
 
     ##############
     #  ADAPTERS  #
@@ -44,24 +40,24 @@ class DependencyContainer:
 
     @property
     def repository_word(self):
-        if self._word_repository:
+        if self.__getattribute__("_word_repository"):
             return self._word_repository
         self._word_repository = WordRepository()
         return self._word_repository
 
     @property
     def repository_flashcard(self):
-        if self._flashcard_repository:
+        if self.__getattribute__("_flashcard_repository"):
             return self._flashcard_repository
         self._flashcard_repository = FlashcardRepository()
         return self._flashcard_repository
 
     @property
     def adapter_llm(self):
-        if self._llm_adapter:
+        if self.__getattribute__("_llm_adapter"):
             return self._llm_adapter
 
-        if self._offline:
+        if self.__getattribute__("_offline"):
             self._llm_adapter = OllamaAdapter()
         else:
             self._llm_adapter = OpenAIAdapter()
@@ -74,7 +70,7 @@ class DependencyContainer:
 
     @property
     def manager_prompt(self):
-        if self._prompt_managers:
+        if self.__getattribute__("_prompt_managers"):
             return self._prompt_managers
         self._prompt_managers = PromptManagersContainer(llm_adapter=self._llm_adapter)
         return self._prompt_managers

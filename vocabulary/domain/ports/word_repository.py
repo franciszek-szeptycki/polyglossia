@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import List
 
 from vocabulary.application.dtos.word import WordDTO
 
@@ -22,4 +23,8 @@ class WordRepositoryABC(ABC):
 
     @abstractmethod
     def generating_flash_cards_failed(self, *, word_id: str):
+        pass
+
+    @abstractmethod
+    def list(self) -> List[WordDTO]:
         pass
