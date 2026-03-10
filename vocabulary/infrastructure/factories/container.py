@@ -40,27 +40,25 @@ class DependencyContainer:
 
     @property
     def repository_word(self):
-        if self.__getattribute__("_word_repository"):
-            return self._word_repository
-        self._word_repository = WordRepository()
+        if not hasattr(self, "_word_repository"):
+            self._word_repository = WordRepository()
         return self._word_repository
 
     @property
     def repository_flashcard(self):
-        if self.__getattribute__("_flashcard_repository"):
-            return self._flashcard_repository
-        self._flashcard_repository = FlashcardRepository()
+        if not hasattr(self, "_flashcard_repository"):
+            self._flashcard_repository = FlashcardRepository()
         return self._flashcard_repository
 
     @property
     def adapter_llm(self):
-        if self.__getattribute__("_llm_adapter"):
+        if hasattr(self, "_llm_adapter"):
             return self._llm_adapter
 
-        if self.__getattribute__("_offline"):
-            self._llm_adapter = OllamaAdapter()
-        else:
+        if not self._offline:
             self._llm_adapter = OpenAIAdapter()
+        else:
+            self._llm_adapter = OllamaAdapter()
 
         return self._llm_adapter
 
@@ -70,9 +68,10 @@ class DependencyContainer:
 
     @property
     def manager_prompt(self):
-        if self.__getattribute__("_prompt_managers"):
-            return self._prompt_managers
-        self._prompt_managers = PromptManagersContainer(llm_adapter=self._llm_adapter)
+        if not hasattr(self, "_prompt_managers"):
+            self._prompt_managers = PromptManagersContainer(
+                llm_adapter=self._llm_adapter
+            )
         return self._prompt_managers
 
     ##############
@@ -81,7 +80,7 @@ class DependencyContainer:
 
     @property
     def service_create_eva_flashcards_de(self):
-        if not self._create_eva_flashcards_service:
+        if not hasattr(self, "_create_eva_flashcards_service"):
             self._create_eva_flashcards_service = CreateEvaFlaschardsService(
                 prompt_manager=self._prompt_managers.language_de
             )
@@ -93,7 +92,7 @@ class DependencyContainer:
 
     @property
     def use_case_generate_flashcards_for_word(self):
-        if not self._use_case_generate_flashcards_for_word:
+        if not hasattr(self, "_use_case_generate_flashcards_for_word"):
             self._use_case_generate_flashcards_for_word = (
                 GenerateFlashcardsForWordUseCase(
                     word_repo=self.repository_word,
@@ -105,7 +104,7 @@ class DependencyContainer:
 
     @property
     def use_case_get_flashcard_data_to_export(self):
-        if not self._use_case_get_flashcard_data_to_export:
+        if not hasattr(self, "_use_case_get_flashcard_data_to_export"):
             self._use_case_get_flashcard_data_to_export = (
                 GetFlashcardDataToExportUseCase(
                     flashcard_repo=self.repository_flashcard,

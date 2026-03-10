@@ -1,5 +1,3 @@
-import uuid
-
 from django.db import models
 
 
@@ -10,7 +8,6 @@ class Word(models.Model):
         FAILED = "FAILED", "FAILED"
         DONE = "DONE", "DONE"
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     text = models.CharField(max_length=255)
     context = models.CharField(max_length=255, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
 
-import dj_database_url
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -29,6 +28,7 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
     "vocabulary",
+    "django_extensions",
 ]
 
 MIDDLEWARE = [

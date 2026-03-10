@@ -2,7 +2,7 @@ from common.context import get_user_id
 from vocabulary.infrastructure.models import Flashcard
 
 
-class FlashcardQuery(GetUserId):
+class FlashcardQuery:
     @staticmethod
-    def list(self):
-        return Flashcard.objects.filter(user=get_user_id())
+    def active():
+        return Flashcard.objects.filter(user=get_user_id(), is_active=True)

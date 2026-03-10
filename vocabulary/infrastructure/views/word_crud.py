@@ -8,7 +8,6 @@ from django.views.generic import (
     UpdateView,
 )
 
-from vocabulary.infrastructure.factories.container import container
 from vocabulary.infrastructure.forms.word import WordForm
 from vocabulary.infrastructure.models.word import Word
 from vocabulary.infrastructure.queries.word_query import WordQuery
@@ -44,8 +43,7 @@ class WordDetailView(LoginRequiredMixin, DetailView):
     context_object_name = "word"
 
     def get_queryset(self):
-        # Zapobiega podglądaniu słówek innych userów przez zmianę ID w URL
-        return WordQuery.list()
+        return WordQuery.list().prefetch_related("flashcards")
 
 
 class WordCreateView(LoginRequiredMixin, CreateView):
@@ -76,7 +74,7 @@ class WordUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_queryset(self):
         # User może edytować tylko swoje słówka
-        return WordQuery.list()
+        return container.query_flashcards.list()
 
 
 class WordDeleteView(LoginRequiredMixin, DeleteView):
@@ -86,4 +84,4 @@ class WordDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_queryset(self):
         # User może usunąć tylko swoje słówka
-        return WordQuery.list()
+        return container.query_flashcards.list()

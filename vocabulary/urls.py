@@ -26,9 +26,9 @@ from vocabulary.infrastructure.views.word_next_redirect import WordNextRedirectV
 urlpatterns = [
     path("", WordListView.as_view(), name="word_list"),
     path("add/", WordCreateView.as_view(), name="word_create"),
-    path("<uuid:pk>/", WordDetailView.as_view(), name="word_detail"),
-    path("<uuid:pk>/edit/", WordUpdateView.as_view(), name="word_edit"),
-    path("<uuid:pk>/delete/", WordDeleteView.as_view(), name="word_delete"),
+    path("<int:pk>/", WordDetailView.as_view(), name="word_detail"),
+    path("<int:pk>/edit/", WordUpdateView.as_view(), name="word_edit"),
+    path("<int:pk>/delete/", WordDeleteView.as_view(), name="word_delete"),
     path("add-bulk/", WordBulkCreateView.as_view(), name="word_bulk_create"),
     path("add-bulk/confirm/", WordBulkConfirmView.as_view(), name="word_bulk_confirm"),
     path(
@@ -37,12 +37,12 @@ urlpatterns = [
         name="word_next_redirect",
     ),
     path(
-        "<uuid:pk>/generate-flashcards/",
+        "<int:pk>/generate-flashcards/",
         WordGenerateFlashcardsView.as_view(),
         name="word_generate_flashcards",
     ),
     path(
-        "flashcards/<uuid:pk>/update-htmx/",
+        "flashcards/<int:pk>/update-htmx/",
         FlashcardHtmxUpdateView.as_view(),
         name="flashcard_update_htmx",
     ),
