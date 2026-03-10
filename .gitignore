@@ -94,3 +94,4 @@ postgres-data
 staticfiles
 media
 venv
+deploy
