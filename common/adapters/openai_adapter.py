@@ -11,8 +11,8 @@ load_dotenv()
 class OpenAIAdapter(LLMAdapter):
     def __init__(self):
         self.client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
-        self.default_model = "gpt-4o-mini"
-        # self.default_model = "gpt-4o"
+        # self.default_model = "gpt-4o-mini"
+        self.default_model = "gpt-4o"
 
     def generate_response(
         self,
