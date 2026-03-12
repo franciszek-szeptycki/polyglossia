@@ -2,6 +2,8 @@ import os
 
 from polyglossia.settings.base import *
 
+import rollbar
+
 DEBUG = False
 
 CSRF_TRUSTED_ORIGINS = [
@@ -24,8 +26,10 @@ ROLLBAR_ENVIRONMENT = os.environ['ROLLBAR_ENVIRONMENT']
 # settings.py
 
 ROLLBAR = {
-    'access_token': os.getenv('ROLLBAR_ACCESS_TOKEN'),
-    'environment': 'development' if DEBUG else 'production',
+    'access_token': ROLLBAR_ACCESS_TOKEN,
+    'environment': ROLLBAR_ENVIRONMENT,
     'code_version': os.getenv('GIT_SHA', '1.0.0'),
     'root': BASE_DIR,
 }
+
+rollbar.init(**ROLLBAR)
