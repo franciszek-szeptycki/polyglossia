@@ -58,7 +58,9 @@
         </td>
         <td class="text-center">
           <a href="{% url 'word_detail' word.id %}" class="btn btn-sm btn-outline-primary">Szczegóły</a>
-          <a href="{% url 'word_generate_flashcards' word.id %}" class="btn btn-sm btn-outline-success">Wygeneruj fiszki</a>
+          <a href="{% url 'word_generate_flashcards' word.id %}" class="btn btn-sm btn-outline-success js-save-scroll">
+            Wygeneruj fiszki
+          </a>
           <!--<a href="{% url 'word_edit' word.id %}" class="btn btn-sm btn-outline-secondary">Edytuj</a>-->
           <a href="{% url 'word_delete' word.id %}" class="btn btn-sm btn-outline-danger">Usuń</a>
         </td>
@@ -69,4 +71,43 @@
     </tbody>
   </table>
 </div>
+
+<script>
+  // Funkcja zapisująca
+  const savePos = () => {
+    localStorage.setItem('scroll_pos', window.scrollY);
+    console.log('Pozycja zapisana:', window.scrollY);
+  };
+
+  // Nasłuchujemy na kliknięcie w przycisk
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('.js-save-scroll')) {
+      savePos();
+    }
+  });
+
+  // Dodatkowe zabezpieczenie: zapisz przy jakimkolwiek przeładowaniu formularza/linku
+  // na wypadek gdyby click nie zdążył
+  window.addEventListener('beforeunload', () => {
+    // Zapisujemy tylko jeśli kliknięto przycisk (można to rozszerzyć)
+  });
+
+  // Przywracanie po załadowaniu
+  window.addEventListener('load', function() {
+    const scrollPos = localStorage.getItem('scroll_pos');
+    if (scrollPos) {
+      console.log('Przywracanie pozycji:', scrollPos);
+
+      // Używamy requestAnimationFrame dla idealnej synchronizacji z renderowaniem
+      requestAnimationFrame(() => {
+        window.scrollTo({
+          top: parseInt(scrollPos),
+          behavior: 'instant'
+        });
+        localStorage.removeItem('scroll_pos');
+      });
+    }
+  });
+</script>
+
 {% endblock %}
