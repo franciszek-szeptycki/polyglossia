@@ -1,6 +1,6 @@
 from typing import List
 
-from common.context import get_user_id
+from tenants.infrastructure.middlewares import get_user_id
 from vocabulary.application.dtos.word import WordDTO
 from vocabulary.domain.ports.word_repository import WordRepositoryABC
 from vocabulary.infrastructure.models.word import Word as WordModel
