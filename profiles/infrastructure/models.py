@@ -11,10 +11,10 @@ class Profile(models.Model):
         choices=[(tag.value, tag.name) for tag in Language],
         default=Language.GERMAN.value
     )
-    is_selected = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=False)
 
     @staticmethod
-    def create_missing_profiles_for_user(*, user_id: int):
+    def seed_profiles_for_user(*, user_id: int):
         user = User.objects.get(id=user_id)
 
         existing_profiles = Profile.objects.filter(user=user)
@@ -28,7 +28,20 @@ class Profile(models.Model):
                 print(f" --- Creating profile for language '{language.value}'")
                 profile.save()
 
-        default_profile = Profile.objects.filter(user=user)
+        user_profiles = Profile.objects.filter(user_id=user.id, is_active=True)
 
-        if 0 == default_profile.count():
-            Profile.objects.get(user=user, language=Language.GERMAN.value).update(is_selected=True)
+        active_profiles = user_profiles.count()
+        if active_profiles == 0:
+            first = Profile.objects.filter(user_id=user.id).first()
+            if first:
+                first.is_active=True
+                first.save()
+            print(f"- Activated first profile for user '{user}'")
+        elif active_profiles > 1:
+            for profile in user_profiles:
+                profile.update(is_active=False)
+            first = Profile.objects.filter(user_id=user.id).first()
+            if first:
+                first.is_active=True
+                first.save()
+            print(f"- Activated first profile for user '{user}'")

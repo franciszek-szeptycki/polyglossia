@@ -1,9 +1,5 @@
 [tool.pyright]
 reportAttributeAccessIssue = false
-reportUnknownArgumentType = false
-reportUnknownVariableType = false
-reportUnknownParameterType = false
-reportMissingParameterType = false
 reportUnknownMemberType = false
 reportDeprecated = false
 reportUnannotatedClassAttribute = false

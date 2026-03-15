@@ -1,7 +1,18 @@
-<select name="language">
-    {% for profile in request.profiles__available_profiles %}
-        <option value="{{ profile.id }}" {% if profile.id == request.profiles__profile.id %}selected{% endif %}>
-            {{ profile.language.pretty_name }}
-        </option>
-    {% endfor %}
-</select>
+{{ request.profiles__available_profiles }}
+<form action="{% url 'change_profile' %}" method="post">
+    {% csrf_token %}
+    <label for="language-select">Wybierz język:</label>
+    <select name="profile_id" id="language-select">
+        {% for profile in request.profiles__available_profiles %}
+            <option value="{{ profile.id }}" {% if profile.is_active %}selected{% endif %}>
+                {% if profile.language == "german" %}🇩🇪 DEUTSCH
+                {% elif profile.language == "spanish" %}🇪🇸 ESPAÑOL
+                {% elif profile.language == "english" %}🇬🇧 ENGLISH
+                {% else %}
+                {{ profile.language }}
+                {% endif %}
+            </option>
+        {% endfor %}
+    </select>
+    <button type="submit">Zatwierdź zmianę</button>
+</form>
