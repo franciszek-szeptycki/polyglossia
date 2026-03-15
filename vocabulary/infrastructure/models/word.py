@@ -17,10 +17,11 @@ class Word(models.Model):
         default=GeneratingAnkiStatus.NULL,
     )
 
-    user = models.ForeignKey(
-        "auth.User",
-        on_delete=models.CASCADE,
+    profile = models.ForeignKey(
+        "profiles.Profile",
+        on_delete=models.SET_NULL,
         related_name="words",
+        null=True,
     )
 
     class Meta:
