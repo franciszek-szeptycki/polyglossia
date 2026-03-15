@@ -4,7 +4,8 @@ from typing import List
 
 from tqdm import tqdm
 
-from vocabulary.infrastructure.adapters.prompt_manager import PromptManager
+from profiles.consts import Language
+from vocabulary.infrastructure.adapters.prompt_manager import PromptManager, PromptManagersContainer
 
 
 @dataclass
@@ -50,56 +51,47 @@ class EvaFlashcardBuilder:
 
 
 class CreateEvaFlaschardsService:
-    def __init__(self, *, prompt_manager: PromptManager):
-        self._prompt_manager = prompt_manager
+    def __init__(self, *, prompt_managers: PromptManagersContainer):
+        self._prompt_managers = prompt_managers
 
-    def execute(self, *, word: str) -> List[EvaFlashcard]:
-        with tqdm(total=100, desc=f"Word: {word}", unit="%") as pbar:
-            raw_sentences = self._prompt_manager.create_raw_sentences(word=word)
-            pbar.update(25)
+    def _get_prompt_manager(self, *, language: Language) -> PromptManager:
+        return {
+            Language.GERMAN: self._prompt_managers.language_de,
+            Language.SPANISH: self._prompt_managers.language_es,
+            Language.ENGLISH: self._prompt_managers.language_en,
+        }[language]
 
-            filtered_sentences = self._prompt_manager.filter_raw_sentences(
-                word=word, sentences=raw_sentences
-            )
-            pbar.update(25)
+    def execute(self, *, word: str, language: Language) -> List[EvaFlashcard]:
 
-            num_sentences = len(filtered_sentences)
-            if num_sentences == 0:
-                pbar.update(50)
-                return []
+        prompt_manager = self._get_prompt_manager(language=language)
 
-            eva_flashcards = []
-            step = 25 // num_sentences
+        raw_sentences = prompt_manager.create_raw_sentences(word=word)
 
-            def process_sentence(sentence: str) -> "EvaFlashcard":
-                builder = EvaFlashcardBuilder(prompt_manager=self._prompt_manager)
-                builder.add_word(word=word)
-                builder.add_raw_sentence(raw_sentence=sentence)
+        filtered_sentences = prompt_manager.filter_raw_sentences(
+            word=word, sentences=raw_sentences
+        )
 
-                builder.generate_draft()
-                pbar.update(step)
+        num_sentences = len(filtered_sentences)
+        if num_sentences == 0:
+            return []
 
-                builder.generate_additional_info()
-                pbar.update(step)
+        eva_flashcards: List[EvaFlashcard] = []
 
-                return builder.build()
+        def process_sentence(sentence: str) -> "EvaFlashcard":
+            builder = EvaFlashcardBuilder(prompt_manager=prompt_manager)
+            builder.add_word(word=word)
+            builder.add_raw_sentence(raw_sentence=sentence)
+            builder.generate_draft()
+            builder.generate_additional_info()
+            return builder.build()
 
-            with ThreadPoolExecutor() as executor:
-                # Używamy dict do śledzenia tasków
-                future_to_sentence = {
-                    executor.submit(process_sentence, s): s for s in filtered_sentences
-                }
+        with ThreadPoolExecutor() as executor:
+            future_to_sentence = {
+                executor.submit(process_sentence, s): s for s in filtered_sentences
+            }
 
-                for future in as_completed(future_to_sentence):
-                    try:
-                        card = future.result()
-                        eva_flashcards.append(card)
-                    except Exception:
-                        # Jeśli jeden padnie, dopychamy jego brakujący progress
-                        pbar.update(step * 2)
+            for future in as_completed(future_to_sentence):
+                card = future.result()
+                eva_flashcards.append(card)
 
-            # Finalizacja do 100%
-            if pbar.n < 100:
-                pbar.update(100 - pbar.n)
-
-            return eva_flashcards
+        return eva_flashcards

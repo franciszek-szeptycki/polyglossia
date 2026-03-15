@@ -1,21 +1,19 @@
-import concurrent.futures
 import json
 import os
 import pathlib
 import re
 from itertools import count
-from typing import Any, Callable, List
-
-from tqdm import tqdm
+from typing import  List
+from profiles.consts import Language
 
 from common.ports.llm_adapter import LLMAdapter
 
 
 class PromptManager:
-    def __init__(self, *, llm_adapter: LLMAdapter):
+    def __init__(self, *, llm_adapter: LLMAdapter, language: Language):
         self._llm_adapter = llm_adapter
         self._error_dir = "./.tmp/llm_errors"
-        self._language = "de"
+        self._language = language
         self._error_counter = self._initialize_error_counter()
 
         self._prompts = {
@@ -114,7 +112,7 @@ class PromptManager:
 
     def _load_prompt(self, filename: str) -> str:
         base_dir = pathlib.Path(__file__).resolve().parent
-        prompt_path = base_dir / "prompts" / self._language / filename
+        prompt_path = base_dir / "prompts"  / self._language / filename
 
         with open(prompt_path, "r", encoding="utf-8") as f:
             return f.read()
@@ -122,4 +120,6 @@ class PromptManager:
 
 class PromptManagersContainer:
     def __init__(self, *, llm_adapter: LLMAdapter):
-        self.language_de = PromptManager(llm_adapter=llm_adapter)
+        self.language_de = PromptManager(llm_adapter=llm_adapter, language=Language.GERMAN)
+        self.language_es = PromptManager(llm_adapter=llm_adapter, language=Language.SPANISH)
+        self.language_en = PromptManager(llm_adapter=llm_adapter, language=Language.ENGLISH)

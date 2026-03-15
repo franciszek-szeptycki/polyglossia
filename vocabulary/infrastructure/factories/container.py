@@ -1,5 +1,3 @@
-from typing_extensions import Optional
-
 from common.adapters.ollama_adapter import OllamaAdapter
 from common.adapters.openai_adapter import OpenAIAdapter
 from common.ports.llm_adapter import LLMAdapter
@@ -79,12 +77,12 @@ class DependencyContainer:
     ##############
 
     @property
-    def service_create_eva_flashcards_de(self):
-        if not hasattr(self, "_create_eva_flashcards_service"):
-            self._create_eva_flashcards_service = CreateEvaFlaschardsService(
-                prompt_manager=self._prompt_managers.language_de
+    def service_create_eva_flashcards(self):
+        if not hasattr(self, "_service_create_eva_flashcards"):
+            self._service_create_eva_flashcards = CreateEvaFlaschardsService(
+                prompt_managers=self._prompt_managers
             )
-        return self._create_eva_flashcards_service
+        return self._service_create_eva_flashcards
 
     ###############
     #  USE CASES  #
