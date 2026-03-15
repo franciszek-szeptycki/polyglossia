@@ -23,9 +23,10 @@ class OpenAIAdapter(LLMAdapter):
         response = self.client.chat.completions.create(
             model=self.default_model,
             messages=[
-                {"role": "system", "content": system},
+                # {"role": "system", "content": system},
                 {"role": "user", "content": user},
             ],
+            response_format={"type": "json_object"}
         )
         return response.choices[0].message.content
 

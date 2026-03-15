@@ -3,12 +3,13 @@ from common.ports.llm_adapter import LLMAdapter
 from vocabulary.application.dtos.flashcard import FlashcardDTO
 from vocabulary.domain.ports.flashcard_repository import FlashcardRepositoryABC
 from vocabulary.domain.ports.word_repository import WordRepositoryABC
-from vocabulary.domain.services.create_eva_flashcards_service import (
-    CreateEvaFlaschardsService,
+from vocabulary.domain.services.create_flashcards_service import (
+    CreateFlaschardsService,
 )
 from vocabulary.infrastructure.adapters.prompt_manager import (
     PromptManagersContainer,
 )
+from profiles.domain.entities import ProfileDTO
 
 
 class GenerateFlashcardsForWordUseCase:
@@ -23,11 +24,11 @@ class GenerateFlashcardsForWordUseCase:
         self.flashcard_repo = flashcard_repo
 
         prompt_mng_container = PromptManagersContainer(llm_adapter=llm_adapter)
-        self.create_eva_flashcard_svc_de = CreateEvaFlaschardsService(
-            prompt_manager=prompt_mng_container.language_de
+        self.create_flashcard_svc = CreateFlaschardsService(
+            prompt_managers=prompt_mng_container
         )
 
-    def execute(self, *, word_id: str):
+    def execute(self, *, word_id: str, profile: ProfileDTO):
 
         word_dto = self.word_repo.get(word_id)
 
@@ -35,10 +36,11 @@ class GenerateFlashcardsForWordUseCase:
         self.word_repo.generating_flash_cards_in_progress(word_id=word_dto.id)
 
         try:
-            eva_flashcards = self.create_eva_flashcard_svc_de.execute(
-                word=word_dto.text
+            flashcards = self.create_flashcard_svc.execute(
+                word=word_dto.text,
+                language=profile.language
             )
-            for card in eva_flashcards:
+            for card in flashcards:
                 flashcard = FlashcardDTO(
                     word_id=word_dto.id,
                     front=card.front,

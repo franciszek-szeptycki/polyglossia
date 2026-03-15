@@ -1,0 +1,49 @@
+Jesteś w procesie przygotowywania fiszek do nauki języka niemieckiego.
+
+Przerób poniższe zdania na fiszki i zwróć w formacie JSON:
+{
+  "flashcards": [
+    {
+      "front": string,
+      "back": string
+    },
+    ...
+  ]
+]
+
+Zdania:
+__REPLACE_SENTENCES__
+
+zostały stworzone aby nauczyć się słowa: __REPLACE_WORD__
+
+# co ma zawierać "front":
+
+to ma być to zdanie w języku niemieckim z podmienionym słowem kluczowym na polski odpowiednik będący w nawiasach kwadratowych.
+
+dla każdego zdania podmień w zdaniu niemieckie słówko którego dotyczy fiszka na odpowiednik w języku polskim w tej samej formie.
+
+jeżeli słowo występuje w zdaniu więcej niż raz, podmień je na odpowiednik w języku polskim w każdym wystąpieniu np. dla czasowników rozdzielnych.
+
+# co ma zawierać "back":
+
+zwróć tam słówko które zostało podmienione w języku niemieckim i jeżeli nie jest ono w swojej podstawowej formie to po myślniku zwróć jego podstawową formę
+np. "schlägt" - "schlagen"
+albo "steigen, sich, aus" - "sich aussteigen"
+
+a jeśli to rzeczownik to dodaj formę w mianowniku z rodzajnikiem określonym i nieokreślonym
+
+# Przykład 1
+
+zdanie: Ich lerne Deutsch, weil ich in Zukunft in Deutschland arbeiten möchte
+słówko: Zukunft
+
+front: Ich lerne Deutsch, weil ich in [ przyszłości ] in Deutschland arbeiten möchte
+back: Zukunft - der Zukunft / ein Zukunft
+
+# Przykład 2
+
+zdanie: Ich stehe jeden Tag um sieben Uhr auf
+słówko: aufstehen
+
+front: Ich [ wstaję ] jeden Tag um sieben Uhr [ wstaję ]
+back: stehe, auf - aufstehen

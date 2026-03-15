@@ -3,14 +3,14 @@ import os
 import pathlib
 import re
 from itertools import count
-from typing import  List
+from typing import  Any, Dict, List
 from profiles.consts import Language
 
 from common.ports.llm_adapter import LLMAdapter
 
 
 class PromptManager:
-    def __init__(self, *, llm_adapter: LLMAdapter, language: Language):
+    def __init__(self, *, llm_adapter: LLMAdapter, language: str):
         self._llm_adapter = llm_adapter
         self._error_dir = "./.tmp/llm_errors"
         self._language = language
@@ -18,48 +18,35 @@ class PromptManager:
 
         self._prompts = {
             "1.create_raw_sentences": self._load_prompt("1.create_raw_sentences.txt"),
-            "2.filter_raw_sentences": self._load_prompt("2.filter_raw_sentences.txt"),
-            "3.replace_in_eva_style": self._load_prompt("3.replace_in_eva_style.txt"),
-            "4.get_additional_word_info": self._load_prompt(
-                "4.get_additional_word_info.txt"
-            ),
+            "2.replace_in_eva_style": self._load_prompt("2.replace_in_eva_style.txt"),
         }
 
     def create_raw_sentences(self, *, word: str) -> List[str]:
         prompt_method = "1.create_raw_sentences"
-        system_prompt = self._prompts[prompt_method]
-        user_prompt = f"słowo: {word}"
+        prompt = self._prompts[prompt_method].replace("__REPLACE_WORD__", word)
 
-        response = self._generate(system=system_prompt, user=user_prompt)
+        response = self._generate(prompt=prompt)
 
-        return self._parse_json(response, prompt_method, system_prompt + user_prompt)
+        return self._parse_json(
+            response=response,
+            method=prompt_method,
+            request=prompt,
+        )["sentences"]
 
-    def filter_raw_sentences(self, *, word: str, sentences: List[str]) -> List[str]:
-        prompt_method = "2.filter_raw_sentences"
-        system_prompt = self._prompts[prompt_method]
-        user_prompt = f"Słowo: {word}\nZdania:\n" + "\n".join(sentences)
+    def create_eva_flashcards(self, *, word: str, sentences: List[str]) -> List[dict]:
+        prompt_method = "2.replace_in_eva_style"
 
-        response = self._generate(system=system_prompt, user=user_prompt)
+        prompt = self._prompts[prompt_method]
+        prompt = prompt.replace("__REPLACE_SENTENCES__", "\n".join(sentences))
+        prompt = prompt.replace("__REPLACE_WORD__", word)
 
-        return self._parse_json(response, prompt_method, system_prompt + user_prompt)
+        response = self._generate(prompt=prompt)
 
-    def create_eva_flashcard(self, *, word: str, sentence: str) -> dict:
-        prompt_method = "3.replace_in_eva_style"
-        system_prompt = self._prompts[prompt_method]
-        user_prompt = f"Słowo: {word}\nZdanie: {sentence}"
-
-        response = self._generate(system=system_prompt, user=user_prompt)
-
-        return self._parse_json(response, prompt_method, system_prompt + user_prompt)
-
-    def get_additional_word_info(self, *, word: str, raw_sentence: str) -> dict:
-        prompt_method = "4.get_additional_word_info"
-        system_prompt = self._prompts[prompt_method]
-        user_prompt = f"Zdanie: {raw_sentence}\nSłowo: {word}\n"
-
-        response = self._generate(system=system_prompt, user=user_prompt)
-
-        return self._parse_json(response, prompt_method, system_prompt + user_prompt)
+        return self._parse_json(
+            response=response,
+            method=prompt_method,
+            request=prompt,
+        )["flashcards"]
 
     #############
     #  Helpers  #
@@ -80,10 +67,11 @@ class PromptManager:
         next_idx = max(indices) + 1 if indices else 1
         return count(next_idx)
 
-    def _generate(self, *, system: str, user: str) -> str:
+    # def _generate(self, *, system: str, user: str) -> str:
+    def _generate(self, *, prompt: str) -> str:
         response = self._llm_adapter.generate_response(
-            system=system,
-            user=user,
+            system="",
+            user=prompt,
         )
 
         if not response:
@@ -111,8 +99,8 @@ class PromptManager:
             f.write(response)
 
     def _load_prompt(self, filename: str) -> str:
-        base_dir = pathlib.Path(__file__).resolve().parent
-        prompt_path = base_dir / "prompts"  / self._language / filename
+        BASE_DIR = pathlib.Path(__file__).resolve().parent
+        prompt_path = BASE_DIR / "prompts"  / self._language / filename
 
         with open(prompt_path, "r", encoding="utf-8") as f:
             return f.read()
@@ -120,6 +108,6 @@ class PromptManager:
 
 class PromptManagersContainer:
     def __init__(self, *, llm_adapter: LLMAdapter):
-        self.language_de = PromptManager(llm_adapter=llm_adapter, language=Language.GERMAN)
-        self.language_es = PromptManager(llm_adapter=llm_adapter, language=Language.SPANISH)
-        self.language_en = PromptManager(llm_adapter=llm_adapter, language=Language.ENGLISH)
+        self.language_de = PromptManager(llm_adapter=llm_adapter, language=Language.GERMAN.value)
+        self.language_es = PromptManager(llm_adapter=llm_adapter, language=Language.SPANISH.value)
+        self.language_en = PromptManager(llm_adapter=llm_adapter, language=Language.ENGLISH.value)

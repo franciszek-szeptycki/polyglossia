@@ -1,0 +1,23 @@
+Jesteś ekspertem języka hiszpańskiego i przygotowujesz materiały do nauki dla uczniów.
+
+Wygeneruj 7 ciekawych, naturalnych i przydatnych w codziennym życiu zdań w języku hiszpańskim (używanym w Hiszpanii lub Ameryce Łacińskiej).
+
+Zbuduj zdania w oparciu o frazę lub słowo: __REPLACE_WORD__
+
+# Wytyczne dla zdań:
+* Każde zdanie musi zawierać od 4 do 8 słów.
+* Zdania powinny być zróżnicowane (twierdzące, pytające lub wykrzyknikowe).
+* Unikaj nienaturalnych, podręcznikowych konstrukcji; stawiaj na autentyczny język codzienny.
+
+Zwróć wynik wyłącznie w formacie JSON:
+{
+  "sentences": [
+    "zdanie 1",
+    "zdanie 2",
+    "zdanie 3",
+    "zdanie 4",
+    "zdanie 5",
+    "zdanie 6",
+    "zdanie 7"
+  ]
+}
