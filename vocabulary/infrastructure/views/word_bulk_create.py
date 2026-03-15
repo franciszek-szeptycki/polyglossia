@@ -40,7 +40,7 @@ class WordBulkConfirmView(LoginRequiredMixin, TemplateView):
             Word(
                 text=item["text"],
                 context=item["context"],
-                user=request.user,
+                profile_id=request.profile.id,
             )
             for item in data
         ]

@@ -17,8 +17,8 @@ class Word(models.Model):
         default=GeneratingAnkiStatus.NULL,
     )
 
-    user = models.ForeignKey(
-        "auth.User",
+    profile = models.ForeignKey(
+        "profiles.Profile",
         on_delete=models.CASCADE,
         related_name="words",
     )

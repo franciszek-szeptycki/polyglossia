@@ -12,4 +12,4 @@ class FlashcardDTO:
     id: Optional[str] = None
     is_active: Optional[bool] = None
     exported_at: Optional[datetime] = None
-    user_id: Optional[int] = None
+    profile_id: Optional[int] = None

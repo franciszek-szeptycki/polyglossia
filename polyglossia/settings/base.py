@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
     "vocabulary",
     "django_extensions",
+    "profiles",
 ]
 
 MIDDLEWARE = [
@@ -41,7 +42,7 @@ MIDDLEWARE = [
     "allauth.account.middleware.AccountMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "common.context.UserContextMiddleware",
+    "profiles.infrastructure.middlewares.ProfileMiddleware",
     "rollbar.contrib.django.middleware.RollbarNotifierMiddleware",
 ]
 
@@ -51,6 +52,7 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
+            os.path.join("templates"),
             os.path.join("common", "templates"),
             os.path.join("sentences", "templates"),
             os.path.join("vocabulary", "templates"),
