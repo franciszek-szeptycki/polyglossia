@@ -22,7 +22,7 @@ class Command(BaseCommand):
             prompt_managers=prompt_mng_container
         )
 
-        flashcards = service.execute(word=word, language=Language.GERMAN)
+        flashcards = service.execute(word=word, language=Language.GERMAN.value, context="")
         for flashcard in flashcards:
             print(flashcard)
             print(flashcard.front)

@@ -38,7 +38,8 @@ class GenerateFlashcardsForWordUseCase:
         try:
             flashcards = self.create_flashcard_svc.execute(
                 word=word_dto.text,
-                language=profile.language
+                language=profile.language,
+                context=word_dto.context,
             )
             for card in flashcards:
                 flashcard = FlashcardDTO(

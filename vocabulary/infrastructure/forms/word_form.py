@@ -7,6 +7,10 @@ class WordForm(forms.ModelForm):
     class Meta:
         model = Word
         fields = ["text", "context"]
+        labels = {
+            "text": "Słowo",
+            "context": "Kontekst",
+        }
         widgets = {
             "text": forms.TextInput(
                 attrs={"class": "form-control-custom shadow-sm", "id": "id_text"}

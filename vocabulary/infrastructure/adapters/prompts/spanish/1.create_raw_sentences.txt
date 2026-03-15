@@ -2,7 +2,7 @@ Jesteś ekspertem języka hiszpańskiego i przygotowujesz materiały do nauki dl
 
 Wygeneruj 7 ciekawych, naturalnych i przydatnych w codziennym życiu zdań w języku hiszpańskim (używanym w Hiszpanii lub Ameryce Łacińskiej).
 
-Zbuduj zdania w oparciu o frazę lub słowo: __REPLACE_WORD__
+Zbuduj zdania w oparciu o frazę lub słowo: __REPLACE_WORD__ __REPLACE_CONTEXT__
 
 # Wytyczne dla zdań:
 * Każde zdanie musi zawierać od 4 do 8 słów.

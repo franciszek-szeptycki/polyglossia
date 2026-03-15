@@ -21,9 +21,12 @@ class PromptManager:
             "2.replace_in_eva_style": self._load_prompt("2.replace_in_eva_style.txt"),
         }
 
-    def create_raw_sentences(self, *, word: str) -> List[str]:
+    def create_raw_sentences(self, *, word: str, context: str) -> List[str]:
         prompt_method = "1.create_raw_sentences"
         prompt = self._prompts[prompt_method].replace("__REPLACE_WORD__", word)
+
+        context_phrase = f"({context})" if context else ""
+        prompt = self._prompts[prompt_method].replace("__REPLACE_CONTEXT__", context_phrase)
 
         response = self._generate(prompt=prompt)
 
@@ -33,12 +36,15 @@ class PromptManager:
             request=prompt,
         )["sentences"]
 
-    def create_eva_flashcards(self, *, word: str, sentences: List[str]) -> List[dict]:
+    def create_eva_flashcards(self, *, word: str, context: str, sentences: List[str]) -> List[dict]:
         prompt_method = "2.replace_in_eva_style"
 
         prompt = self._prompts[prompt_method]
         prompt = prompt.replace("__REPLACE_SENTENCES__", "\n".join(sentences))
         prompt = prompt.replace("__REPLACE_WORD__", word)
+
+        context_phrase = f"({context})" if context else ""
+        prompt = prompt.replace("__REPLACE_CONTEXT__", context_phrase)
 
         response = self._generate(prompt=prompt)
 

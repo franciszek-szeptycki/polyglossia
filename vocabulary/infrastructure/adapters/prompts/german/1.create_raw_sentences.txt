@@ -1,6 +1,6 @@
 Wygeneruj 7 fajnych, ciekawych i dobrych do nauki zdań w języku niemieckim, które przydają się w codziennym życiu.
 
-Zbuduj zdania w oparciu o frazę: __REPLACE_WORD__
+Zbuduj zdania w oparciu o frazę: __REPLACE_WORD__ __REPLACE_CONTEXT__
 
 Zdania mają mieć nie mniej niż 4 słów i nie więcej niż 8.
 

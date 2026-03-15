@@ -23,16 +23,16 @@ class CreateFlaschardsService:
             Language.ENGLISH.value: self._prompt_managers.language_en,
         }[language]
 
-    def execute(self, *, word: str, language: str) -> List[EvaFlashcard]:
+    def execute(self, *, word: str, language: str, context: str = "") -> List[EvaFlashcard]:
         prompt_manager = self._get_prompt_manager(language=language)
 
         with tqdm(total=2, desc=f"Processing '{word}'") as progress_bar:
 
-            sentences = prompt_manager.create_raw_sentences(word=word)
+            sentences = prompt_manager.create_raw_sentences(word=word, context=context)
             progress_bar.update(1)
 
             flashcards = []
-            for item in prompt_manager.create_eva_flashcards(word=word, sentences=sentences):
+            for item in prompt_manager.create_eva_flashcards(word=word, context=context, sentences=sentences):
                 flashcards.append(EvaFlashcard(
                     front=item["front"],
                     back=item["back"],

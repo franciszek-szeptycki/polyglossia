@@ -14,7 +14,7 @@ Przerób poniższe zdania na fiszki i zwróć w formacie JSON:
 Zdania:
 __REPLACE_SENTENCES__
 
-zostały stworzone aby nauczyć się słowa: __REPLACE_WORD__
+zostały stworzone aby nauczyć się słowa: __REPLACE_WORD__ __REPLACE_CONTEXT__
 
 # co ma zawierać "front":
 
