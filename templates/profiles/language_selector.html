@@ -10,20 +10,7 @@
                 <button type="submit"
                     class="btn btn-sm {% if profile.is_active %}btn-success text-white{% else %}btn-outline-dark text-muted{% endif %} px-3 py-1 fw-semibold d-flex align-items-center"
                     style="font-size: 0.85rem; border-radius: 20px; transition: 0.2s;">
-
-                    <span class="me-1">
-                        {% if profile.language == "german" %}🇩🇪
-                        {% elif profile.language == "spanish" %}🇪🇸
-                        {% elif profile.language == "english" %}🇬🇧
-                        {% else %}🌐{% endif %}
-                    </span>
-
-                    <span class="text-uppercase" style="letter-spacing: 0.5px;">
-                        {% if profile.language == "german" %}DE
-                        {% elif profile.language == "spanish" %}ES
-                        {% elif profile.language == "english" %}EN
-                        {% else %}{{ profile.language|slice:":2" }}{% endif %}
-                    </span>
+                    <span>{% include 'snippets/language_pretty.html' with profile=profile %}</span>
                 </button>
             </form>
         {% endfor %}
