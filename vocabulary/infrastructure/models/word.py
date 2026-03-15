@@ -19,9 +19,8 @@ class Word(models.Model):
 
     profile = models.ForeignKey(
         "profiles.Profile",
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         related_name="words",
-        null=True,
     )
 
     class Meta:

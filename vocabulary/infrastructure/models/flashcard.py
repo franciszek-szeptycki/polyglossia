@@ -14,7 +14,7 @@ class Flashcard(models.Model):
     exported_at = models.DateTimeField(null=True, blank=True)
 
     profile = models.ForeignKey(
-        "profiles.Profile", on_delete=models.SET_NULL, null=True, related_name="flashcards"
+        "profiles.Profile", on_delete=models.CASCADE, related_name="flashcards"
     )
 
     class Meta:

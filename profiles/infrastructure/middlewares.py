@@ -33,8 +33,8 @@ class ProfileMiddleware:
 
         context_token = profile_ctx.set(profile)
 
-        request.profiles__profile = profile
-        request.profiles__available_profiles = profiles
+        request.profile = profile
+        request.available_profiles = profiles
         print(f"ProfileMiddleware: profile={profile}, profiles={profiles}")
 
         try:

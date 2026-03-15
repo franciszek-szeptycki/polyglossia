@@ -12,4 +12,4 @@ class ChangeProfileView(LoginRequiredMixin, View):
 
         change_user_profile_service.execute(user_id=int(request.user.id), profile_id=int(profile_id))
 
-        return redirect(request.META.get('HTTP_REFERER', '/'))
+        return redirect("word_list")

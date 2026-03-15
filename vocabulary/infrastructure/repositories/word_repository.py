@@ -48,7 +48,7 @@ class WordRepository(WordRepositoryABC):
             id=str(word.id),
             text=str(word.text),
             context=str(word.context),
-            profile_id=int(word.user.id),
+            profile_id=int(word.profile.id),
         )
 
     def list(self) -> List[WordDTO]:

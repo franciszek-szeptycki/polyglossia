@@ -1,18 +1,45 @@
-{{ request.profiles__available_profiles }}
-<form action="{% url 'change_profile' %}" method="post">
-    {% csrf_token %}
-    <label for="language-select">Wybierz język:</label>
-    <select name="profile_id" id="language-select">
-        {% for profile in request.profiles__available_profiles %}
-            <option value="{{ profile.id }}" {% if profile.is_active %}selected{% endif %}>
-                {% if profile.language == "german" %}🇩🇪 DEUTSCH
-                {% elif profile.language == "spanish" %}🇪🇸 ESPAÑOL
-                {% elif profile.language == "english" %}🇬🇧 ENGLISH
-                {% else %}
-                {{ profile.language }}
-                {% endif %}
-            </option>
+<div class="p-2 bg-white rounded border d-inline-block shadow-sm">
+    <div class="d-flex align-items-center gap-2">
+        <span class="text-dark fw-bold small me-1">Język:</span>
+
+        {% for profile in request.available_profiles %}
+            <form action="{% url 'change_profile' %}" method="post" class="m-0">
+                {% csrf_token %}
+                <input type="hidden" name="profile_id" value="{{ profile.id }}">
+
+                <button type="submit"
+                    class="btn btn-sm {% if profile.is_active %}btn-success text-white{% else %}btn-outline-dark text-muted{% endif %} px-3 py-1 fw-semibold d-flex align-items-center"
+                    style="font-size: 0.85rem; border-radius: 20px; transition: 0.2s;">
+
+                    <span class="me-1">
+                        {% if profile.language == "german" %}🇩🇪
+                        {% elif profile.language == "spanish" %}🇪🇸
+                        {% elif profile.language == "english" %}🇬🇧
+                        {% else %}🌐{% endif %}
+                    </span>
+
+                    <span class="text-uppercase" style="letter-spacing: 0.5px;">
+                        {% if profile.language == "german" %}DE
+                        {% elif profile.language == "spanish" %}ES
+                        {% elif profile.language == "english" %}EN
+                        {% else %}{{ profile.language|slice:":2" }}{% endif %}
+                    </span>
+                </button>
+            </form>
         {% endfor %}
-    </select>
-    <button type="submit">Zatwierdź zmianę</button>
-</form>
+    </div>
+</div>
+
+<style>
+    /* Subtelny efekt hover dla nieaktywnych przycisków */
+    .btn-outline-dark:hover {
+        background-color: #f8f9fa;
+        color: #198754 !important; /* Zmienia tekst na zielony przy najechaniu */
+        border-color: #198754 !important;
+    }
+    /* Styl dla aktywnego przycisku, żeby zieleń była nasycona */
+    .btn-success {
+        background-color: #198754;
+        border-color: #198754;
+    }
+</style>

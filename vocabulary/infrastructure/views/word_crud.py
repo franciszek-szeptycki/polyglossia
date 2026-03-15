@@ -9,7 +9,7 @@ from django.views.generic import (
 )
 
 from vocabulary.infrastructure.factories.container import container
-from vocabulary.infrastructure.forms.word import WordForm
+from vocabulary.infrastructure.forms.word_form import WordForm
 from vocabulary.infrastructure.models.word import Word
 from vocabulary.infrastructure.queries.word_query import WordQuery
 
@@ -54,7 +54,7 @@ class WordCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         # Automatycznie przypisujemy zalogowanego użytkownika przed zapisem
-        form.instance.user = self.request.user
+        form.instance.profile_id = self.request.profile.id
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
