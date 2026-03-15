@@ -1,0 +1,7 @@
+<select name="language">
+    {% for profile in request.profiles__available_profiles %}
+        <option value="{{ profile.id }}" {% if profile.id == request.profiles__profile.id %}selected{% endif %}>
+            {{ profile.language.pretty_name }}
+        </option>
+    {% endfor %}
+</select>

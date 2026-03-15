@@ -1,3 +1,4 @@
+from profiles.consts import Language
 from profiles.domain.entities import ProfileDTO
 from profiles.infrastructure.repositories import profile_repository
 from contextvars import ContextVar
@@ -26,7 +27,9 @@ class ProfileMiddleware:
 
         profile_token = profile_ctx.set(profile)
 
-        request.profile = profile
+        request.profiles__profile = profile
+        request.profiles__available_profiles = [enum for enum in Language]
+
         try:
             response = self.get_response(request)
         finally:

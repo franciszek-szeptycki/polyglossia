@@ -52,6 +52,7 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
+            os.path.join("templates"),
             os.path.join("common", "templates"),
             os.path.join("sentences", "templates"),
             os.path.join("vocabulary", "templates"),

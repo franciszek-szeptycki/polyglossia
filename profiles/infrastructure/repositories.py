@@ -17,6 +17,10 @@ class ProfileRepository:
             return self._to_dto(profile)
         raise Profile.DoesNotExist()
 
+    def get_all_user_profiles(self, *, user_id: int) -> list[ProfileDTO]:
+        profiles = Profile.objects.filter(user_id=user_id)
+        return [self._to_dto(profile) for profile in profiles]
+
     def _to_dto(self, profile: Profile) -> ProfileDTO:
         return ProfileDTO(
             id=profile.id,
