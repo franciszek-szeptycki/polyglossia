@@ -1,4 +1,4 @@
-from tenants.infrastructure.repositories import tenant_repository
+from profiles.infrastructure.repositories import profile_repository
 from contextvars import ContextVar
 from typing import Optional
 
@@ -10,7 +10,7 @@ def get_user_id() -> int:
     raise ValueError("No user id in context")
 
 
-class TenantMiddleware:
+class ProfileMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 
@@ -22,7 +22,7 @@ class TenantMiddleware:
 
         token = user_id_ctx.set(user_id)
         try:
-            request.tenant = tenant_repository.get_by_user_id(user_id=user_id)
+            request.profile = profile_repository.get_by_user_id(user_id=user_id)
             response = self.get_response(request)
         finally:
             user_id_ctx.reset(token)

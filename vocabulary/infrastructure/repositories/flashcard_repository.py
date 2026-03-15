@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import List
 
-from tenants.infrastructure.middlewares import get_user_id
+from profiles.infrastructure.middlewares import get_user_id
 from vocabulary.application.dtos.flashcard import FlashcardDTO
 from vocabulary.domain.ports.flashcard_repository import FlashcardRepositoryABC
 from vocabulary.infrastructure.models.flashcard import Flashcard

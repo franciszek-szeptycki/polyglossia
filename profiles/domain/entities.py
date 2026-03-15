@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 
-from tenants.consts import Language
+from profiles.consts import Language
 
 @dataclass(frozen=True)
-class TenantDTO:
+class ProfileDTO:
     id: int
     user_id: int
     language: Language

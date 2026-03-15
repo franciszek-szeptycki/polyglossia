@@ -1,4 +1,4 @@
-from tenants.infrastructure.middlewares import get_user_id
+from profiles.infrastructure.middlewares import get_user_id
 from vocabulary.infrastructure.models import Flashcard
 
 

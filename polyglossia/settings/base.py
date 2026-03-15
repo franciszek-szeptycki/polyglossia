@@ -29,7 +29,7 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
     "vocabulary",
     "django_extensions",
-    "tenants",
+    "profiles",
 ]
 
 MIDDLEWARE = [
@@ -42,7 +42,7 @@ MIDDLEWARE = [
     "allauth.account.middleware.AccountMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "tenants.infrastructure.middlewares.TenantMiddleware",
+    "profiles.infrastructure.middlewares.ProfileMiddleware",
     "rollbar.contrib.django.middleware.RollbarNotifierMiddleware",
 ]
 
