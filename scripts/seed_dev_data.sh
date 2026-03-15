@@ -17,3 +17,5 @@ for username, email, password in users:
     else:
         print(f"User {username} already exists")
 EOF
+
+python manage.py propagate_profiles_across_users

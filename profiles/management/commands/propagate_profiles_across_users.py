@@ -10,5 +10,5 @@ class Command(BaseCommand):
         for user in users:
             print(f"Analyzing user '{user}'...")
             if 0 == user.profiles.all().count():
-                Profile.create_default(user_id=user.id)
-                print(f"- Created profile for user '{user}'")
+                Profile.create_missing_profiles_for_user(user_id=user.id)
+                print(f"- Created missing profiles for user '{user}'")

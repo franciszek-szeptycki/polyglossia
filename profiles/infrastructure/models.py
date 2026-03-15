@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 from profiles.consts import Language
@@ -12,10 +13,16 @@ class Profile(models.Model):
     )
 
     @staticmethod
-    def create_default(*, user_id: int) -> 'Profile':
-        profile = Profile(
-            user_id=user_id,
-            language=Language.GERMAN.value,
-        )
-        profile.save()
-        return profile
+    def create_missing_profiles_for_user(*, user_id: int):
+        user = User.objects.get(id=user_id)
+
+        existing_profiles = Profile.objects.filter(user=user)
+
+        for language in Language:
+            if not existing_profiles.filter(language=language.value).exists():
+                profile = Profile(
+                    user=user,
+                    language=language.value,
+                )
+                print(f" --- Creating profile for language '{language.value}'")
+                profile.save()

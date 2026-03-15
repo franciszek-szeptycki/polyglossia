@@ -1,8 +1,8 @@
-from profiles.infrastructure.middlewares import get_user_id
+from profiles.infrastructure.middlewares import get_profile_id
 from vocabulary.infrastructure.models import Flashcard
 
 
 class FlashcardQuery:
     @staticmethod
     def active():
-        return Flashcard.objects.filter(user=get_user_id(), is_active=True)
+        return Flashcard.objects.filter(profile=get_profile_id(), is_active=True)

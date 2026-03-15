@@ -7,4 +7,4 @@ class WordDTO:
     id: str
     text: str
     context: str = ""
-    user_id: Optional[int] = None
+    profile_id: Optional[int] = None

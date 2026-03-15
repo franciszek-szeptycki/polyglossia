@@ -1,13 +1,14 @@
+from profiles.domain.entities import ProfileDTO
 from profiles.infrastructure.repositories import profile_repository
 from contextvars import ContextVar
 from typing import Optional
 
-user_id_ctx: ContextVar[Optional[int]] = ContextVar("user_id", default=None)
+profile_ctx: ContextVar[Optional[ProfileDTO]] = ContextVar("profile", default=None)
 
-def get_user_id() -> int:
-    if user_id := user_id_ctx.get():
-        return user_id
-    raise ValueError("No user id in context")
+def get_profile_id() -> int:
+    if profile := profile_ctx.get():
+        return profile.id
+    raise ValueError("No profile in the context")
 
 
 class ProfileMiddleware:
@@ -20,11 +21,15 @@ class ProfileMiddleware:
         if not user_id:
             return self.get_response(request)
 
-        token = user_id_ctx.set(user_id)
+        # profile = profile_repository.get_all_for_user(user_id=user_id)
+        profile: ProfileDTO = profile_repository.get_first_by_user_id(user_id=user_id)
+
+        profile_token = profile_ctx.set(profile)
+
+        request.profile = profile
         try:
-            request.profile = profile_repository.get_by_user_id(user_id=user_id)
             response = self.get_response(request)
         finally:
-            user_id_ctx.reset(token)
+            profile_ctx.reset(profile_token)
 
         return response
