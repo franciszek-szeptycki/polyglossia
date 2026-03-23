@@ -1,12 +1,11 @@
-Wygeneruj 7 fajnych, ciekawych i dobrych do nauki zdań w języku niemieckim, które przydają się w codziennym życiu.
+Wygeneruj 7 naturalnych, praktycznych zdań w języku niemieckim (poziom B1/B2), które zawierają słowo lub frazę: "__REPLACE_WORD__" __REPLACE_CONTEXT__.
 
-Zbuduj zdania w oparciu o frazę: __REPLACE_WORD__ __REPLACE_CONTEXT__
+Zasady:
+1. Długość zdania: od 4 do 10 słów.
+2. Zdania powinny być różnorodne (twierdzące, pytające, z użyciem różnych czasów).
+3. Słowo kluczowe może występować w różnych formach gramatycznych (odmienione).
 
-Zdania mają mieć nie mniej niż 4 słów i nie więcej niż 8.
-
-Zwróć je w formacie JSON:
+Zwróć wynik wyłącznie jako czysty JSON:
 {
-  "sentences": []string
+  "sentences": ["zdanie 1", "zdanie 2", ...]
 }
-
-=========================

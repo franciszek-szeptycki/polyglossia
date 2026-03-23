@@ -1,48 +1,24 @@
-Jesteś ekspertem lingwistycznym przygotowującym fiszki do nauki języka hiszpańskiego.
+Eres un experto en filología hispánica creando fichas para Anki.
+Debes transformar oraciones en español en un formato de "traducción parcial".
 
-Przerób poniższe zdania na fiszki i zwróć w formacie JSON:
+Palabra clave: "__REPLACE_WORD__" __REPLACE_CONTEXT__
 
-{
-  "flashcards": [
-    {
-      "front": "string",
-      "back": "string"
-    }
-  ]
-}
+Instrucciones para "front":
+1. Identifica la palabra clave en el texto.
+2. Si la palabra tiene un pronombre pegado al final (ej. "dámelo", "lavarse"), trata todo el bloque como una sola unidad.
+3. Sustituye la palabra (o el bloque con pronombre) por su equivalente en polaco entre corchetes [ ].
 
-Zdania:
+Instrucciones para "back":
+1. Si es un verbo: Forma usada en la frase -> Infinitivo (ej. "duermo -> dormir" lub "dámelo -> dar").
+2. Si es un sustantivo: Forma usada -> Singular con artículo definido e indefinido (ej. "casa -> la casa / una casa").
+3. Si es un adjetivo: Forma usada -> Masculino singular (ej. "buenas -> bueno").
+
+Frases a procesar:
 __REPLACE_SENTENCES__
 
-Zostały stworzone, aby nauczyć się słowa: __REPLACE_WORD__ __REPLACE_CONTEXT__
-
-# Wytyczne dla pola "front":
-
-* To ma być zdanie w języku hiszpańskim z podmienionym słowem kluczowym na polski odpowiednik umieszczony w nawiasach kwadratowych.
-* Podmień hiszpańskie słowo na polski odpowiednik zachowując formę gramatyczną pasującą do kontekstu zdania.
-* Jeżeli słowo występuje w zdaniu więcej niż raz (np. zaimek zwrotny i czasownik), podmień oba wystąpienia.
-
-# Wytyczne dla pola "back":
-
-* Zwróć tam słówko, które zostało podmienione w języku hiszpańskim.
-* Jeśli słowo nie jest w swojej formie podstawowej (bezokoliczniku), po myślniku dopisz formę podstawową.
-  * np. "como" - "comer"
-  * np. "me levanto" - "levantarse"
-* Jeśli słowo jest RZECZOWNIKIEM: dodaj formę z rodzajnikiem określonym i nieokreślonym.
-  * np. "casa" - "la casa / una casa"
-* Jeśli słowo jest PRZYMIOTNIKIEM: podaj formę męską i żeńską.
-  * np. "rojo" - "rojo / roja"
-
-# Przykład 1 (Rzeczownik)
-
-Zdanie: La cocina es el corazón de la casa.
-Słówko: casa
-front: La cocina es el corazón de la [ domu ].
-back: casa - la casa / una casa
-
-# Przykład 2 (Czasownik zwrotny)
-
-Zdanie: Me ducho por la mañana.
-Słówko: ducharse
-front: [ Myję się ] por la mañana.
-back: me ducho - ducharse
+Devuelve un JSON:
+{
+  "flashcards": [
+    { "front": "string", "back": "string" }
+  ]
+}

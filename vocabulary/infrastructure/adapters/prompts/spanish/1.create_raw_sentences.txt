@@ -1,23 +1,11 @@
-Jesteś ekspertem języka hiszpańskiego i przygotowujesz materiały do nauki dla uczniów.
+Genera 7 frases naturales y útiles en español que contengan la palabra o expresión: "__REPLACE_WORD__" __REPLACE_CONTEXT__.
 
-Wygeneruj 7 ciekawych, naturalnych i przydatnych w codziennym życiu zdań w języku hiszpańskim (używanym w Hiszpanii lub Ameryce Łacińskiej).
+Reglas:
+1. Longitud: entre 4 y 10 palabras.
+2. Usa contextos de la vida cotidiana.
+3. Varía las formas verbales (presente, pasado, imperativo).
 
-Zbuduj zdania w oparciu o frazę lub słowo: __REPLACE_WORD__ __REPLACE_CONTEXT__
-
-# Wytyczne dla zdań:
-* Każde zdanie musi zawierać od 4 do 8 słów.
-* Zdania powinny być zróżnicowane (twierdzące, pytające lub wykrzyknikowe).
-* Unikaj nienaturalnych, podręcznikowych konstrukcji; stawiaj na autentyczny język codzienny.
-
-Zwróć wynik wyłącznie w formacie JSON:
+Resultado en JSON:
 {
-  "sentences": [
-    "zdanie 1",
-    "zdanie 2",
-    "zdanie 3",
-    "zdanie 4",
-    "zdanie 5",
-    "zdanie 6",
-    "zdanie 7"
-  ]
+  "sentences": ["frase 1", "frase 2", ...]
 }

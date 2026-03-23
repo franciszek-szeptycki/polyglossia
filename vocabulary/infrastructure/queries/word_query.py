@@ -12,4 +12,4 @@ class WordQuery:
     @staticmethod
     def get_next_word_without_flashcards() -> Optional[Word]:
         words = Word.objects.filter(profile=get_profile_id()).order_by("created_at")
-        return next((w for w in words if not w.has_active_flashcards()), None)
+        return next((w for w in words if not w.has_active_flashcards), None)

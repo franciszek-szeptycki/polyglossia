@@ -1,49 +1,24 @@
-Jesteś w procesie przygotowywania fiszek do nauki języka niemieckiego.
+Jesteś ekspertem lingwistycznym przygotowującym materiały do Anki.
+Twoim zadaniem jest przekształcenie zdań niemieckich w fiszki typu "cloze deletion" z polskim tłumaczeniem wewnątrz.
 
-Przerób poniższe zdania na fiszki i zwróć w formacie JSON:
-{
-  "flashcards": [
-    {
-      "front": string,
-      "back": string
-    },
-    ...
-  ]
-]
+Słowo kluczowe: "__REPLACE_WORD__" __REPLACE_CONTEXT__
 
-Zdania:
+Zasady tworzenia "front":
+1. Znajdź w zdaniu wszystkie elementy należące do słowa kluczowego (w tym przedrostki rozdzielne, zaimki zwrotne 'sich', końcówki).
+2. Zastąp KAŻDY z tych elementów polskim odpowiednikiem w nawiasach kwadratowych [ ].
+3. Ważne: Jeśli czasownik jest rozdzielny (np. "Ich stehe auf"), oba elementy zamień na polskie słowo: "Ich [ wstaję ] ... [ wstaję ]".
+
+Zasady tworzenia "back":
+1. Jeśli to czasownik: Podaj formę użytą w zdaniu -> bezokolicznik (np. "stehe ... auf -> aufstehen").
+2. Jeśli to rzeczownik: Podaj formę użytą w zdaniu -> Mianownik z rodzajnikiem określonym i nieokreślonym (np. "Tisch -> der Tisch / ein Tisch").
+3. Jeśli to inna część mowy: Podaj formę użytą w zdaniu -> forma podstawowa.
+
+Dane wejściowe (zdania):
 __REPLACE_SENTENCES__
 
-zostały stworzone aby nauczyć się słowa: __REPLACE_WORD__ __REPLACE_CONTEXT__
-
-# co ma zawierać "front":
-
-to ma być to zdanie w języku niemieckim z podmienionym słowem kluczowym na polski odpowiednik będący w nawiasach kwadratowych.
-
-dla każdego zdania podmień w zdaniu niemieckie słówko którego dotyczy fiszka na odpowiednik w języku polskim w tej samej formie.
-
-jeżeli słowo występuje w zdaniu więcej niż raz, podmień je na odpowiednik w języku polskim w każdym wystąpieniu np. dla czasowników rozdzielnych.
-
-# co ma zawierać "back":
-
-zwróć tam słówko które zostało podmienione w języku niemieckim i jeżeli nie jest ono w swojej podstawowej formie to po myślniku zwróć jego podstawową formę
-np. "schlägt" - "schlagen"
-albo "steigen, sich, aus" - "sich aussteigen"
-
-a jeśli to rzeczownik to dodaj formę w mianowniku z rodzajnikiem określonym i nieokreślonym
-
-# Przykład 1
-
-zdanie: Ich lerne Deutsch, weil ich in Zukunft in Deutschland arbeiten möchte
-słówko: Zukunft
-
-front: Ich lerne Deutsch, weil ich in [ przyszłości ] in Deutschland arbeiten möchte
-back: Zukunft - der Zukunft / ein Zukunft
-
-# Przykład 2
-
-zdanie: Ich stehe jeden Tag um sieben Uhr auf
-słówko: aufstehen
-
-front: Ich [ wstaję ] jeden Tag um sieben Uhr [ wstaję ]
-back: stehe, auf - aufstehen
+Zwróć JSON:
+{
+  "flashcards": [
+    { "front": "string", "back": "string" }
+  ]
+}
