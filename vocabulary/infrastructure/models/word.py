@@ -28,7 +28,11 @@ class Word(models.Model):
 
     @property
     def has_active_flashcards(self):
-        return self.flashcards.filter(is_active=True).exists()
+        return getattr(
+            self,
+            "annotated_has_active_flashcards",
+            self.flashcards.filter(is_active=True).exists(),
+        )
 
     @property
     def flashcards_number(self):
