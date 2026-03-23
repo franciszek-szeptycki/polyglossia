@@ -23,17 +23,17 @@ class WordListView(LoginRequiredMixin, ListView):
         queryset = WordQuery.list()
 
         self.active_filter = self.request.GET.get("active_flashcards")
-
         if self.active_filter == "yes":
-            queryset = queryset.filter(has_active_fiszki=True)
+            queryset = queryset.filter(flashcards__is_active=True).distinct()
         elif self.active_filter == "no":
-            queryset = queryset.filter(has_active_fiszki=False)
+            queryset = queryset.exclude(flashcards__is_active=True).distinct()
 
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["total_count"] = self.object_list.count()
+        # Używamy zafiltrowanego querysetu do licznika
+        context["total_count"] = self.get_queryset().count()
         context["current_filter"] = self.active_filter
         return context
 
@@ -76,6 +76,7 @@ class WordUpdateView(LoginRequiredMixin, UpdateView):
     def get_queryset(self):
         # User może edytować tylko swoje słówka
         return WordQuery.list()
+
 
 
 class WordDeleteView(LoginRequiredMixin, DeleteView):
