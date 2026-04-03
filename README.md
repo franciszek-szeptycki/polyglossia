@@ -26,3 +26,4 @@ python manage.py runserver
 
 ## Important notes
 **Current Focus**: The app is currently optimized for Polish-German translations and learning.
+
