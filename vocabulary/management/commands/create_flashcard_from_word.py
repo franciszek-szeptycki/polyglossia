@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 
 from common.adapters.openai_adapter import OpenAIAdapter
 from profiles.consts import Language
-from vocabulary.domain.services.create_flashcards_service import (
+from vocabulary.application.services.create_flashcards_service import (
     CreateFlaschardsService,
 )
 from vocabulary.infrastructure.adapters.prompt_manager import PromptManagersContainer
@@ -18,11 +18,11 @@ class Command(BaseCommand):
         llm_adapter = OpenAIAdapter()
         prompt_mng_container = PromptManagersContainer(llm_adapter=llm_adapter)
 
-        service = CreateFlaschardsService(
-            prompt_managers=prompt_mng_container
-        )
+        service = CreateFlaschardsService(prompt_managers=prompt_mng_container)
 
-        flashcards = service.execute(word=word, language=Language.GERMAN.value, context="")
+        flashcards = service.execute(
+            word=word, language=Language.GERMAN.value, context=""
+        )
         for flashcard in flashcards:
             print(flashcard)
             print(flashcard.front)

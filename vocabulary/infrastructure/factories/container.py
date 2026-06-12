@@ -1,12 +1,12 @@
 from common.adapters.openai_adapter import OpenAIAdapter
+from vocabulary.application.services.create_flashcards_service import (
+    CreateFlaschardsService,
+)
 from vocabulary.application.use_cases.create_flashcards_from_word_use_case import (
     GenerateFlashcardsForWordUseCase,
 )
 from vocabulary.application.use_cases.get_flashcard_data_to_export_use_case import (
     GetFlashcardDataToExportUseCase,
-)
-from vocabulary.domain.services.create_flashcards_service import (
-    CreateFlaschardsService,
 )
 from vocabulary.infrastructure.adapters.prompt_manager import (
     PromptManagersContainer,
@@ -34,7 +34,9 @@ class DependencyContainer:
         ##############
         #  SERVICES  #
         ##############
-        self.service_create_eva_flashcards = CreateFlaschardsService(prompt_managers=self.manager_prompt)
+        self.service_create_eva_flashcards = CreateFlaschardsService(
+            prompt_managers=self.manager_prompt
+        )
 
         ###############
         #  USE_CASES  #
@@ -47,5 +49,6 @@ class DependencyContainer:
         self.use_case_get_flashcard_data_to_export = GetFlashcardDataToExportUseCase(
             flashcard_repo=self.repository_flashcard,
         )
+
 
 container = DependencyContainer()

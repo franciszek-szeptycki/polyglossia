@@ -3,7 +3,7 @@ from typing import List
 
 from profiles.infrastructure.middlewares import get_profile_id
 from vocabulary.application.dtos.flashcard import FlashcardDTO
-from vocabulary.domain.ports.flashcard_repository import FlashcardRepositoryABC
+from vocabulary.application.ports.flashcard_repository import FlashcardRepositoryABC
 from vocabulary.infrastructure.models.flashcard import Flashcard
 
 

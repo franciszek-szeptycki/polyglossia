@@ -2,7 +2,7 @@ from typing import List
 
 from profiles.infrastructure.middlewares import get_profile_id
 from vocabulary.application.dtos.word import WordDTO
-from vocabulary.domain.ports.word_repository import WordRepositoryABC
+from vocabulary.application.ports.word_repository import WordRepositoryABC
 from vocabulary.infrastructure.models.word import Word as WordModel
 
 

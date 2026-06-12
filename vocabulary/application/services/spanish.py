@@ -3,7 +3,7 @@ from typing import List
 from common.adapters.openai_adapter import OpenAIAdapter
 from common.ports.llm_adapter import LLMAdapter
 from vocabulary.application.dtos.flashcard import Flashcard
-from vocabulary.application.services.spanish_vars import SpanishPrompts
+from vocabulary.application.services.spanish_prompts import SpanishPrompts
 
 
 class SpanishFlashcardsService:
@@ -11,26 +11,45 @@ class SpanishFlashcardsService:
         self.llm: LLMAdapter = llm
 
     def execute(self, *, word: str) -> List[Flashcard]:
+        # STEP 1
         sentences_prompt = SpanishPrompts.sentences(word=word)
         sentences = self.llm.prompt_json(user=sentences_prompt).get("sentences", [])
         print(sentences)
 
-        detect_word = SpanishPrompts.detect_word(sentences=sentences, word=word)
-        forms = self.llm.prompt_json(user=detect_word).get("forms", [])
+        # STEP 2
+        forms_prompt = SpanishPrompts.word_forms(sentences=sentences, word=word)
+        forms = self.llm.prompt_json(user=forms_prompt).get("forms", [])
+        print(forms)
 
+        # STEP 3
+        translation_prompt = SpanishPrompts.translate(data=list(zip(sentences, forms)))
+        translations = self.llm.prompt_json(user=translation_prompt).get(
+            "translations", []
+        )
+        print(translations)
+
+        # STEP 4
         replaced_sentences = []
         for sentence, form in zip(sentences, forms):
-            replaced_sentence = self._replace_word_with_blank(sentence, form)
-            replaced_sentences.append(replaced_sentence)
-
+            replaced_sentece = sentence.replace(form, f"[ {form} ]")
+            replaced_sentences.append(replaced_sentece)
         print(replaced_sentences)
 
-    def _replace_word_with_blank(self, sentence: str, word_form: str) -> str:
-        return sentence.replace(word_form, "___")
+        # STEP 5
+        flashcards = []
+        for replaced_sentece, translation, word_form in zip(
+            replaced_sentences, translations, forms
+        ):
+            flashcard = Flashcard(
+                front=replaced_sentece,
+                back=f"{word_form}<br>{translation}",
+            )
+            flashcards.append(flashcard)
+        return flashcards
 
 
 if __name__ == "__main__":
     from dotenv import load_dotenv
 
     load_dotenv()
-    SpanishFlashcardsService(llm=OpenAIAdapter()).execute(word="tener")
+    SpanishFlashcardsService(llm=OpenAIAdapter()).execute(word="hablo")
