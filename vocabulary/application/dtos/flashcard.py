@@ -3,6 +3,14 @@ from datetime import datetime
 from optparse import Option
 from typing import Optional
 
+from attrs import frozen
+
+
+@frozen(kw_only=True)
+class Flashcard:
+    front: str
+    back: str
+
 
 @dataclass
 class FlashcardDTO:

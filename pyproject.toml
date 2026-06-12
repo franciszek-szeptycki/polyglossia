@@ -3,3 +3,5 @@ reportAttributeAccessIssue = false
 reportUnknownMemberType = false
 reportDeprecated = false
 reportUnannotatedClassAttribute = false
+reportUnusedCallResult = false
+reportMissingTypeArgument = false
