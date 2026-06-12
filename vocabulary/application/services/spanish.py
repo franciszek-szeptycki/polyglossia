@@ -14,11 +14,23 @@ class SpanishFlashcardsService:
         sentences_prompt = SpanishPrompts.sentences(word=word)
         sentences = self.llm.prompt_json(user=sentences_prompt).get("sentences", [])
         print(sentences)
-        pass
+
+        detect_word = SpanishPrompts.detect_word(sentences=sentences, word=word)
+        forms = self.llm.prompt_json(user=detect_word).get("forms", [])
+
+        replaced_sentences = []
+        for sentence, form in zip(sentences, forms):
+            replaced_sentence = self._replace_word_with_blank(sentence, form)
+            replaced_sentences.append(replaced_sentence)
+
+        print(replaced_sentences)
+
+    def _replace_word_with_blank(self, sentence: str, word_form: str) -> str:
+        return sentence.replace(word_form, "___")
 
 
 if __name__ == "__main__":
     from dotenv import load_dotenv
 
     load_dotenv()
-    SpanishFlashcardsService(llm=OpenAIAdapter()).execute(word="hola")
+    SpanishFlashcardsService(llm=OpenAIAdapter()).execute(word="tener")

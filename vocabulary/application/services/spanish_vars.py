@@ -1,6 +1,9 @@
+from typing import List
+
+
 class SpanishPrompts:
     @staticmethod
-    def sentences(*, word: str):
+    def sentences(*, word: str) -> str:
         return (
             f"""
         Generate 7 sentences in Spanish using the word "{word}".
@@ -17,4 +20,30 @@ class SpanishPrompts:
                 "sentence 3"
             ]
         }"""
+        )
+
+    @staticmethod
+    def detect_word(*, sentences: List[str], word: str) -> str:
+        return (
+            f"""
+        Given the following sentences in Spanish:
+        {"\n".join(sentences)}
+        Each sentence contains a word "{word}" in Spanish.
+        Identify that word in each sentence and return a list of the forms of the word "{
+                word
+            }" used in each sentence.
+        For example, if the word is "hablar" and the sentences are:
+        "Yo hablo español."
+        "Tú hablas inglés."
+        "Él habla francés."
+        The output should be: """
+            + """
+        {
+            "forms": [
+                "hablo",
+                "hablas",
+                "habla"
+            ]
+        }
+        """
         )
