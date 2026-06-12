@@ -1,12 +1,9 @@
-from logging import getLogger
 from typing import List
 
 from common.adapters.openai_adapter import OpenAIAdapter
 from common.ports.llm_adapter import LLMAdapter
 from vocabulary.application.dtos.flashcard import Flashcard
 from vocabulary.application.services.spanish_prompts import SpanishPrompts
-
-logger = getLogger(__name__)
 
 
 class SpanishFlashcardsService:
@@ -16,17 +13,14 @@ class SpanishFlashcardsService:
     def execute(self, *, word: str) -> List[Flashcard]:
         try:
             # STEP 1
-            logger.info(f"SpanishFlashcardsService::STEP 1 - word='{word}'")
             sentences_prompt = SpanishPrompts.sentences(word=word)
             sentences = self.llm.prompt_json(user=sentences_prompt).get("sentences", [])
 
             # STEP 2
-            logger.info(f"SpanishFlashcardsService::STEP 2 - word='{word}'")
             forms_prompt = SpanishPrompts.word_forms(sentences=sentences, word=word)
             forms = self.llm.prompt_json(user=forms_prompt).get("forms", [])
 
             # STEP 3
-            logger.info(f"SpanishFlashcardsService::STEP 3 - word='{word}'")
             translation_prompt = SpanishPrompts.translate(
                 data=list(zip(sentences, forms))
             )
@@ -39,7 +33,6 @@ class SpanishFlashcardsService:
             translated_words = [translation["word"] for translation in translations]
 
             # STEP 4
-            logger.info(f"SpanishFlashcardsService::STEP 4 - word='{word}'")
             replaced_sentences = []
             for sentence, form, translated_word in zip(
                 sentences, forms, translated_words
@@ -49,7 +42,6 @@ class SpanishFlashcardsService:
             print(replaced_sentences)
 
             # STEP 5
-            logger.info(f"SpanishFlashcardsService::STEP 5 - word='{word}'")
             flashcards = []
             for replaced_sentece, translated_sentence, word_form in zip(
                 replaced_sentences, translated_sentences, forms
@@ -61,7 +53,6 @@ class SpanishFlashcardsService:
                 flashcards.append(flashcard)
             return flashcards
         except Exception as e:
-            logger.error(f"Error in SpanishFlashcardsService: {e}")
             raise e
 
 

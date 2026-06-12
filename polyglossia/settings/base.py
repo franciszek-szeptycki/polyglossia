@@ -38,7 +38,6 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    # "stronghold.middleware.LoginRequiredMiddleware",
     "allauth.account.middleware.AccountMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -71,7 +70,6 @@ TEMPLATES = [
 WSGI_APPLICATION = "polyglossia.wsgi.application"
 
 
-# DATABASES = {"default": dj_database_url.config()}
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",

@@ -1,4 +1,3 @@
-from common.adapters.ollama_adapter import ollama_adapter
 from common.ports.llm_adapter import LLMAdapter
 from profiles.domain.entities import ProfileDTO
 from vocabulary.application.dtos.flashcard import FlashcardDTO
