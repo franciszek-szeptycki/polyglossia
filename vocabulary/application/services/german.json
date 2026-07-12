@@ -3,24 +3,28 @@
         "Ich muss hier aussteigen.",
         "Wann steigen wir aus?",
         "Steigst du an der nächsten aus?",
-        "Wie lange dauert die Messe?"
+        "Wie lange dauert die Messe?",
+        "Die Messe endet um sechs."
     ],
     "forms": [
         "aussteigen",
         "steigen ... aus",
         "steigst ... aus",
+        "die Messe",
         "die Messe"
     ],
     "translated_words": [
         "wysiąść",
         "wysiadamy",
         "wysiadasz",
+        "targi",
         "targi"
     ],
     "expected": [
       "Ich muss hier [ wysiąść ].",
       "Wann [ wysiadamy ] wir [ wysiadamy ]?",
       "[ wysiadasz ] du an der nächsten [ wysiadasz ]?",
-      "Wie lange dauert [ targi ]?"
+      "Wie lange dauert [ targi ]?",
+      "[ targi ] endet um sechs."
     ]
 }
