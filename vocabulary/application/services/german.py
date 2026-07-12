@@ -46,7 +46,6 @@ class GermanFlashcardsService:
             replaced_sentences = self.prepare_sentences(
                 sentences=sentences, forms=forms, translated_words=translated_words
             )
-            print(replaced_sentences)
 
             # STEP 5
             logger.info(f"GermanFlashcardsService::STEP 5 - word='{word}'")
@@ -71,10 +70,10 @@ class GermanFlashcardsService:
         ):
             replaced_sentence = sentence
             for word_part in form.split(" "):
-                print(f"Replacing '{word_part}' with '[ {translated_word} ]' in sentence: '{sentence}'")
+                if word_part == "...":
+                    continue
                 safe_word = re.escape(word_part)
-                replaced_sentence = re.sub( safe_word, f"[ {translated_word} ]", sentence, flags=re.IGNORECASE)
-            print(f"Replaced sentence: '{replaced_sentence}'")
+                replaced_sentence = re.sub(safe_word, f"[ {translated_word} ]", replaced_sentence, flags=re.IGNORECASE)
 
             replaced_sentences.append(replaced_sentence)
         return replaced_sentences

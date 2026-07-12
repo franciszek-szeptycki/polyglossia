@@ -46,7 +46,6 @@ class SpanishFlashcardsService:
             ):
                 replaced_sentece = sentence.replace(form, f"[ {translated_word} ]")
                 replaced_sentences.append(replaced_sentece)
-            print(replaced_sentences)
 
             # STEP 5
             logger.info(f"SpanishFlashcardsService::STEP 5 - word='{word}'")

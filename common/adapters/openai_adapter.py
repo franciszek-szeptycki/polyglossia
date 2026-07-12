@@ -65,4 +65,3 @@ if __name__ == "__main__":
     response = openai_adapter.generate_response(
         system="", user="What is the capital of France?"
     )
-    print(response)

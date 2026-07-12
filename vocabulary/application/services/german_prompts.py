@@ -48,6 +48,7 @@ class GermanPrompts:
         }
         Take into account that the word might be 2 parts, for example "sich freuen" and the forms can be "freue mich",
         or if the word is separable, for example "aufstehen" and the forms can be "stehe auf".
+        If the word is separable in sentence - return value should be splitted by " ... " example: "stehe ... auf" for "aufstehen" in sentence "Ich stehe um 7 Uhr auf.".
         """
         )
 
