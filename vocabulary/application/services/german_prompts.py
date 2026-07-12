@@ -46,6 +46,8 @@ class GermanPrompts:
                 "spricht"
             ]
         }
+        Take into account that the word might be 2 parts, for example "sich freuen" and the forms can be "freue mich",
+        or if the word is separable, for example "aufstehen" and the forms can be "stehe auf".
         """
         )
 
