@@ -96,3 +96,6 @@ staticfiles
 media
 venv
 deploy
+
+# App logs
+logs/
