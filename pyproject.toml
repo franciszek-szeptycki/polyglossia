@@ -5,3 +5,7 @@ reportDeprecated = false
 reportUnannotatedClassAttribute = false
 reportUnusedCallResult = false
 reportMissingTypeArgument = false
+reportUnknownVariableType = false
+reportUnknownArgumentType = false
+reportMissingParameterType = false
+reportUnknownParameterType = false

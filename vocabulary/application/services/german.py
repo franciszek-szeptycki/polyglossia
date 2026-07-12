@@ -1,5 +1,8 @@
+import re
 from logging import getLogger
 from typing import List
+
+import json
 
 from common.adapters.openai_adapter import OpenAIAdapter
 from common.ports.llm_adapter import LLMAdapter
@@ -40,12 +43,9 @@ class GermanFlashcardsService:
 
             # STEP 4
             logger.info(f"GermanFlashcardsService::STEP 4 - word='{word}'")
-            replaced_sentences = []
-            for sentence, form, translated_word in zip(
-                sentences, forms, translated_words
-            ):
-                replaced_sentece = sentence.replace(form, f"[ {translated_word} ]")
-                replaced_sentences.append(replaced_sentece)
+            replaced_sentences = self.prepare_sentences(
+                sentences=sentences, forms=forms, translated_words=translated_words
+            )
             print(replaced_sentences)
 
             # STEP 5
@@ -63,6 +63,21 @@ class GermanFlashcardsService:
         except Exception as e:
             logger.error(f"Error in GermanFlashcardsService: {e}")
             raise e
+
+    def prepare_sentences(self, *, sentences, forms, translated_words) -> List[str]:
+        replaced_sentences = []
+        for sentence, form, translated_word in zip(
+            sentences, forms, translated_words
+        ):
+            replaced_sentence = sentence
+            for word_part in form.split(" "):
+                print(f"Replacing '{word_part}' with '[ {translated_word} ]' in sentence: '{sentence}'")
+                safe_word = re.escape(word_part)
+                replaced_sentence = re.sub( safe_word, f"[ {translated_word} ]", sentence, flags=re.IGNORECASE)
+            print(f"Replaced sentence: '{replaced_sentence}'")
+
+            replaced_sentences.append(replaced_sentence)
+        return replaced_sentences
 
 
 if __name__ == "__main__":
