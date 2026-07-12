@@ -69,11 +69,12 @@ class GermanFlashcardsService:
             sentences, forms, translated_words
         ):
             replaced_sentence = sentence
-            for word_part in form.split(" "):
-                if word_part == "...":
-                    continue
-                safe_word = re.escape(word_part)
-                replaced_sentence = re.sub(safe_word, f"[ {translated_word} ]", replaced_sentence, flags=re.IGNORECASE)
+            if " ... " not in form:
+                replaced_sentence = replaced_sentence.replace(form, f"[ {translated_word} ]")
+            else:
+                for word_part in form.split(" ... "):
+                    safe_word = re.escape(word_part)
+                    replaced_sentence = re.sub(safe_word, f"[ {translated_word} ]", replaced_sentence, flags=re.IGNORECASE)
 
             replaced_sentences.append(replaced_sentence)
         return replaced_sentences

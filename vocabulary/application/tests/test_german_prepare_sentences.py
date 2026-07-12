@@ -24,16 +24,7 @@ class GermanFlashcardsServicePrepareSentencesTest(SimpleTestCase):
             forms=self.fixture["forms"],
             translated_words=self.fixture["translated_words"],
         )
-
-        expected = [
-            "Ich muss hier [ wysiąść ].",
-            "Wann [ wysiadamy ] wir [ wysiadamy ]?",
-            "Bitte vorne [ wysiadać ].",
-            "Er will nicht [ wysiąść ].",
-            "[ wysiadasz ] du an der nächsten [ wysiadasz ]?",
-            "Können wir jetzt [ wysiąść ]?",
-            "Lass uns schnell [ wysiądźmy ].",
-        ]
+        expected = self.fixture["expected"]
 
         self.assertEqual(result, expected)
 
