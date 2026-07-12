@@ -6,6 +6,7 @@ from vocabulary.application.ports.word_repository import WordRepositoryABC
 from vocabulary.application.services.create_flashcards_service import (
     CreateFlaschardsService,
 )
+from vocabulary.application.services.german import GermanFlashcardsService
 from vocabulary.application.services.spanish import SpanishFlashcardsService
 from vocabulary.infrastructure.adapters.prompt_manager import (
     PromptManagersContainer,
@@ -28,6 +29,7 @@ class GenerateFlashcardsForWordUseCase:
             prompt_managers=prompt_mng_container
         )
         self.spanish_flashcards = SpanishFlashcardsService(llm=llm_adapter)
+        self.german_flashcards = GermanFlashcardsService(llm=llm_adapter)
 
     def execute(self, *, word_id: str, profile: ProfileDTO):
 
@@ -39,6 +41,8 @@ class GenerateFlashcardsForWordUseCase:
         try:
             if profile.language == "spanish":
                 flashcards = self.spanish_flashcards.execute(word=word.text)
+            elif profile.language == "german":
+                flashcards = self.german_flashcards.execute(word=word.text)
             else:
                 flashcards = self.create_flashcard_svc.execute(
                     word=word.text,
